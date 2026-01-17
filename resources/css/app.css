@@ -47,3 +47,21 @@ html, body, #app {
     line-height: 1.5 !important;
   }
 }
+
+@keyframes swimRight {
+  from { transform: translateX(-50vw); }
+  to { transform: translateX(120vw); }
+}
+
+@keyframes swimLeft {
+  from { transform: translateX(120vw) scaleX(-1); }
+  to { transform: translateX(-50vw) scaleX(-1); }
+}
+
+.fish-swim-right {
+  animation: swimRight 25s linear infinite;
+}
+
+.fish-swim-left {
+  animation: swimLeft 30s linear infinite;
+}

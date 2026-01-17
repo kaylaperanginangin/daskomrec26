@@ -7,18 +7,39 @@ import cave from '../assets/cave.png';
 import DaskomBnW01 from '../assets/DaskomBnW01.png';
 import DLOR_Plain2 from '../assets/DLOR_Plain2.png';
 import utama from '../assets/utama.png';
-import Button09 from '../assets/Button09.png';
+import Button09 from '../assets/09-Button.png';
 import door2 from '../assets/door2.png';
 import trial from '../assets/trial.png';
+import road from '../assets/road.png';
+import Fish01L from '../assets/01-FishL.png';
+import Fish01R from '../assets/01-FishR.png';
+import Fish02 from '../assets/02-Fish.png';
+import Sign04 from '../assets/04-Sign.png';
+
+
 
 
 
 export default function Welcome() {
   const parallax = useRef(null);
 
+  const styles = `
+    @keyframes swimRight {
+      from { transform: translateX(-50vw); }
+      to { transform: translateX(120vw); }
+    }
+    @keyframes swimLeft {
+      from { transform: translateX(120vw) scaleX(-1); }
+      to { transform: translateX(-50vw) scaleX(-1); }
+    }
+    .fish-swim-right { animation: swimRight 35s linear infinite; }
+    .fish-swim-left { animation: swimLeft 40s linear infinite; }
+  `;
+
   return (
     <>
       <Head title="DLOR 2026 (Atlantis)" />
+      <style>{styles}</style>
 
       <div style={{ width: '100%', height: '100vh', margin: 0, padding: 0 }}>
         
@@ -29,7 +50,7 @@ export default function Welcome() {
             speed={0.2} 
             factor={1}
             style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, #00022c), url(${ocean})`, 
+              backgroundImage: `url(${ocean})`, 
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               filter: 'blur(2px)',
@@ -98,17 +119,17 @@ export default function Welcome() {
                   We seek resilient guardians to uphold a<br/>
                   legacy time could not erode.
                 </p>
-                <p style={{ marginBottom: '40px' }}>
+                <p style={{ marginBottom: '25px' }}>
                   Descend into the unknown and forge the<br/>
                   future.
                 </p>
-                <p style={{ fontSize: '30px', fontStyle: 'italic',}}>
+                <p style={{ fontSize: '30px'}}>
                   Are you ready for the adventure?
                 </p>
               </div>
 
               <div 
-                onClick={() => parallax.current.scrollTo(1)}
+                onClick={() => parallax.current.scrollTo(2)}
                 style={{ 
                   marginTop: '30px', 
                   animation: 'bounce 2s infinite',
@@ -128,16 +149,30 @@ export default function Welcome() {
 
             {/* SECTION 2 */}
           <ParallaxLayer 
-            offset={1.15} 
+            offset={1} 
             speed={0} 
-            factor={1}
+            factor={2}
             style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(0, 2, 44, 1) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 100%), url(${utama})`, 
+              backgroundImage: `url(${utama})`, 
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               zIndex: 1,
             }}
           />
+          <ParallaxLayer
+            offset={1.15}
+            speed={0.05}
+            style={{ 
+                zIndex: 2,       
+                pointerEvents: 'none' 
+            }}
+          >
+
+             <img src={Fish01R} className="fish-swim-right" style={{ position: 'absolute', top: '40%', left: '-10%', width: '110px', opacity: 0.7 }} />
+             <img src={Fish02} className="fish-swim-left" style={{ position: 'absolute', top: '60%', right: '-10%', width: '90px', opacity: 0.5, animationDelay: '2s' }} />
+             <img src={Fish01R} className="fish-swim-right" style={{ position: 'absolute', top: '80%', left: '-20%', width: '60px', opacity: 0.3, filter: 'blur(1px)', animationDelay: '10s' }} />
+          </ParallaxLayer>
+
             <ParallaxLayer
                 offset={1.15}
                 speed={0.1}
@@ -145,19 +180,129 @@ export default function Welcome() {
                     display:'flex',
                     justifyContent: 'center',
                     alignItems: 'flex-start',
-                    paddingTop: '20vh',
-                    zIndex: 2
+                    paddingTop: '45vh',
+                    zIndex: 3
                 }}
                 >
                     <img
                         src={trial}
-                        alt="bola"
-                        style={{
-                            width: '70%',
-                            opacity: 0.9,
-                            filter: 'drop-shadow(0 0 30px rgba(0, 200, 255, 0.4))'
+                        alt="trial"
+                       style={{
+                            width: '100%',
+                            height: 'auto', 
+                           
                         }}
                         />
+                </ParallaxLayer>
+
+            <ParallaxLayer
+              offset={1.15}      
+              speed={0.1}       
+              style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start', 
+                  paddingTop: '40vh',      
+                  zIndex: 3               
+              }}
+          >
+              <img
+                  src={door2}
+                  alt="door"
+                  style={{
+                      width: '100%',      
+                      height: 'auto',
+                      marginTop: '15vh', 
+                  }}
+              />
+          </ParallaxLayer>
+
+          <ParallaxLayer
+              offset={1.15}     
+              speed={0.1}   
+              style={{
+                  display: 'flex',
+                  flexDirection: 'column', 
+                  alignItems: 'center',  
+                  zIndex: 3              
+              }}
+          >
+
+              <div 
+                  onClick={() => alert("Menuju Login Page...")} 
+                  style={{
+                      marginTop: '110vh', 
+                      cursor: 'pointer',
+                      transition: 'transform 0.3s ease',
+                      position: 'relative',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                  <img
+                      src={Sign04} 
+                      alt="Start"
+                      style={{
+                          width: '450px',
+                          height: 'auto',
+                          filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.6))',
+                          display: 'block',
+                      }}
+                  />
+                  <span style={{
+                      position: 'absolute',   
+                      top: '50%',           
+                      left: '50%',           
+                      transform: 'translate(-50%, -60%)',
+                  
+                      fontFamily: 'Caudex',
+                      fontSize: '45px',      
+                      fontWeight: 'semibold',
+                      color: '#ffffff',        
+                      letterSpacing: '2px',   
+                      pointerEvents: 'none'   
+                  }}>
+                      START
+                  </span>
+              </div>
+
+              
+              <div style={{
+                 position: 'absolute', 
+                  marginTop: '190vh',      
+                  left: 0,
+                  right: 0,          
+                  textAlign: 'center',
+                  
+                  fontFamily: 'Caudex',
+                  color: 'rgba(255,255,255, 0.6)',
+                  fontSize: '20px',
+                  letterSpacing: '1px'
+              }}>
+                  @Atlantis.DLOR2026. All Right Served
+              </div>
+
+          </ParallaxLayer>
+
+            <ParallaxLayer
+                offset={1.15}
+                speed={0.1}
+                factor={2}
+                style={{
+                  zIndex: 3
+                }}
+                >
+                  <img
+                      src={road}
+                      alt="rocks"
+                      style={{
+                          width: '100%',
+                          height: 'auto',
+                          position: 'absolute',
+                          bottom: '40px',
+                          left: '0',
+                      }}
+                      />
                 </ParallaxLayer>
 
         </Parallax>
