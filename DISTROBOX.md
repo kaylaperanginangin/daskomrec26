@@ -1,7 +1,12 @@
 # Using Distrobox
 
-If you want to use it inside a distrobox container, here are the step required to setup stuff 
-`"Using arch container because i'm more familiar to it" -VIM`
+Distrobox is a way to run containerized linux distro on your terminal. 
+Quite useful if you want to seperate your workspace appart so that it doesnt clutter your main workspace.
+It uses either your standard Docker program or Podman as the backend.
+
+If you want to use it inside a distrobox container, here are the step required to setup stuff
+
+`"Basically, this is just for my workspace only though... - VIM`
 
 1. Create the distrobox container
 
