@@ -17,6 +17,7 @@ export default function Welcome() {
         }, 1200);
     };
 
+
     const styles = `
    @keyframes rumble {
       0% { transform: translate(0, 0) scale(1.0); }
@@ -31,7 +32,55 @@ export default function Welcome() {
       90% { transform: translate(-1px, 0) scale(1.0); }
       100% { transform: translate(0, 0) scale(1.0); }
     }
-    
+ @keyframes swimLeftTop {
+    /* Ikan bawah kiri */
+      0% { left: -15%; top: 180%; opacity: 0; }
+      100% { left: 22%; top: 160%; opacity: 1; }
+    }
+    /* Ikan atas kiri */
+    @keyframes swimLeftBottom {
+      0% { left: -15%; top: 160%; opacity: 0; }
+      100% { left: 15%; top: 135%; opacity: 1; }
+    }
+    /* Ikan bawah kanan*/
+    @keyframes swimRightTop {
+      0% { right: -15%; top: 180%; opacity: 0; }
+      100% { right: 22%; top: 160%; opacity: 1; }
+    }
+    /* Ikan atas kanan */
+    @keyframes swimRightBottom {
+      0% { right: -15%; top: 160%; opacity: 0; }
+      100% { right: 15%; top: 135%; opacity: 1; }
+    }
+
+    /* Class untuk menerapkan animasi ikan */
+    .fish-lt { /* Left Top */
+        position: absolute;
+        animation: swimLeftTop 8s ease-out forwards;
+        animation-delay: 0.5s;
+        transform: rotate(0deg);
+    }
+    .fish-lb { /* Left Bottom */
+        position: absolute;
+        animation: swimLeftBottom 9s ease-out forwards;
+        animation-delay: 1s;
+        transform: rotate(-15deg);
+    }
+    .fish-rt { /* Right Top */
+        position: absolute;
+        animation: swimRightTop 8s ease-out forwards;
+        animation-delay: 0.2s;
+        transform: scaleX(-1) rotate(0deg);
+    }
+    .fish-rb { /* Right Bottom */
+        position: absolute;
+        animation: swimRightBottom 9s ease-out forwards;
+        animation-delay: 1.2s;
+        transform: scaleX(-1) rotate(-15deg);
+    }
+    .fish-filter {
+     filter: brightness(0.9) sepia(1) hue-rotate(190deg) saturate(2) contrast(1.5)}
+    }
     .rumble-effect {
         animation: rumble 0.3s infinite linear;
         transform: scale(1.1); 
@@ -120,8 +169,8 @@ export default function Welcome() {
                         }}
                         >
                             <div style={{ marginBottom: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0px' }}>
-                                <img src="/assets/logo/01-DaskomBnW.png" alt="Logo Daskom" style={{ width: '150px', height: 'auto' }} />
-                                <img src="/assets/logo/02-DLOR_Plain.png" alt="Logo DLOR" style={{ width: '160px', height: 'auto' }} />
+                                <img src="/assets/logo/01-DaskomBnW.png" alt="Logo Daskom" style={{ width: '20%', height: 'auto' }} />
+                                <img src="/assets/logo/02-DLOR_Plain.png" alt="Logo DLOR" style={{ width: '20%', height: 'auto' }} />
                             </div>
 
                             <div style={{ fontSize: '30px', lineHeight: '1.6', textShadow: '0 2px 10px rgba(0,0,0,0.5)', textAlign: 'left', }}>
@@ -189,11 +238,10 @@ export default function Welcome() {
                         pointerEvents: 'none', 
                         zIndex:10
                         }}>
-                      <img src="/assets/others/01-Fish.png" style={{ position: 'absolute', top: '145%', left: '14%', width: '12%', filter: 'brightness(0.9) sepia(1) hue-rotate(190deg) saturate(2) contrast(1.5)' }} />
-                      <img src="/assets/others/02-Fish.png" style={{ position: 'absolute', top: '120%', left: '6%', width: '20%', height: 'auto', filter: 'brightness(0.9) sepia(1) hue-rotate(190deg) saturate(2) contrast(1.5)'}} />
-                        
-                      <img src="/assets/others/01-Fish.png" style={{ position: 'absolute', top: '145%', right: '14%', width: '12%', height: 'auto', transform: 'scaleX(-1)' , filter: 'brightness(0.9) sepia(1) hue-rotate(190deg) saturate(2) contrast(1.5)' }} />
-                      <img src="/assets/others/02-Fish.png" style={{ position: 'absolute', top: '120%', right: '7%', width: '20%', transform: 'scaleX(-1)', filter: 'brightness(0.9) sepia(1) hue-rotate(190deg) saturate(2) contrast(1.5)'  }} />
+                      <img src="/assets/others/01-Fish.png" className="fish-lt fish-filter" style={{ width: '12%' }}/>
+                      <img src="/assets/others/02-Fish.png" className="fish-lb fish-filter" style={{ width: '20%' }} />  
+                      <img src="/assets/others/01-Fish.png" className="fish-rt fish-filter" style={{ width: '12%' }} />
+                      <img src="/assets/others/02-Fish.png" className="fish-rb fish-filter" style={{ width: '20%' }} />
 
                     </ParallaxLayer>
 
@@ -204,7 +252,7 @@ export default function Welcome() {
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'flex-start',
-                            paddingTop: '50vh',
+                            paddingTop: '25%',
                             zIndex: 3
                         }}
                     >
@@ -225,7 +273,7 @@ export default function Welcome() {
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'flex-start',
-                            paddingTop: '42vh',
+                            paddingTop: '20%',
                             zIndex: 3
                         }}
                     >
@@ -235,7 +283,7 @@ export default function Welcome() {
                             style={{
                                 width: '100%',
                                 height: 'auto',
-                                marginTop: '20vh',
+                                marginTop: '10%',
                                 filter: 'sepia(1) hue-rotate(150deg) saturate(2) contrast(1.5) brightness(0.9)'
                             }}
                         />
@@ -254,7 +302,7 @@ export default function Welcome() {
                         <Link href="/login">
                             <div
                                 style={{
-                                    marginTop: '110vh',
+                                    marginTop: '165%',
                                     cursor: 'pointer',
                                     transition: 'transform 0.3s ease',
                                     position: 'relative',
@@ -266,8 +314,10 @@ export default function Welcome() {
                                     src="/assets/buttons/04-Sign.png"
                                     alt="Start"
                                     style={{
-                                        width: '450px',
+                                        width: '100%',
                                         height: 'auto',
+                                        left: '50%',
+                                        right: '50%',
                                         filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.6))',
                                         display: 'block',
                                     }}
@@ -292,7 +342,7 @@ export default function Welcome() {
 
                         <div style={{
                             position: 'absolute',
-                            marginTop: '190vh',
+                            marginTop: '85%',
                             left: 0,
                             right: 0,
                             textAlign: 'center',
@@ -321,7 +371,7 @@ export default function Welcome() {
                                 width: '100%',
                                 height: 'auto',
                                 position: 'absolute',
-                                bottom: '30px',
+                                bottom: '5px',
                                 left: '0',
                                 filter: 'sepia(1) hue-rotate(150deg) saturate(2) contrast(1.5) brightness(0.9)'
                             }}
