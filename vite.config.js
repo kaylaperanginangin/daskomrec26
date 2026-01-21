@@ -20,6 +20,8 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': '/resources/ts',
+            '@components': '/resources/js/Components',
+            '@assets': '/public/assets',
         },
     },
 });

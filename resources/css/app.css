@@ -13,8 +13,7 @@
 
 * {
   box-sizing: border-box;
-
-  cursor: url('../../public/assets/others/cursor.png'), auto;
+  cursor: url('../../public/assets/others/cursor_64x64.png'), auto;
 }
 
 html, body, #app {
@@ -72,4 +71,22 @@ html, body, #app {
   font-optical-sizing: auto;
   font-weight: <weight>;
   font-style: normal;
+}
+
+@keyframes softSway {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(40px); }
+}
+
+@keyframes particlesFloat {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
 }
