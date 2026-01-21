@@ -12,23 +12,20 @@ class Configuration extends Model
     protected $fillable = [
         'pengumuman_on',
         'isi_jadwal_on',
-        'puzzles',
-        'role_on',
+        'puzzles_on',
         'current_stage_id',
     ];
 
     protected $casts = [
         'pengumuman_on' => 'boolean',
         'isi_jadwal_on' => 'boolean',
-        'puzzles' => 'boolean',
-        'role_on' => 'boolean',
+        'puzzles_on' => 'boolean',
     ];
 
     protected $attributes = [
         'pengumuman_on' => false,
         'isi_jadwal_on' => false,
-        'puzzles' => false,
-        'role_on' => false,
+        'puzzles_on' => false,
     ];
 
     /**

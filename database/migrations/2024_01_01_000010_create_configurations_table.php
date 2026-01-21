@@ -16,8 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->boolean('pengumuman_on')->default(false);
             $table->boolean('isi_jadwal_on')->default(false);
-            $table->boolean('puzzles')->default(false);
-            $table->boolean('role_on')->default(false);
+            $table->boolean('puzzles_on')->default(false);
             $table->foreignId('current_stage_id')->nullable()->constrained('stages')->onDelete('set null');
         });
     }
