@@ -4,9 +4,8 @@ import { Head, router } from '@inertiajs/react';
 import ButtonSidebar from '@components/ButtonSidebar';
 import ButtonHome from '@components/ButtonHome';
 import UserSidebar from '@components/UserSidebar';
-import ConfirmationModal from '@components/ConfirmationModal';
-import SuccessModal from '@components/SuccessModal';
 import UnderwaterEffect from '@components/UnderwaterEffect'
+import BlueModalWrapper from '@components/BlueBox';
 
 import utama from '@assets/backgrounds/utama.png'; 
 import build from '@assets/others/DECORATIONS/Atlantis Ruins/06-Building.png';
@@ -14,6 +13,7 @@ import road from '@assets/backgrounds/road2.png';
 import seaweed from '@assets/others/DECORATIONS/Seaweed & Coral Reefs/29.png';
 import fishGroup from '@assets/others/DECORATIONS/Fish & Other Sea Creatures/02-Fish.png';
 import buttonImg from '@assets/buttons/ButtonRegular.png'; 
+import logoImg from '@assets/logo/ORB_DLOR 1.png'; 
 
 export default function ChangePassword() {
     const backgroundRef = useRef(null);
@@ -39,7 +39,7 @@ export default function ChangePassword() {
         setIsSidebarOpen(false);
         setTimeout(() => {
             setIsLoggingOut(true);
-            setTimeout(() => router.visit('/'), 1000); 
+            setTimeout(() => router.visit('/'), 300); 
         }, 350);
     };
 
@@ -47,7 +47,7 @@ export default function ChangePassword() {
         setShowModal(true); 
     };
 
-const handleConfirmChange = () => {
+    const handleConfirmChange = () => {
         setShowModal(false); 
         setTimeout(() => {
             setShowSuccess(true); 
@@ -62,7 +62,7 @@ const handleConfirmChange = () => {
         const zoomTimer = setTimeout(() => {
             setIsZooming(false);
             setInputLocked(false); 
-        }, 1800);
+        }, 500);
 
         const handleKeyDown = (e) => {
             if (e.key === 'Escape') { 
@@ -231,17 +231,70 @@ const handleConfirmChange = () => {
                      />
                 </div>
                 {/* 6. KONFIRMASI PASSWORD */}
-                <ConfirmationModal 
-                    isOpen={showModal}
+                <BlueModalWrapper 
+                    isOpen={showModal} 
                     onClose={() => setShowModal(false)}
-                    onConfirm={handleConfirmChange}
-                />
+                >
+                    <div className="flex flex-col justify-center items-center text-center h-full w-full space-y-3">
+                        <p className="font-caudex text-xs text-white tracking-[0.2em] uppercase drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)] leading-tight font-bold">
+                            Let The Deep Uncover Your Purpose
+                        </p>
+
+                        <h2 className="font-caudex text-4xl text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)] leading-tight font-bold">
+                            Are you sure to <br /> change the password?
+                        </h2>
+
+                        <div className="flex gap-6 mt-4">                   
+                            <button
+                                onClick={() => setShowModal(false)}
+                                className="relative flex items-center justify-center h-12 min-w-[150px] md:min-w-[180px] px-6 group active:scale-95 transition-transform"
+                            >
+                                <img
+                                    src={buttonImg}
+                                    alt="No bg"
+                                    className="absolute inset-0 w-full h-full object-fill pointer-events-none"
+                                />
+                                <span className="relative z-10 text-white text-xl tracking-wide drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
+                                    No
+                                </span>
+                            </button>
+
+                            <button
+                                onClick={handleConfirmChange}
+                                className="relative flex items-center justify-center h-12 min-w-[150px] md:min-w-[180px] px-6 group active:scale-95 transition-transform"
+                            >
+                                <img
+                                    src={buttonImg}
+                                    alt="Yes bg"
+                                    className="absolute inset-0 w-full h-full object-fill pointer-events-none"
+                                />
+                                <span className="relative z-10 text-white text-xl tracking-wide drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
+                                    Yes
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </BlueModalWrapper>
 
                 {/* 4. NOTIF BERHASIL */}
-                <SuccessModal
-                    isOpen={showSuccess}
+                <BlueModalWrapper 
+                    isOpen={showSuccess} 
                     onClose={() => setShowSuccess(false)}
-                />       
+                >
+                    <div className="flex flex-col justify-center items-center h-full w-full text-left relative">    
+                        <h2 className="font-caudex text-3xl md:text-4xl text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)] leading-snug font-bold px-4">
+                            Your password already <br /> changed, don't forget it <br /> again!
+                        </h2>
+                    
+                        <div className="absolute bottom-0 right-3">
+                            <img 
+                                src={logoImg} 
+                                alt="Logo" 
+                                className="w-14 h-14 md:w-20 md:h-20 object-contain drop-shadow-md"
+                            />
+                        </div>
+                    </div>
+                </BlueModalWrapper>
 
                 {/* 7. NAVIGASI & SIDEBAR*/}
                 <div className={`absolute top-6 left-6 z-50 transition-all duration-700 ${!inputLocked ? 'opacity-100' : 'opacity-0 -translate-x-10'}`}>
@@ -249,7 +302,7 @@ const handleConfirmChange = () => {
                 </div>
 
                 <div className={`absolute top-6 right-6 z-50 transition-all duration-700 ${!inputLocked ? 'opacity-100' : 'opacity-0 translate-x-10'}`}>
-                    <ButtonHome onClick={() => router.visit('/dashboard')} />
+                    <ButtonHome onClick={() => router.visit('/user/home')} />
                 </div>
 
                 <UserSidebar
