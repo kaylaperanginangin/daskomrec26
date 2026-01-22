@@ -13,7 +13,7 @@ import build from '@assets/others/DECORATIONS/Atlantis Ruins/06-Building.png';
 import road from '@assets/backgrounds/road2.png'; 
 import seaweed from '@assets/others/DECORATIONS/Seaweed & Coral Reefs/29.png';
 import fishGroup from '@assets/others/DECORATIONS/Fish & Other Sea Creatures/02-Fish.png';
-import buttonImg from '@assets/buttons/sign1.png'; 
+import buttonImg from '@assets/buttons/ButtonRegular.png'; 
 
 export default function ChangePassword() {
     const backgroundRef = useRef(null);

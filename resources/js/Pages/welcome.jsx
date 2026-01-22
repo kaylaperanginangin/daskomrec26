@@ -15,7 +15,7 @@ import fish01 from '@assets/others/01-Fish.png';
 import fish02 from '@assets/others/02-Fish.png';
 import trialImg from '@assets/backgrounds/trial.png';
 import doorImg from '@assets/backgrounds/door2.png';
-import startSign from '@assets/buttons/04-Sign.png';
+import startSign from '@assets/buttons/ButtonRegular.png';
 import roadImg from '@assets/backgrounds/road.png';
 
 import UnderwaterEffect from '@components/UnderwaterEffect';
@@ -375,7 +375,7 @@ export default function Welcome() {
                             onClick={handleLockedIn}
                             disabled={isLockedIn}
                             className={`
-                                relative mb-75
+                                relative mb-118
                                 transition-all duration-1000 ease-in-out
                                 ${isLockedIn ? 'opacity-0 scale-140 blur-sm' : 'opacity-100 hover:scale-110'}
                             `}

@@ -6,15 +6,7 @@ import ButtonStar from '@assets/buttons/ButtonStar.png'
 import ButtonAnchor from '@assets/buttons/ButtonAnchor.png'
 import ButtonChain from '@assets/buttons/ButtonChain.png'
 
-import ButtonProfile from '@assets/buttons/07-Profile.png';
-import ButtonPassword from '@assets/buttons/08-ChangePass.png';
-import ButtonAssistants from '@assets/buttons/09-Assistants.png';
-import ButtonLine from '@assets/buttons/10-OALine.png';
-import ButtonAnnouncement from '@assets/buttons/11-Announcement.png';
-import ButtonShift from '@assets/buttons/12-Shift.png';
-import ButtonCoreUnlocked from '@assets/buttons/Cores.png';
-import ButtonCoreLocked from '@assets/buttons/06-Cores.png';
-import ButtonLogout from '@assets/buttons/13-LogOut.png';
+import ButtonCores from '@assets/buttons/ButtonCores.png';
 
 export default function UserSidebar({ isOpen, onClose, onLogout }) {
     const [coreUnlocked, setCoreUnlocked] = useState(true);
@@ -87,17 +79,6 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
 
                         {/* Profile / Password */}
                         <div className="flex flex-col gap-2">
-                            <button type="button" className={buttonWrapper} onClick={() => {router.visit('/user/profile')}}>
-                                <img src={ButtonStar} className={imageStyle} alt="Profile" />
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
-                                    }}>
-                                    PROFILE
-                                </span>
-                            </button>
                             <button type="button" className={buttonWrapper} onClick={() => {router.visit('/user/password')}}>
                                 <img src={ButtonRegular} className={imageStyle} alt="Change Password"/>
                                 <span 
@@ -107,32 +88,6 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
                                         textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
                                     }}>
                                     CHANGE PASSWORD
-                                </span>
-                            </button>
-                        </div>
-
-                        {/* Assistants / Line */}
-                        <div className="flex flex-col gap-2">
-                            <button type="button" className={buttonWrapper} onClick={() => {router.visit('/user/assistants')}}>
-                                <img src={ButtonRegular} className={imageStyle} alt="Assistants"/>
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
-                                    }}>
-                                    ASSISTANTS
-                                </span>
-                            </button>
-                            <button type="button" className={buttonWrapper}>
-                                <img src={ButtonAnchor} className={imageStyle} alt="OA LINE"/>
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
-                                    }}>
-                                    OA LINE
                                 </span>
                             </button>
                         </div>
@@ -167,7 +122,7 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
                                 onClick={handleCoreClick}
                             >
                                 <img
-                                    src={coreUnlocked ? ButtonCoreUnlocked : ButtonCoreLocked}
+                                    src={ButtonCores}
                                     className={imageStyle}
                                     alt="Core"
                                 />
@@ -177,7 +132,7 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
                                         color: '#e0f2fe', 
                                         textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
                                 }}>
-                                    {coreUnlocked ? 'CORES' : ''}
+                                    CAAS
                                 </span>
                             </button>
                         </div>

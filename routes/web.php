@@ -34,6 +34,18 @@ Route::get('/user/shift', function () {
     return inertia('User/shift');
 });
 
+Route::get('/user/announcement', function () {
+    return inertia('User/announcement');
+});
+
 Route::get('/user/cores', function () {
     return inertia('User/cores');
+});
+
+Route::get('/admin/login', function () {
+    return inertia('Admin/login');
+});
+
+Route::get('/admin/home', function () {
+    return inertia('Admin/home');
 });

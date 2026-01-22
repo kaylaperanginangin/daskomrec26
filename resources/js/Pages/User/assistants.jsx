@@ -131,11 +131,11 @@ export default function Assistants() {
         /* Book Filter */
         .book-filter {
             filter:
-                brightness(1)
+                brightness(1.1)
                 contrast(1)
-                saturate(1.2)
+                saturate(2)
                 hue-rotate(0deg)
-                sepia(0);
+                sepia(0.2);
         }
     `;
 
@@ -200,21 +200,21 @@ export default function Assistants() {
 
                 {/* The Book */}
                 <div 
-                    className={`absolute top-22 md:top-6 z-60 text-center font-extrabold transition-all duration-700
+                    className={`absolute top-[14%] md:top-[2%] z-50 text-center font-extrabold transition-all duration-700
                         ${!inputLocked && !isLoggingOut ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}
                     style={{ fontFamily: 'Cormorant Infant, serif' }}
                 >
                     <h1 
-                        className="text-4xl md:text-4xl text-white leading-tight"
+                        className="text-2xl sm:text-4xl text-white leading-tight"
                     >
                         Daskom Laboratory
                     </h1>
-                    <h1 className="text-6xl text-white leading-tight">
+                    <h1 className="text-4xl sm:text-6xl text-white leading-tight">
                         Assistants 2026
                     </h1>
                 </div>
                 <div 
-                    className="absolute z-50 transition-all duration-1000 book-filter"
+                    className="absolute z-40 transition-all duration-1000 book-filter"
                     style={getBookStyle()}
                 >
                     <AssistantBook 
@@ -226,7 +226,7 @@ export default function Assistants() {
                 </div>
 
                 <BookControls 
-                    className={`absolute bottom-8 left-1/2 -translate-x-1/2 z-60 transition-all duration-700
+                    className={`absolute bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-700
                         ${!inputLocked && !isLoggingOut ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
                     onPrev={handlePrev}
                     onNext={handleNext}

@@ -28,7 +28,7 @@ const ControlButton = ({ onClick, disabled, src, alt }) => {
                 src={src} 
                 alt={alt}
                 className={`
-                    h-16 md:h-22 w-auto 
+                    h-60 md:h-22 w-auto 
                     object-contain transition-all duration-100 ease-out
                     ${pressed ? 'scale-90 brightness-110' : 'scale-100 hover:brightness-105'}
                 `}

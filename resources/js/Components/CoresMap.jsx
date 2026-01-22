@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 // Assets
 import Map from '@assets/map/map.png';
@@ -8,36 +8,42 @@ import Thevia from '@assets/map/Territory/Thevia.png';
 import Xurith from '@assets/map/Territory/Xurith.png';
 
 const TERRITORIES = [
-  { id: 'euprus', src: Euprus, className: "w-28 ml-[55%] mt-[20%]" },
-  { id: 'northgard', src: Northgard, className: "w-22 ml-[55%] mt-[8%]" },
-  { id: 'thevia', src: Thevia, className: "w-[42%] h-[35%] ml-[39%] mt-[30%]" },
-  { id: 'xurith', src: Xurith, className: "w-[19%] ml-[24.5%] mt-[60.5%]" },
+  { 
+    id: 'northgard', 
+    src: Northgard, 
+    className: "w-[15%] h-[15%] ml-[55%] mt-[8%]" 
+  },
+  { 
+    id: 'euprus', 
+    src: Euprus, 
+    className: "w-[19%] h-[25.5%] ml-[55%] mt-[20%]" 
+  },
+  { 
+    id: 'thevia', 
+    src: Thevia, 
+    className: "w-[42%] h-[35%] ml-[39%] mt-[30%]" 
+  },
+  { 
+    id: 'xurith', 
+    src: Xurith, 
+    className: "w-[19%] h-[19%] ml-[24.5%] mt-[60.5%]" 
+  },
 ];
 
 const MAX_ROTATION = 2;
 
-export default function CoresMap() {
-  const [dummyStatus, setDummyStatus] = useState({
-    euprus: false,
-    northgard: false,
-    thevia: false,
-    xurith: false,
-  });
-
+export default function CoresMap({ territoryStates, onTerritoryClick }) {
   const [clickedId, setClickedId] = useState(null);
   const containerRef = useRef(null);
   const imageRefs = useRef({});
 
-  // 3D Tilt Logic
   const handlePointerMove = (e) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const xPct = (e.clientX - rect.left) / rect.width;
     const yPct = (e.clientY - rect.top) / rect.height;
-
     const xRot = (yPct - 0.5) * 2;
     const yRot = (xPct - 0.5) * 2;
-
     containerRef.current.style.setProperty('--rx', `${-xRot * MAX_ROTATION}deg`);
     containerRef.current.style.setProperty('--ry', `${yRot * MAX_ROTATION}deg`);
   };
@@ -47,13 +53,6 @@ export default function CoresMap() {
     containerRef.current.style.setProperty('--rx', '0deg');
     containerRef.current.style.setProperty('--ry', '0deg');
   };
-
-  useEffect(() => {
-    if (clickedId) {
-      const timer = setTimeout(() => setClickedId(null), 300);
-      return () => clearTimeout(timer);
-    }
-  }, [clickedId]);
 
   const isPixelOpaque = (img, clientX, clientY) => {
     const canvas = document.createElement('canvas');
@@ -72,23 +71,24 @@ export default function CoresMap() {
 
   const handleMapClick = (e) => {
     const reversedIds = TERRITORIES.map(t => t.id).reverse();
+    
     for (const id of reversedIds) {
       const img = imageRefs.current[id];
-      if (!img) continue;
+      // We allow interaction with 'locked' and 'unlocked', just not 'hidden'
+      if (!img || territoryStates[id] === 'hidden') continue;
+
       const rect = img.getBoundingClientRect();
       if (e.clientX >= rect.left && e.clientX <= rect.right &&
           e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        
         if (isPixelOpaque(img, e.clientX, e.clientY)) {
-          handleInteract(id);
+          setClickedId(id);
+          setTimeout(() => setClickedId(null), 300); // Reset animation
+          onTerritoryClick(id);
           return;
         }
       }
     }
-  };
-
-  const handleInteract = (id) => {
-    setClickedId(id);
-    setDummyStatus(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
@@ -102,8 +102,8 @@ export default function CoresMap() {
         .map-inner {
           transform: rotateX(var(--rx)) rotateY(var(--ry));
           transition: transform 0.2s ease-out;
-          filter: url(#paper-grain) drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-          background: #f4ecd8; /* Vintage paper base color */
+          filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
+          background: #f4ecd8;
         }
         .paper-overlay {
           pointer-events: none;
@@ -111,46 +111,110 @@ export default function CoresMap() {
           opacity: 0.4;
           background: url('https://www.transparenttextures.com/patterns/natural-paper.png');
         }
+        
+        @keyframes cloud-drift {
+          0% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(-10px, -5px) scale(1.05); }
+          100% { transform: translate(0, 0) scale(1); }
+        }
+
+        .cloud-wrapper {
+          filter: url(#cloud-fog) blur(4px);
+          opacity: 0.95;
+          mix-blend-mode: normal;
+        }
+
+        .cloud-base {
+          position: absolute;
+          inset: -40%; 
+          background: radial-gradient(closest-side, rgba(255,255,255,1) 40%, rgba(255,255,255,0) 100%);
+          animation: cloud-drift 8s infinite ease-in-out;
+        }
+
+        .cloud-detail {
+          position: absolute;
+          inset: -20%;
+          background: radial-gradient(closest-side, rgba(240,240,240,0.8) 30%, rgba(255,255,255,0) 100%);
+          animation: cloud-drift 12s infinite ease-in-out reverse;
+          opacity: 0.7;
+        }
       `}</style>
 
-      <div className="flex items-center justify-center min-h-screen p-8">
+      {/* SVG Filters */}
+      <svg className="hidden">
+        <defs>
+          <filter id="paper-grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" in="noise" result="coloredNoise" />
+            <feComposite operator="in" in="coloredNoise" in2="SourceGraphic" result="composite" />
+            <feBlend mode="multiply" in="composite" in2="SourceGraphic" />
+          </filter>
+
+          <filter id="cloud-fog">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="5" seed="5" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G" />
+            <feGaussianBlur stdDeviation="2" />
+          </filter>
+        </defs>
+      </svg>
+
+      <div 
+        ref={containerRef}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        onClick={handleMapClick}
+        className="map-container relative w-full max-w-[300px] sm:max-w-[600px] cursor-pointer select-none"
+      >
         <div 
-          ref={containerRef}
-          onPointerMove={handlePointerMove}
-          onPointerLeave={handlePointerLeave}
-          onClick={handleMapClick}
-          className="map-container relative w-full max-w-[600px] cursor-pointer select-none"
+          className="map-inner relative overflow-hidden rounded-sm border-8 border-[#3d2b1f]/10"
+          style={{ filter: 'url(#paper-grain) drop-shadow(0 20px 30px rgba(0,0,0,0.3))' }}
         >
-          <div className="map-inner relative overflow-hidden rounded-sm border-8 border-[#3d2b1f]/10">
-            {/* Main Map Background */}
-            <img src={Map} alt="Main Map" className="w-full h-auto block grayscale-[0.2] sepia-[0.2]" />
+          <img src={Map} alt="Main Map" className="w-full h-auto block grayscale-[0.2] sepia-[0.2]" />
+          <div className="paper-overlay absolute inset-0 z-20" />
 
-            {/* Paper Texture Layers */}
-            <div className="paper-overlay absolute inset-0 z-20" />
+          {TERRITORIES.map((t) => {
+            const status = territoryStates[t.id]; 
+            const isHidden = status === 'hidden';
+            const isLocked = status === 'locked';
+            const isAnimating = clickedId === t.id;
 
-            {/* Territories */}
-            {TERRITORIES.map((t) => {
-              const isActive = dummyStatus[t.id] ?? false;
-              const isAnimating = clickedId === t.id;
+            return (
+              <div key={t.id} className="absolute inset-0 pointer-events-none">
+                
+                {/* 1. Territory Image */}
+                <img
+                  ref={el => imageRefs.current[t.id] = el}
+                  src={t.src}
+                  crossOrigin="anonymous"
+                  className={`
+                    absolute transition-all duration-1000 ease-in-out pointer-events-none
+                    ${t.className} 
+                    
+                    /* Visual State (Locked vs Unlocked) */
+                    ${isLocked ? 'grayscale brightness-90' : 'grayscale-0 sepia-[0.3]'}
 
-              return (
-                <div key={t.id} className="absolute inset-0 pointer-events-none">
-                  <img
-                    ref={el => imageRefs.current[t.id] = el}
-                    src={t.src}
-                    crossOrigin="anonymous"
-                    className={`
-                      absolute transition-all duration-500 pointer-events-none
-                      ${t.className} 
-                      ${isActive ? 'opacity-100' : 'grayscale'}
-                      ${isAnimating ? 'brightness-125 scale-105 z-10' : 'scale-100'}
-                    `}
-                    alt={t.id}
-                  />
+                    /* Click Animation (Applied regardless of Lock status) */
+                    ${isAnimating ? 'brightness-125 scale-105 z-30' : 'z-10'}
+                  `}
+                  alt={t.id}
+                />
+
+                <div 
+                   className={`
+                     absolute transition-all duration-1000 ease-in-out z-20 flex items-center justify-center sepia-90
+                     ${t.className}
+                     ${isHidden ? 'opacity-100 scale-125' : 'opacity-0 scale-150 pointer-events-none'}
+                   `}
+                >
+                   <div className="cloud-wrapper w-full h-full relative">
+                      <div className="cloud-base"></div>
+                      <div className="cloud-detail"></div>
+                   </div>
                 </div>
-              );
-            })}
-          </div>
+
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

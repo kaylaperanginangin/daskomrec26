@@ -82,7 +82,7 @@ export default function Login() {
         setFadeScroll(true);
         setTimeout(() => setCameraState('in'), 500);
         setTimeout(() => setShowColorFade(true), 800);
-        setTimeout(() => router.visit('/user/home'), 2000);
+        setTimeout(() => router.visit('/admin/home'), 2000);
     };
 
     useEffect(() => {
@@ -112,17 +112,12 @@ export default function Login() {
                 .deep-ocean-bg {
                     filter: brightness(0.8) saturate(1.2) contrast(1.1);
                 }
-                .cold-blue-filter-scroll { filter: brightness(1.1) contrast(1) saturate(0.2) hue-rotate(220deg) sepia(0.2); }
+                .cold-blue-filter-scroll { filter: brightness(1.1) contrast(1) saturate(0.2) hue-rotate(0deg) sepia(0.2); }
                 
-                /* [NEW] Shared placement class to match Welcome.js */
                 .bottom-centered-asset {
                     position: absolute;
                     bottom: 0;
                     left: 50%;
-                    /* We use margin-left or transform in JS, but here strictly CSS centering */
-                    /* Note: The JS parallax adds 'translate', so we must be careful not to conflict. */
-                    /* We will use a wrapper-less approach: relying on the JS 'translate' to include the centering? 
-                       No, that's messy. Let's keep the -translate-x-1/2 in CSS and let JS add RELATIVE movement. */
                 }
             `}</style>
 
@@ -195,7 +190,7 @@ export default function Login() {
                                     color: '#0c365b', 
                                     textShadow: '0 2px 10px rgba(12, 54, 91, 0.3), 0 0 20px rgba(96, 165, 250, 0.2)' }}
                             >
-                                Insert The Key
+                                Prove yourself...
                             </h1>
                             
                             <form onSubmit={handleSubmit} className="w-[80%] sm:w-[90%] max-w-105 flex flex-col gap-3 sm:gap-4">

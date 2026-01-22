@@ -1,7 +1,7 @@
 import React from 'react';
 import popupFrameBlue from '@assets/backgrounds/01-ABoard_PC.png';
 import btnCloseXImg from '@assets/buttons/07-Button.png';
-import buttonImg from '@assets/buttons/sign1.png';
+import buttonImg from '@assets/buttons/ButtonRegular.png';
 
 export default function ConfirmationModal({ isOpen, onClose, onConfirm }) {
     if (!isOpen) return null;
