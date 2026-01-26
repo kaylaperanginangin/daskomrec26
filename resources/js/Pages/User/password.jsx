@@ -281,12 +281,12 @@ export default function ChangePassword() {
                     isOpen={showSuccess} 
                     onClose={() => setShowSuccess(false)}
                 >
-                    <div className="flex flex-col justify-center items-center h-full w-full text-left relative">    
-                        <h1 className="font-caudex text-2xl md:text-4xl text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)] leading-snug font-bold px-10 sm:px-4">
+                    <div className=" flex flex-col justify-center items-center h-full w-full text-left relative">    
+                        <h1 className="font-caudex text-2xl md:text-5xl text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)] leading-snug font-bold px-10 sm:px-4">
                             Your password already <br /> changed, don't forget it <br /> again!
                         </h1>
                     
-                        <div className="absolute bottom-0 right-7 sm:right-3">
+                        <div className="w-full flex justify-end px-5 pb-5 sm:px-6 sm:pb-6">
                             <img 
                                 src={logoImg} 
                                 alt="Logo" 
