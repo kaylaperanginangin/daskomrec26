@@ -2,13 +2,8 @@ import { useState } from 'react'
 import button from '@assets/buttons/02-Home.png'
 
 export default function ButtonHome({ onClick }) {
-    const [pressed, setPressed] = useState(false)
-
     return (
         <button
-            onMouseDown={() => setPressed(true)}
-            onMouseUp={() => setPressed(false)}
-            onMouseLeave={() => setPressed(false)}
             onClick={onClick}
             className="relative focus:outline-none"
         >
@@ -17,13 +12,8 @@ export default function ButtonHome({ onClick }) {
                 alt="Menu Button"
                 className={`
                     h-20 md:h-30 w-auto
-                    ${pressed ? 'scale-90 brightness-110' : 'scale-100'}
+                    active:scale-90
                 `}
-                style={{
-                    filter: pressed
-                        ? 'drop-shadow(0 0 14px rgba(0,180,255,.9))'
-                        : 'drop-shadow(0 0 8px rgba(0,120,200,.6))',
-                }}
             />
         </button>
     )

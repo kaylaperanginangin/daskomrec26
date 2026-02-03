@@ -30,14 +30,14 @@ export default function Login() {
     };
 
     const [isIntro, setIsIntro] = useState(true);
-    const [cameraState, setCameraState] = useState('enter'); 
+    const [cameraState, setCameraState] = useState('enter');
     const [showColorFade, setShowColorFade] = useState(false);
     const [fadeScroll, setFadeScroll] = useState(false);
 
     // Added errors and setError for indicator logic
-    const { data, setData, processing, errors, setError, clearErrors } = useForm({ 
-        username: '', 
-        password: '' 
+    const { data, setData, processing, errors, setError, clearErrors } = useForm({
+        username: '',
+        password: ''
     });
 
     const getTransform = (type) => {
@@ -84,8 +84,6 @@ export default function Login() {
 
         clearErrors();
 
-        // --- DUMMY TEST LOGIC ---
-        // Change "atlantis" to your preferred test password
         if (data.password !== 'atlantis') {
             setError('password', 'Incorrect key provided.');
             return;
@@ -105,7 +103,7 @@ export default function Login() {
         return () => clearTimeout(t);
     }, []);
 
-    const commonTransformStyle = { 
+    const commonTransformStyle = {
         transformOrigin: 'bottom center',
         transition: 'transform 2000ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
     };
@@ -128,7 +126,7 @@ export default function Login() {
                     filter: brightness(0.8) saturate(1.2) contrast(1.1);
                 }
                 .cold-blue-filter-scroll { filter: brightness(1.1) contrast(1) saturate(0.2) hue-rotate(220deg) sepia(0.2); }
-                
+
                 .bottom-centered-asset {
                     position: absolute;
                     bottom: 0;
@@ -157,34 +155,34 @@ export default function Login() {
                 <UnderwaterEffect/>
 
                 {/* Main BG */}
-                <img 
-                    src={background} 
-                    alt="background" 
-                    className="absolute inset-0 w-full h-full object-cover pointer-events-none deep-ocean-bg" 
+                <img
+                    src={background}
+                    alt="background"
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none deep-ocean-bg"
                 />
-                
-                <img 
-                    ref={roadRef} 
-                    src={road} 
-                    alt="road" 
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-auto h-auto min-w-[1200px] max-w-[2000px] z-5 atlantis-sync" 
-                    style={roadStyle} 
+
+                <img
+                    ref={roadRef}
+                    src={road}
+                    alt="road"
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-auto h-auto min-w-[1200px] max-w-[2000px] z-5 atlantis-sync"
+                    style={roadStyle}
                 />
-                
-                <img 
-                    ref={trialRef} 
-                    src={trial} 
-                    alt="background" 
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-auto h-auto min-w-[1200px] max-w-[2000px] z-0 atlantis-sync" 
-                    style={bgStyle} 
+
+                <img
+                    ref={trialRef}
+                    src={trial}
+                    alt="background"
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-auto h-auto min-w-[1200px] max-w-[2000px] z-0 atlantis-sync"
+                    style={bgStyle}
                 />
-                
-                <img 
-                    ref={doorRef} 
-                    src={cameraState === 'in' ? door_opened : door_closed} 
-                    alt="door" 
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-auto h-auto min-w-[1200px] max-w-[2000px] z-10 atlantis-sync" 
-                    style={doorStyle} 
+
+                <img
+                    ref={doorRef}
+                    src={cameraState === 'in' ? door_opened : door_closed}
+                    alt="door"
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-auto h-auto min-w-[1200px] max-w-[2000px] z-10 atlantis-sync"
+                    style={doorStyle}
                 />
 
                 <div className="absolute inset-0 backdrop-blur-[2px] bg-black/10 z-20 pointer-events-none" />
@@ -207,50 +205,50 @@ export default function Login() {
                             src={scroll}
                             alt="scroll"
                             className="w-auto max-h-full object-contain cold-blue-filter-scroll origin-center scale-125 sm:scale-170 md:scale-190"
-                        />  
+                        />
                         <div className="absolute inset-0 flex flex-col items-center justify-center px-14 sm:px-12 text-[#0b3a66] gap-1 sm:gap-6">
                             <h1 className="font-serif font-extrabold tracking-wide drop-shadow-lg text-4xl sm:text-5xl md:text-6xl mb-2 sm:mb-4 text-center"
-                                style={{ 
-                                    fontFamily: 'Cormorant Infant', 
+                                style={{
+                                    fontFamily: 'Cormorant Infant',
                                     color: hasError ? '#7f1d1d' : '#0c365b', // Changes title to dark red on error
-                                    textShadow: '0 2px 10px rgba(12, 54, 91, 0.3), 0 0 20px rgba(96, 165, 250, 0.2)' 
+                                    textShadow: '0 2px 10px rgba(12, 54, 91, 0.3), 0 0 20px rgba(96, 165, 250, 0.2)'
                                 }}
                             >
                                 {hasError ? 'Access Denied' : 'Insert The Key'}
                             </h1>
-                            
+
                             <form onSubmit={handleSubmit} className="w-[80%] sm:w-[90%] max-w-105 flex flex-col gap-3 sm:gap-4">
                                 <div className="flex flex-col gap-1">
-                                    <label 
-                                        className="font-serif font-bold text-xl sm:text-2xl md:text-4xl" 
-                                        style={{ 
-                                            fontFamily: 'Cormorant Infant', 
-                                            color: '#0c365b', 
-                                            textShadow: '0 2px 10px rgba(12, 54, 91, 0.3), 0 0 20px rgba(96, 165, 250, 0.2)' 
+                                    <label
+                                        className="font-serif font-bold text-xl sm:text-2xl md:text-4xl"
+                                        style={{
+                                            fontFamily: 'Cormorant Infant',
+                                            color: '#0c365b',
+                                            textShadow: '0 2px 10px rgba(12, 54, 91, 0.3), 0 0 20px rgba(96, 165, 250, 0.2)'
                                         }}
                                     >
                                         Username
                                     </label>
-                                    <BlueInputBox 
-                                        value={data.username} 
-                                        onChange={(e) => setData('username', e.target.value)} 
+                                    <BlueInputBox
+                                        value={data.username}
+                                        onChange={(e) => setData('username', e.target.value)}
                                     />
                                 </div>
                                 <div className="flex flex-col gap-1">
-                                    <label 
-                                        className="font-serif font-bold text-xl sm:text-2xl md:text-4xl" 
-                                        style={{ 
-                                            fontFamily: 'Cormorant Infant', 
-                                            color: '#0c365b', 
-                                            textShadow: '0 2px 10px rgba(12, 54, 91, 0.3), 0 0 20px rgba(96, 165, 250, 0.2)' 
+                                    <label
+                                        className="font-serif font-bold text-xl sm:text-2xl md:text-4xl"
+                                        style={{
+                                            fontFamily: 'Cormorant Infant',
+                                            color: '#0c365b',
+                                            textShadow: '0 2px 10px rgba(12, 54, 91, 0.3), 0 0 20px rgba(96, 165, 250, 0.2)'
                                         }}
                                     >
                                         Password
                                     </label>
-                                    <BlueInputBox 
-                                        type="password" 
-                                        value={data.password} 
-                                        onChange={(e) => setData('password', e.target.value)} 
+                                    <BlueInputBox
+                                        type="password"
+                                        value={data.password}
+                                        onChange={(e) => setData('password', e.target.value)}
                                     />
                                 </div>
 
@@ -261,21 +259,21 @@ export default function Login() {
                                     </p>
                                 )}
 
-                                <button 
-                                    type="submit" 
-                                    disabled={processing} 
+                                <button
+                                    type="submit"
+                                    disabled={processing}
                                     className="mt-4 sm:mt-2 relative self-center transition-transform duration-300 hover:scale-110"
                                 >
-                                    <img 
-                                        src={Sign04} 
-                                        alt="Start" 
-                                        className="w-45 sm:w-55 h-9 sm:h-13 drop-shadow-[0_0_20px_rgba(96,165,250,0.8)] cold-blue-filter-light" 
+                                    <img
+                                        src={Sign04}
+                                        alt="Start"
+                                        className="w-45 sm:w-55 h-9 sm:h-13 drop-shadow-[0_0_20px_rgba(96,165,250,0.8)] cold-blue-filter-light"
                                     />
-                                    <span 
-                                        className="absolute inset-0 flex items-center justify-center text-xl sm:text-3xl font-extrabold tracking-[2px]" 
-                                        style={{ 
-                                            color: '#e0f2fe', 
-                                            textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                                    <span
+                                        className="absolute inset-0 flex items-center justify-center text-xl sm:text-3xl font-extrabold tracking-[2px]"
+                                        style={{
+                                            color: '#e0f2fe',
+                                            textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                                         }}>
                                         Dive In
                                     </span>
@@ -288,9 +286,9 @@ export default function Login() {
                 <div className="absolute inset-0 z-30 pointer-events-none mix-blend-lighten opacity-30">
                     <div className="absolute inset-0 bg-linear-to-b from-cyan-400/5 via-transparent to-blue-500/5" />
                 </div>
-                <div 
-                    className="fixed inset-0 z-50 pointer-events-none transition-opacity duration-1000 ease-in-out" 
-                    style={{ background: 'linear-gradient(to bottom, #0a2a4a, #0c365b)', opacity: showColorFade ? 1 : 0 }} 
+                <div
+                    className="fixed inset-0 z-50 pointer-events-none transition-opacity duration-1000 ease-in-out"
+                    style={{ background: 'linear-gradient(to bottom, #0a2a4a, #0c365b)', opacity: showColorFade ? 1 : 0 }}
                 />
             </div>
         </>

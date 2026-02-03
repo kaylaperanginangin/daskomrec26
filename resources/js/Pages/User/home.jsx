@@ -79,6 +79,11 @@ export default function Home() {
             50% { opacity:.95 }
         }
 
+        @keyframes nudgeHorizontal {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(15px); }
+        }
+
         .cold-blue-filter {
             filter:
                 brightness(1)
@@ -90,6 +95,10 @@ export default function Home() {
 
         .pulse-effect {
             animation: subtlePulse 3s ease-in-out infinite;
+        }
+
+        .animate-nudge {
+            animation: nudgeHorizontal 1.5s ease-in-out infinite;
         }
     `;
 
@@ -147,17 +156,30 @@ export default function Home() {
                     `}
                 />
 
-                {/* SIDEBAR BUTTON */}
-                <div
-                    className={`
-                        absolute top-6 left-6 z-60
-                        transition-all duration-700 ease-out
-                        ${!isZooming && !isLoggingOut
-                            ? 'opacity-100 translate-x-0'
-                            : 'opacity-0 -translate-x-6 pointer-events-none'}
-                    `}
-                >
+                {/* Sidebar Button & Click Me Text */}
+                <div className={`
+                    absolute top-6 left-6 z-60
+                    transition-all duration-700 ease-out
+                    flex items-center
+                    ${!isZooming && !isLoggingOut ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6 pointer-events-none'}
+                `}>
+
                     <ButtonSidebar onClick={toggleSidebar} />
+
+                    {/* Animated Text - Hidden if sidebar open OR if scrolled */}
+                    <div className={`
+                        transition-all duration-500 ease-in-out
+                        ${!isSidebarOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'}
+                    `}>
+                         <div className="animate-nudge flex items-center mb-5 sm:mb-6">
+                            <span className="text-7xl leading-none font-bold text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] pb-2">
+                                ←
+                            </span>
+                            <span className="text-lg md:text-xl pt-5 font-serif uppercase tracking-widest text-cyan-200/90 drop-shadow-md whitespace-nowrap">
+                                Dive in
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 {/* USER SIDEBAR */}

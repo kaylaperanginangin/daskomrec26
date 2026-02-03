@@ -12,7 +12,7 @@ import background from '@assets/backgrounds/AssistantBackground.png';
 
 export default function Assistants() {
     const backgroundRef = useRef(null);
-    const bookControlRef = useRef(null); 
+    const bookControlRef = useRef(null);
 
     const [showImage, setShowImage] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -20,30 +20,52 @@ export default function Assistants() {
     const [isBookPlacing, setIsBookPlacing] = useState(true);
 
     const [pageIndex, setPageIndex] = useState(0);
-    const totalIndices = 89 + 2; 
-    
+    const totalIndices = 89 + 2;
+
     const [bookDim, setBookDim] = useState({ width: 300, height: 450 });
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
 
-    useEffect(() => {
+useEffect(() => {
         const handleResize = () => {
             const w = window.innerWidth;
-            
-            if (w < 480) {
-                setBookDim({ width: 260, height: 390 });
-            } 
-            else if (w < 768) {
-                setBookDim({ width: 320, height: 480 });
-            } 
-            else if (w < 1280) {
-                setBookDim({ width: 380, height: 570 });
-            } 
-            else {
-                setBookDim({ width: 420, height: 630 });
+            const h = window.innerHeight;
+
+            let targetW, targetH;
+
+            if (w < 768) {
+                let mobileW = w * 0.85;
+
+                if (mobileW * 1.5 > h * 0.60) {
+                    mobileW = (h * 0.60) / 1.5;
+                }
+
+                targetW = mobileW;
+
+                if (w < 385) {
+                    targetW = Math.min(targetW, 280);
+                } else {
+                    targetW = Math.min(targetW, 400);
+                }
+
+                targetH = targetW * 1.5;
+
+            } else {
+                targetH = h * 0.65;
+                targetW = targetH * 0.66;
+
+                if (w < 1280) {
+                    targetW = Math.min(targetW, 400);
+                    targetH = targetW * 1.5;
+                } else {
+                    targetW = Math.min(targetW, 450);
+                    targetH = targetW * 1.5;
+                }
             }
+
+            setBookDim({ width: targetW, height: targetH });
         };
 
         handleResize();
@@ -53,7 +75,7 @@ export default function Assistants() {
 
     useEffect(() => {
         const showTimer = setTimeout(() => setShowImage(true), 300);
-        
+
         const placeBookTimer = setTimeout(() => {
             setIsBookPlacing(false);
             setInputLocked(false);
@@ -104,7 +126,7 @@ export default function Assistants() {
     // Book Control
     const handlePrev = () => bookControlRef.current?.flipPrev();
     const handleNext = () => bookControlRef.current?.flipNext();
-    
+
     const handleGoToPage = (val) => {
         let p = parseInt(val);
         if (isNaN(p)) p = 0;
@@ -118,24 +140,18 @@ export default function Assistants() {
     };
 
     const styles = `
-        /* Background Filter */
         .cold-blue-filter {
-            filter:
-                brightness(1.1)
-                contrast(1.2)
-                saturate(1)
-                hue-rotate(15deg)
-                sepia(0);
+            filter: brightness(1.1) contrast(1.2) saturate(1) hue-rotate(15deg) sepia(0);
         }
-
-        /* Book Filter */
         .book-filter {
-            filter:
-                brightness(1.1)
-                contrast(1)
-                saturate(2)
-                hue-rotate(0deg)
-                sepia(0.2);
+            filter: brightness(1.1) contrast(1) saturate(2) hue-rotate(0deg) sepia(0.2);
+        }
+        @keyframes floatBook {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: floatBook 6s ease-in-out infinite;
         }
     `;
 
@@ -180,10 +196,11 @@ export default function Assistants() {
             <Head title="Assistants" />
             <style>{styles}</style>
 
-            <div className="relative w-full min-h-screen overflow-hidden flex items-center justify-center">
+            <div className="relative w-full h-dvh overflow-hidden flex flex-col items-center justify-between">
 
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, #0a2a4a, #0c365b)' }} />
-                <div className="absolute inset-0 cold-blue-filter">
+                {/* === BACKGROUND LAYERS === */}
+                <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(to bottom, #0a2a4a, #0c365b)' }} />
+                <div className="absolute inset-0 z-0 cold-blue-filter">
                     <img
                         ref={backgroundRef}
                         src={background}
@@ -193,60 +210,75 @@ export default function Assistants() {
                         style={getBackgroundStyle()}
                     />
                 </div>
-                <div className="absolute inset-0 pointer-events-none transition-opacity duration-1000" style={{ background: 'rgba(2, 99, 196, 0.2)' }} />
+                <div className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000" style={{ background: 'rgba(2, 99, 196, 0.2)' }} />
                 <UnderwaterEffect isLoaded={showImage && imageLoaded} isZooming={false} />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/30 pointer-events-none transition-opacity duration-1000" style={{ opacity: showImage && imageLoaded ? 1 : 0 }} />
+                <div className="absolute inset-0 z-20 bg-linear-to-b from-black/25 via-transparent to-black/30 pointer-events-none transition-opacity duration-1000" style={{ opacity: showImage && imageLoaded ? 1 : 0 }} />
 
 
-                {/* The Book */}
-                <div 
-                    className={`absolute top-[14%] md:top-[2%] z-50 text-center font-extrabold transition-all duration-700
-                        ${!inputLocked && !isLoggingOut ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}
-                    style={{ fontFamily: 'Cormorant Infant, serif' }}
-                >
-                    <h1 
-                        className="text-2xl sm:text-4xl text-white leading-tight"
+                {/* === TOP SECTION: TITLE & NAVIGATION === */}
+                <div className="relative z-50 w-full shrink-0 pt-0 md:pt-6 pb-2 px-4 flex flex-col items-center justify-center pointer-events-none">
+                    {/* Title Text */}
+                    <div className={`text-center font-extrabold transition-all duration-700 mt-24 md:mt-4
+                        ${!inputLocked && !isLoggingOut ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}
+                        style={{ fontFamily: 'Cormorant Infant, serif' }}
                     >
-                        Daskom Laboratory
-                    </h1>
-                    <h1 className="text-4xl sm:text-6xl text-white leading-tight">
-                        Assistants 2026
-                    </h1>
+                        <h1 className="text-lg sm:text-2xl md:text-3xl text-cyan-200/80 leading-tight uppercase tracking-widest drop-shadow-md">
+                            Daskom Laboratory
+                        </h1>
+                        <h1 className="text-3xl sm:text-5xl md:text-6xl text-white leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+                            Assistants 2026
+                        </h1>
+                    </div>
                 </div>
-                <div 
-                    className="absolute z-40 transition-all duration-1000 book-filter"
-                    style={getBookStyle()}
-                >
-                    <AssistantBook 
-                        ref={bookControlRef} 
-                        onPageChange={onBookFlip}
-                        width={bookDim.width}
-                        height={bookDim.height}
+
+
+                {/* === MIDDLE SECTION: THE BOOK === */}
+                <div className="relative z-40 flex-1 w-full flex items-center justify-center p-4">
+                    <div
+                        className={`transition-all duration-1000 book-filter ${!isBookPlacing && !isExiting ? 'animate-float' : ''}`}
+                        style={getBookStyle()}
+                    >
+                        <div style={{ width: bookDim.width, height: bookDim.height }}>
+                            <AssistantBook
+                                ref={bookControlRef}
+                                onPageChange={onBookFlip}
+                                width={bookDim.width}
+                                height={bookDim.height}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+
+                {/* === BOTTOM SECTION: CONTROLS === */}
+                <div className={`relative z-50 w-full shrink-0 flex justify-center pb-8 md:pb-10 transition-all duration-700
+                    ${!inputLocked && !isLoggingOut ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
+                    <BookControls
+                        onPrev={handlePrev}
+                        onNext={handleNext}
+                        onGoToPage={handleGoToPage}
+                        currentPage={pageIndex}
+                        totalPages={totalIndices - 1}
                     />
                 </div>
 
-                <BookControls 
-                    className={`absolute bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-700
-                        ${!inputLocked && !isLoggingOut ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
-                    onPrev={handlePrev}
-                    onNext={handleNext}
-                    onGoToPage={handleGoToPage}
-                    currentPage={pageIndex}
-                    totalPages={totalIndices - 1} 
-                />
-
-                <div className={`absolute top-6 left-6 z-60 transition-all duration-700 ease-out ${!inputLocked && !isLoggingOut ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6 pointer-events-none'}`}>
+                {/* Navigation Buttons (Fixed & High Z-Index) */}
+                <div className="fixed top-6 left-6 z-60 pointer-events-auto transition-all duration-700 ease-out"
+                        style={{ opacity: !inputLocked && !isLoggingOut ? 1 : 0, transform: !inputLocked && !isLoggingOut ? 'translateX(0)' : 'translateX(-24px)' }}>
                     <ButtonSidebar onClick={toggleSidebar} />
                 </div>
 
-                <div className={`absolute top-6 right-6 z-60 transition-all duration-700 ease-out ${!inputLocked && !isLoggingOut ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6 pointer-events-none'}`}>
+                <div className="fixed top-6 right-6 z-60 pointer-events-auto transition-all duration-700 ease-out"
+                        style={{ opacity: !inputLocked && !isLoggingOut ? 1 : 0, transform: !inputLocked && !isLoggingOut ? 'translateX(0)' : 'translateX(24px)' }}>
                     <ButtonHome onClick={goHome} />
                 </div>
 
+                {/* === OVERLAYS === */}
                 <UserSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onLogout={handleLogout} />
 
-                <div className="fixed inset-0 z-70 pointer-events-none transition-opacity duration-1000" style={{ background: 'linear-gradient(to bottom, #0a2a4a, #0c365b)', opacity: isLoggingOut ? 1 : 0 }} />
-                
+                <div className="fixed inset-0 z-70 pointer-events-none transition-opacity duration-1000"
+                     style={{ background: 'linear-gradient(to bottom, #0a2a4a, #0c365b)', opacity: isLoggingOut ? 1 : 0 }} />
+
                 {inputLocked && <div className="fixed inset-0 z-80 pointer-events-auto" />}
             </div>
         </>

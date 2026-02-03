@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import { Head, router } from '@inertiajs/react';
 import { createPortal } from 'react-dom';
-import * as XLSX from 'xlsx';
 
 // Components
 import UnderwaterEffect from '@components/UnderwaterEffect';
@@ -11,11 +10,11 @@ import ButtonHome from '@components/ButtonHome';
 import AdminSidebar from '@components/AdminSidebar';
 
 // Icons
-import { 
-    PencilSquareIcon, TrashIcon, EyeIcon, PlusIcon, 
-    ChevronLeftIcon, ChevronRightIcon, ArrowDownTrayIcon, 
-    ArrowUpTrayIcon, MagnifyingGlassIcon, ArrowsUpDownIcon, 
-    ChevronUpIcon, ChevronDownIcon, ListBulletIcon, 
+import {
+    PencilSquareIcon, TrashIcon, EyeIcon, PlusIcon,
+    ChevronLeftIcon, ChevronRightIcon, ArrowDownTrayIcon,
+    ArrowUpTrayIcon, MagnifyingGlassIcon, ArrowsUpDownIcon,
+    ChevronUpIcon, ChevronDownIcon, ListBulletIcon,
     TableCellsIcon, UserGroupIcon, XMarkIcon ,
     ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
@@ -27,8 +26,8 @@ const StatCard = ({ label, value, type }) => {
         <div className={`
             relative overflow-hidden rounded-sm p-4 flex items-center gap-4 group
             border-double border-4 backdrop-blur-md transition-all duration-500 flex-1
-            ${isTotal 
-                ? 'bg-[#0f1c2e]/60 border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.1)] hover:border-cyan-400/50' 
+            ${isTotal
+                ? 'bg-[#0f1c2e]/60 border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.1)] hover:border-cyan-400/50'
                 : 'bg-[#0f1c2e]/60 border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.1)] hover:border-amber-400/50'}
         `}>
             <div className={`absolute -right-8 -top-8 w-24 h-24 rounded-full blur-[50px] opacity-20 transition-opacity group-hover:opacity-40 ${isTotal ? 'bg-cyan-500' : 'bg-amber-500'}`} />
@@ -48,7 +47,7 @@ const StatCard = ({ label, value, type }) => {
 export default function Caas() {
     const backgroundRef = useRef(null);
     const fileInputRef = useRef(null);
-    
+
     // --- UI & Cinematic States ---
     const [showImage, setShowImage] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -58,8 +57,8 @@ export default function Caas() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     // --- View State ---
-    const [viewMode, setViewMode] = useState('regular'); 
-    const ITEMS_PER_PAGE = viewMode === 'small' ? 10 : 5; 
+    const [viewMode, setViewMode] = useState('regular');
+    const ITEMS_PER_PAGE = viewMode === 'small' ? 10 : 5;
     const stateOptions = ["Administration", "Coding and Writing Test", "Interview", "Grouping Task", "Teaching Test", "Rising"];
 
     // --- Data States ---
@@ -172,37 +171,11 @@ export default function Caas() {
     };
 
     const handleExportExcel = () => {
-        const exportData = caasList.map(c => ({
-            id: c.id, name: c.name, email: c.email, major: c.major, class: c.class, stage: c.state, result: c.status
-        }));
-        const worksheet = XLSX.utils.json_to_sheet(exportData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "CaAs");
-        XLSX.writeFile(workbook, "CaAs_Manifest_Archive.xlsx");
+
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-            const bstr = evt.target.result;
-            const wb = XLSX.read(bstr, { type: 'binary' });
-            const data = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-            const newEntries = data.map(row => ({
-                id: String(row.id || row.ID || row.nim || row.NIM || Date.now()),
-                name: row.name || row.Name || 'Unknown',
-                email: row.email || row.Email || '',
-                major: row.major || row.Major || '-',
-                class: row.class || row.Class || '-',
-                password: String(row.id || row.ID || '123'),
-                state: 'Administration',
-                status: 'Passed'
-            }));
-            setCaasList(prev => [...prev, ...newEntries]);
-        };
-        reader.readAsBinaryString(file);
-        e.target.value = null;
+    const handleImportExcel = (e) => {
+
     };
 
     const handleJumpPage = (e) => {
@@ -218,7 +191,7 @@ export default function Caas() {
         setIsSidebarOpen(false);
         setTimeout(() => {
             setIsLoggingOut(true);
-            setTimeout(() => router.visit('/'), 300); 
+            setTimeout(() => router.visit('/'), 300);
         }, 350);
     };
 
@@ -239,16 +212,16 @@ export default function Caas() {
         <>
             <Head title="CaAs Management" />
             <style>{styles}</style>
-            
+
             <div className="fixed inset-0 w-full h-full bg-[#0a2a4a] text-white overflow-hidden font-sans">
 
                 {/* BACKGROUND */}
                 <div className="absolute inset-0 z-0 pointer-events-none">
-                    <img 
-                        ref={backgroundRef} src={background} alt="bg" 
+                    <img
+                        ref={backgroundRef} src={background} alt="bg"
                         onLoad={() => setImageLoaded(true)}
-                        className={`absolute inset-0 w-full h-full object-cover transition-all duration-1500 ease-out ${showImage && imageLoaded ? 'opacity-100' : 'opacity-0'} ${!isZooming ? 'pulse-effect' : ''} cold-blue-filter`} 
-                        style={{ transform: showImage && imageLoaded ? (isZooming ? 'scale(1.5)' : 'scale(1.0)') : 'scale(1.3)', transformOrigin: 'center' }} 
+                        className={`absolute inset-0 w-full h-full object-cover transition-all duration-1500 ease-out ${showImage && imageLoaded ? 'opacity-100' : 'opacity-0'} ${!isZooming ? 'pulse-effect' : ''} cold-blue-filter`}
+                        style={{ transform: showImage && imageLoaded ? (isZooming ? 'scale(1.5)' : 'scale(1.0)') : 'scale(1.3)', transformOrigin: 'center' }}
                     />
                     <UnderwaterEffect />
                     <div className={`absolute inset-0 bg-linear-to-b from-black/25 via-transparent to-black/30 transition-opacity duration-1000 ${showImage && imageLoaded ? 'opacity-100' : 'opacity-0'}`} />
@@ -256,7 +229,7 @@ export default function Caas() {
 
                 {/* MAIN CONTENT AREA */}
                 <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center p-4 md:p-8 transition-all duration-1000 ${isZooming ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
-                    
+
                     <div className="text-center relative z-10 mb-8 w-full max-w-7xl flex flex-col md:flex-row items-center md:items-end justify-between gap-6">
                         <div className="text-center md:text-left">
                             <h1 className="text-5xl md:text-7xl font-bold leading-tight" style={{ fontFamily: 'Cormorant Infant, serif', textShadow: '0 2px 20px rgba(0,0,0,.8)' }}>
@@ -273,18 +246,18 @@ export default function Caas() {
                         {/* Control Header */}
                         <div className="atlantean-panel p-6 flex flex-col xl:flex-row justify-between items-center gap-6 rounded-t-2xl">
                             <div className="flex gap-2">
-                                <button 
+                                <button
                                     onClick={() => {
-                                        setCurrentFormData({ id: '', name: '', email: '', password: '', major: '', class: '', state: 'Administration', status: 'Passed' }); 
+                                        setCurrentFormData({ id: '', name: '', email: '', password: '', major: '', class: '', state: 'Administration', status: 'Passed' });
                                         setIsFormOpen(true);
-                                    }} 
+                                    }}
                                     className="px-6 py-3 bg-cyan-600/80 border border-cyan-400/50 hover:bg-cyan-500 rounded-sm font-serif font-bold uppercase tracking-widest flex items-center gap-2 shadow-lg transition-all text-xs"
                                 >
-                                    <PlusIcon className="w-4 h-4" /> 
+                                    <PlusIcon className="w-4 h-4" />
                                     New CaAs
                                 </button>
-                                <button 
-                                    onClick={() => 
+                                <button
+                                    onClick={() =>
                                         setConfirmModal({
                                             isOpen: true,
                                             title: 'Import CaAs',
@@ -299,21 +272,21 @@ export default function Caas() {
                                 >
                                     <ArrowUpTrayIcon className="w-5 h-5" />
                                 </button>
-                                <button 
-                                    onClick={handleExportExcel} 
+                                <button
+                                    onClick={handleExportExcel}
                                     className="p-3 border border-emerald-500/40 text-emerald-300 rounded-sm hover:bg-emerald-900/20 transition-all"
                                 >
                                     <ArrowDownTrayIcon className="w-5 h-5" />
                                 </button>
-                                <input 
-                                    type="file" 
-                                    ref={fileInputRef} 
-                                    onChange={handleFileChange} 
-                                    accept=".xlsx, .xls" 
-                                    className="hidden" 
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleImportExcel}
+                                    accept=".xlsx, .xls"
+                                    className="hidden"
                                 />
                             </div>
-                            
+
                             <div className="flex flex-wrap items-center justify-center gap-4">
                                 <div className="bg-black/30 p-1 rounded-sm border border-white/10 flex">
                                     <button onClick={() => setViewMode('regular')} className={`p-2 rounded-sm transition-all ${viewMode === 'regular' ? 'bg-cyan-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]' : 'text-white/40 hover:text-white'}`}><TableCellsIcon className="w-5 h-5" /></button>
@@ -344,19 +317,19 @@ export default function Caas() {
                                     <tbody className="font-sans">
                                         {paginatedData.map((item, index) => (
                                             <tr key={item.id} className="border-b border-white/5 hover:bg-cyan-400/5 transition-colors group">
-                                                <td className={`${viewMode === 'small' ? 'py-1.5' : 'p-4'} pl-8 font-mono text-white/30 text-[10px]`}>{(currentPage - 1) * ITEMS_PER_PAGE + index + 1}</td>
-                                                <td className={`${viewMode === 'small' ? 'py-1.5' : 'p-4'}`}>
+                                                <td className={`${viewMode === 'small' ? 'px-4 py-1.5' : 'p-4'} pl-8 font-mono text-white/30 text-[10px]`}>{(currentPage - 1) * ITEMS_PER_PAGE + index + 1}</td>
+                                                <td className={`${viewMode === 'small' ? 'px-4 py-1.5' : 'p-4'}`}>
                                                     <div className="flex flex-col">
-                                                        <span className={`${viewMode === 'small' ? 'text-sm' : 'text-base font-bold'} uppercase tracking-wider text-white`}>{item.name}</span>
-                                                        <span className="text-[10px] font-mono text-cyan-500/60 uppercase tracking-widest">{item.id}</span>
+                                                        <span className={`${viewMode === 'small' ? 'text-sm' : 'text-lg'} font-bold uppercase tracking-wider text-white`}>{item.name}</span>
+                                                        <span className={`${viewMode === 'small' ? 'text-xs' : 'text-sm'} font-mono text-cyan-500/60 uppercase tracking-widest`}>{item.id}</span>
                                                     </div>
                                                 </td>
-                                                <td className={`${viewMode === 'small' ? 'py-1.5 text-[11px]' : 'p-4 text-sm'} italic font-light text-cyan-100/70`}>{item.major}</td>
-                                                <td className={`${viewMode === 'small' ? 'py-1.5' : 'p-4'}`}>
-                                                    <span className={`px-2.5 py-1 border rounded-sm font-bold uppercase tracking-widest text-[9px] ${getStatusColor(item.status)}`}>{item.status}</span>
+                                                <td className={`${viewMode === 'small' ? 'text-base px-4 py-1.5' : 'text-lg p-4'} font-light text-cyan-100/70`}>{item.major}</td>
+                                                <td className={`${viewMode === 'small' ? 'px-4 py-1.5' : 'p-4'}`}>
+                                                    <span className={`px-2.5 py-1 border rounded-sm font-bold uppercase tracking-widest text-xs ${getStatusColor(item.status)}`}>{item.status}</span>
                                                 </td>
-                                                <td className={`${viewMode === 'small' ? 'py-1.5 text-[11px]' : 'p-4 text-sm'} font-semibold text-cyan-100`}>{item.state}</td>
-                                                <td className={`${viewMode === 'small' ? 'py-1.5' : 'p-4'} pr-8`}>
+                                                <td className={`${viewMode === 'small' ? 'px-4 py-1.5 text-base' : 'p-4 text-lg'} font-semibold text-cyan-100`}>{item.state}</td>
+                                                <td className={`${viewMode === 'small' ? 'px-4 py-1.5' : 'p-4'} pr-8`}>
                                                     <div className="flex justify-center gap-3">
                                                         <button onClick={() => {setViewData(item); setIsViewOpen(true);}} className="p-2 border border-cyan-500/30 text-cyan-400 hover:text-white rounded-sm hover:bg-cyan-500/10 transition-all"><EyeIcon className="w-4 h-4" /></button>
                                                         <button onClick={() => {setCurrentFormData(item); setIsFormOpen(true);}} className="p-2 border border-amber-500/30 text-amber-400 hover:text-white rounded-sm hover:bg-amber-500/10 transition-all"><PencilSquareIcon className="w-4 h-4" /></button>
@@ -368,7 +341,7 @@ export default function Caas() {
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                             {/* Footer */}
                             <div className="p-4 border-t border-white/5 bg-[#0f1c2e]/80 backdrop-blur-md flex justify-between items-center text-xs font-serif">
                                 <div className="flex items-center gap-6">
@@ -387,11 +360,10 @@ export default function Caas() {
                     </div>
                 </div>
 
-                {/* FIXED UI ELEMENTS */}
-                <div className={`absolute top-6 left-6 z-[60] transition-all duration-700 ease-out ${!isZooming && !isLoggingOut ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6 pointer-events-none'}`}>
+                <div className={`absolute top-6 left-6 z-60 transition-all duration-700 ease-out ${!isZooming && !isLoggingOut ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6 pointer-events-none'}`}>
                     <ButtonSidebar onClick={() => setIsSidebarOpen(prev => !prev)} />
                 </div>
-                <div className={`absolute top-6 right-6 z-[60] transition-all duration-700 ease-out ${!isZooming && !isLoggingOut ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6 pointer-events-none'}`}>
+                <div className={`absolute top-6 right-6 z-60 transition-all duration-700 ease-out ${!isZooming && !isLoggingOut ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6 pointer-events-none'}`}>
                     <ButtonHome onClick={() => router.visit('/admin/home')} />
                 </div>
 

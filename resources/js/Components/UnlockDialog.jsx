@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@assets/buttons/ButtonRegular.png';
 
-export default function UnlockDialog({ isOpen, onClose, onSubmit, territoryName, isError }) {
+// Added 'clue' to the props list
+export default function UnlockDialog({ isOpen, onClose, onSubmit, territoryName, isError, clue }) {
   const [code, setCode] = useState('');
-  
+
   const [isVisible, setIsVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
 
@@ -43,28 +44,33 @@ export default function UnlockDialog({ isOpen, onClose, onSubmit, territoryName,
         }
       `}</style>
 
-      <div 
+      <div
         onClick={handleBackdropClick}
         className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/10 backdrop-blur-sm transition-opacity duration-300 ease-out cursor-pointer
           ${isVisible ? 'opacity-100' : 'opacity-0'}
         `}
       >
-        <div 
+        <div
           className={`relative w-full max-w-lg overflow-hidden transition-all duration-300 ease-out cursor-default
             ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
-            ${isError ? 'animate-shake' : ''} 
+            ${isError ? 'animate-shake' : ''}
           `}
         >
 
           <div className="relative z-10 p-6 flex flex-col items-center text-white">
-            <h2 
-              className="text-5xl font-extrabold m-8"
-              style={{ 
-                  fontFamily: 'Cormorant Infant', 
+            <h2
+              className="text-5xl font-extrabold mt-8 mb-2" // Reduced bottom margin to fit clue
+              style={{
+                  fontFamily: 'Cormorant Infant',
                   textShadow: '0 2px 10px rgba(12, 54, 91, 0.5), 0 0 20px rgba(96, 165, 250, 0.2)' }}
             >
               Be careful...
             </h2>
+
+            {/* --- CLUE DISPLAY ADDED HERE --- */}
+            <p className="mb-8 text-lg text-cyan-200 font-serif italic text-center max-w-[85%] drop-shadow-md">
+                "{clue}"
+            </p>
 
             <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
               <div className="flex flex-col gap-1">
@@ -81,7 +87,7 @@ export default function UnlockDialog({ isOpen, onClose, onSubmit, territoryName,
                     ${isError ? 'border-2 border-red-500/50' : 'border-transparent border-2'}
                   `}
                 />
-                
+
                 {isError && (
                   <span className="text-red-700 font-bold text-xs text-center animate-pulse mt-1">
                     The atlantean isn't pleased....
@@ -90,39 +96,39 @@ export default function UnlockDialog({ isOpen, onClose, onSubmit, territoryName,
               </div>
 
               <div className="flex gap-2 mt-2 justify-center">
-                <button 
+                <button
                     type="button"
                     onClick={onClose}
                     className="mt-4 sm:mt-6 relative self-center transition-transform duration-300 hover:scale-110 active:scale-95"
                 >
-                    <img 
-                        src={Button} 
-                        alt="Back" 
-                        className="w-55 h-13 drop-shadow-[0_0_20px_rgba(96,165,250,0.8)] cold-blue-filter-light" 
+                    <img
+                        src={Button}
+                        alt="Back"
+                        className="w-55 h-13 drop-shadow-[0_0_20px_rgba(96,165,250,0.8)] cold-blue-filter-light"
                     />
-                    <span 
-                        className="absolute inset-0 flex items-center justify-center text-3xl font-extrabold tracking-[2px]" 
-                        style={{ 
-                            color: '#e0f2fe', 
-                            textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                    <span
+                        className="absolute inset-0 flex items-center justify-center text-3xl font-extrabold tracking-[2px]"
+                        style={{
+                            color: '#e0f2fe',
+                            textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                         }}>
                         Back
                     </span>
                 </button>
-                <button 
-                    type="submit" 
+                <button
+                    type="submit"
                     className="mt-4 sm:mt-6 relative self-center transition-transform duration-300 hover:scale-110 active:scale-95"
                 >
-                    <img 
-                        src={Button} 
-                        alt="Submit" 
-                        className="w-55 h-13 drop-shadow-[0_0_20px_rgba(96,165,250,0.8)] cold-blue-filter-light" 
+                    <img
+                        src={Button}
+                        alt="Submit"
+                        className="w-55 h-13 drop-shadow-[0_0_20px_rgba(96,165,250,0.8)] cold-blue-filter-light"
                     />
-                    <span 
-                        className="absolute inset-0 flex items-center justify-center text-3xl font-extrabold tracking-[2px]" 
-                        style={{ 
-                            color: '#e0f2fe', 
-                            textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                    <span
+                        className="absolute inset-0 flex items-center justify-center text-3xl font-extrabold tracking-[2px]"
+                        style={{
+                            color: '#e0f2fe',
+                            textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                         }}>
                         Submit
                     </span>

@@ -12,7 +12,7 @@ import ButtonAssistants from '@assets/buttons/09-Assistants.png';
 import ButtonLine from '@assets/buttons/10-OALine.png';
 import ButtonAnnouncement from '@assets/buttons/11-Announcement.png';
 import ButtonShift from '@assets/buttons/12-Shift.png';
-import ButtonCoreUnlocked from '@assets/buttons/Cores.png';
+import ButtonCoreUnlocked from '@assets/buttons/ButtonCores.png';
 import ButtonCoreLocked from '@assets/buttons/06-Cores.png';
 import ButtonLogout from '@assets/buttons/13-LogOut.png';
 
@@ -38,7 +38,7 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
                 if (clickTimer.current) clearTimeout(clickTimer.current);
                 clickTimer.current = setTimeout(() => setCoreClickCount(0), 2000);
                 if (newCount >= 3) {
-                    router.visit('/user'); 
+                    router.visit('/user');
                 }
                 return newCount;
             });
@@ -78,7 +78,7 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
             {/* Sidebar */}
             <aside
                 onClick={(e) => e.stopPropagation()}
-                className={`fixed top-0 left-0 h-screen w-full md:w-90 bg-black/30 backdrop-blur-xs text-white shadow-xl transform transition-transform duration-300 z-60
+                className={`fixed top-0 left-0 h-screen w-full md:w-90 bg-black/30 backdrop-blur-xs text-white shadow-xl transform transition-transform duration-300 z-50
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'}
                 `}
             >
@@ -89,22 +89,22 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
                         <div className="flex flex-col gap-2">
                             <button type="button" className={buttonWrapper} onClick={() => {router.visit('/user/profile')}}>
                                 <img src={ButtonStar} className={imageStyle} alt="Profile" />
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                                <span
+                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2"
+                                    style={{
+                                        color: '#e0f2fe',
+                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                                     }}>
                                     PROFILE
                                 </span>
                             </button>
                             <button type="button" className={buttonWrapper} onClick={() => {router.visit('/user/password')}}>
                                 <img src={ButtonRegular} className={imageStyle} alt="Change Password"/>
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                                <span
+                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2"
+                                    style={{
+                                        color: '#e0f2fe',
+                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                                     }}>
                                     CHANGE PASSWORD
                                 </span>
@@ -115,22 +115,22 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
                         <div className="flex flex-col gap-2">
                             <button type="button" className={buttonWrapper} onClick={() => {router.visit('/user/assistants')}}>
                                 <img src={ButtonRegular} className={imageStyle} alt="Assistants"/>
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                                <span
+                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2"
+                                    style={{
+                                        color: '#e0f2fe',
+                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                                     }}>
                                     ASSISTANTS
                                 </span>
                             </button>
                             <button type="button" className={buttonWrapper} onClick={() => {router.visit('/user/oaline')}}>
                                 <img src={ButtonAnchor} className={imageStyle} alt="OA LINE"/>
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                                <span
+                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2"
+                                    style={{
+                                        color: '#e0f2fe',
+                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                                     }}>
                                     OA LINE
                                 </span>
@@ -141,22 +141,22 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
                         <div className="flex flex-col gap-2">
                             <button type="button" className={buttonWrapper} onClick={() => {router.visit('/user/announcement')}}>
                                 <img src={ButtonChain} className={imageStyle} alt="Announcement"/>
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                                <span
+                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2"
+                                    style={{
+                                        color: '#e0f2fe',
+                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                                     }}>
                                     ANNOUNCEMENT
                                 </span>
                             </button>
                             <button type="button" className={buttonWrapper} onClick={() => {router.visit('/user/shift')}}>
                                 <img src={ButtonRegular} className={imageStyle} alt="Announcement"/>
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                                <span
+                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-2"
+                                    style={{
+                                        color: '#e0f2fe',
+                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                                     }}>
                                     SHIFT
                                 </span>
@@ -171,11 +171,11 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
                                     className={imageStyle}
                                     alt="Core"
                                 />
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-1" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                                <span
+                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-1"
+                                    style={{
+                                        color: '#e0f2fe',
+                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                                 }}>
                                     {coreUnlocked ? 'CORES' : ''}
                                 </span>
@@ -190,11 +190,11 @@ export default function UserSidebar({ isOpen, onClose, onLogout }) {
                                 onClick={handleLogoutClick}
                             >
                                 <img src={ButtonRegular} className={imageStyle} alt="Logout" style={{filter: 'brightness(0.7) contrast(1.2) saturate(1.2) hue-rotate(20deg)'}}/>
-                                <span 
-                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-1" 
-                                    style={{ 
-                                        color: '#e0f2fe', 
-                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)' 
+                                <span
+                                    className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold mb-1"
+                                    style={{
+                                        color: '#e0f2fe',
+                                        textShadow: '0 0 10px rgba(56, 189, 248, 0.7), 0 0 20px rgba(96, 165, 250, 0.5)'
                                 }}>
                                     LOG OUT
                                 </span>

@@ -6,14 +6,20 @@ import ButtonHome from '@components/ButtonHome';
 import UserSidebar from '@components/UserSidebar';
 import UnderwaterEffect from '@components/UnderwaterEffect';
 
-import utama from '@assets/backgrounds/utama.png'; import logoImg from '@assets/logo/ORB_DLOR 1.png'; import PCboard from '@assets/backgrounds/01-ABoard_PC.png';
+// --- ASSETS ---
+import Background3 from '@assets/backgrounds/Background3.png';
+import logoImg from '@assets/logo/ORB_DLOR 1.png'; // Used as BG Watermark
+import PCboard from '@assets/backgrounds/01-ABoard_PC.png';
 import Mobileboard from '@assets/backgrounds/02-ABoard_Mobile.png';
 import qrCodeImg from '@assets/logo/Code.jpeg';
+import Chains1 from '@assets/others/DECORATIONS/Chains/01-Chain.png';
+import Chains2 from '@assets/others/DECORATIONS/Chains/01-Chain.png';
 
 export default function OaLinePage() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [inputLocked, setInputLocked] = useState(true);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const [showBoard, setShowBoard] = useState(false);
 
     const lineInfo = {
         id: "@492ehaee",
@@ -35,125 +41,148 @@ export default function OaLinePage() {
     };
 
     useEffect(() => {
-        const zoomTimer = setTimeout(() => {
-            setInputLocked(false);
-        }, 500);
+        const boardTimer = setTimeout(() => setShowBoard(true), 100);
+        const unlockTimer = setTimeout(() => setInputLocked(false), 1200);
+        return () => {
+            clearTimeout(boardTimer);
+            clearTimeout(unlockTimer);
+        }
     }, []);
+
+    const styles = `
+        @keyframes dropIn {
+            0% { transform: translateY(-150%); opacity: 0; }
+            60% { transform: translateY(5%); opacity: 1; }
+            80% { transform: translateY(-2%); }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes sway {
+            0%, 100% { transform: rotate(0deg); }
+            33% { transform: rotate(1.5deg); }
+            66% { transform: rotate(-1.5deg); }
+        }
+        @keyframes chainLeftPhysics { 0%, 100% { transform: scaleY(1); } 33% { transform: scaleY(0.97); } 66% { transform: scaleY(1.03); } }
+        @keyframes chainRightPhysics { 0%, 100% { transform: scaleY(1); } 33% { transform: scaleY(1.03); } 66% { transform: scaleY(0.97); } }
+
+        .animate-drop { animation: dropIn 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        .animate-sway-container { animation: sway 7s ease-in-out infinite; transform-origin: top center; }
+        .animate-chain-left { animation: chainLeftPhysics 7s ease-in-out infinite; transform-origin: top center; }
+        .animate-chain-right { animation: chainRightPhysics 7s ease-in-out infinite; transform-origin: top center; }
+    `;
 
     return (
         <>
             <Head title="OA Line Information" />
-            <div className="relative w-full h-screen overflow-hidden text-white font-caudex">
+            <style>{styles}</style>
 
+            <div className="relative w-full min-h-screen overflow-hidden text-white font-caudex bg-slate-900">
 
-                {/* --- BACKGROUND --- */}
+                {/* --- BACKGROUND LAYER --- */}
                 <div className="absolute inset-0 z-0">
-                    <img
-                        src={utama}
-                        alt="Background Utama"
-                        className="w-full h-full object-cover brightness-75"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-cyan-900/20 via-transparent to-slate-900/80" />
+                    <img src={Background3} alt="Background" className="w-full h-full object-cover brightness-[0.6] blur-sm scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-cyan-900/30" />
                 </div>
-
-                <div className="absolute inset-0 z-10 pointer-events-none">
+                <div className="absolute inset-0 z-10 pointer-events-none mix-blend-screen opacity-50">
                     <UnderwaterEffect />
                 </div>
 
-                {/* --- MAIN CONTENT BOARD --- */}
-                <div className="absolute inset-0 z-40 flex items-center justify-center p-4">
-
-                    {/* Container Board Responsif */}
-                    <div className="relative w-[85vw] aspect-[3/4] sm:w-auto sm:h-[85vh] sm:aspect-[4/3] max-w-[1000px] flex flex-col items-center justify-center animate-popup">
-
-                        {/* Frame Images */}
-                        <img
-                            src={Mobileboard}
-                            alt="Frame Mobile"
-                            className="block sm:hidden absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
-                        />
-                        <img
-                            src={PCboard}
-                            alt="Frame PC"
-                            className="hidden sm:block absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-2xl"
-                        />
-
-                        {/* Content Safe Zone */}
-                        <div className="mt-0 sm:mt-2 absolute inset-0 flex flex-col items-center justify-center text-center
-                                        pt-[28%] pb-[22%] px-[14%]
-                                        sm:pt-[22%] sm:pb-[18%] sm:px-[18%]">
-
-                            <h1 className="text-2xl sm:text-5xl mb-4 sm:mb-0 font-bold mx-5 sm:mx-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] leading-tight">
-                                Official Account Line
-                            </h1>
-
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-8 w-full h-full max-h-[70%]">
-
-                                {/* QR Code Area */}
-                                <div className="shrink-0 bg-white p-2 rounded-xl shadow-lg rotate-0 sm:-rotate-2 transition-transform hover:rotate-0 duration-300">
-                                    <img
-                                        src={qrCodeImg}
-                                        alt="QR Code Line"
-                                        className="w-24 h-24 sm:w-32 sm:h-32 sm:w-50 sm:h-50 object-contain"
-                                    />
-                                </div>
-
-                                {/* Text Info Area */}
-                                <div className="flex flex-col items-center sm:items-start space-y-2 sm:space-y-4 max-w-full">
-
-                                    <div className="flex flex-col items-center sm:items-start">
-                                        <span className="text-[10px] sm:text-sm text-white uppercase tracking-widest font-bold">
-                                            ID Line
-                                        </span>
-                                        <p className="text-lg sm:text-xl sm:text-3xl font-bold drop-shadow-sm select-all tracking-wide">
-                                            {lineInfo.id}
-                                        </p>
-                                    </div>
-
-                                    <a
-                                        href={lineInfo.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="bg-[#0C365B] hover:brightness-110 text-white px-5 py-2 sm:px-6 sm:py-2.5 rounded-full font-bold shadow-lg
-                                                   transition-all active:scale-95 flex items-center gap-2 text-xs sm:text-sm sm:text-base mt-1"
-                                    >
-                                        <span>Add Friend</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-3 h-3 sm:w-4 sm:h-4">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Logo DLOR */}
-                        <div className="absolute bottom-[13%] right-[20%] sm:bottom-[25%] sm:right-[20%] pointer-events-none">
-                            <img
-                                src={logoImg}
-                                alt="DLOR Logo"
-                                className="w-10 h-10 sm:w-20 sm:h-20 object-contain drop-shadow-sm"
-                            />
-                        </div>
-
-                    </div>
-                </div>
-
-                {/* 7. NAVIGASI & SIDEBAR*/}
+                {/* --- NAVIGATION --- */}
                 <div className={`absolute top-6 left-6 z-60 transition-all duration-700 ${!inputLocked ? 'opacity-100' : 'opacity-0 -translate-x-10'}`}>
                     <ButtonSidebar onClick={toggleSidebar} />
                 </div>
-
                 <div className={`absolute top-6 right-6 z-60 transition-all duration-700 ${!inputLocked ? 'opacity-100' : 'opacity-0 translate-x-10'}`}>
                     <ButtonHome onClick={() => router.visit('/user/home')} />
                 </div>
+                <UserSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onLogout={handleLogout} />
 
-                {/* --- SIDEBAR --- */}
-                <UserSidebar
-                    isOpen={isSidebarOpen}
-                    onClose={() => setIsSidebarOpen(false)}
-                    onLogout={handleLogout}
-                />
+                {/* --- MAIN CONTENT --- */}
+                <div className="relative z-30 w-full min-h-screen flex justify-center items-center py-10">
+                    <div className={`relative w-[90%] max-w-[450px] sm:max-w-[900px] h-[550px] sm:h-[750px] mt-2 sm:mt-24
+                                     ${showBoard ? 'animate-drop' : 'opacity-0'}`}>
 
+                        <div className="w-full h-full animate-sway-container">
+
+                            {/* Chains */}
+                            <div className="absolute -top-80 sm:-top-70 left-[15%] h-100 z-10 animate-chain-left">
+                                <img src={Chains1} alt="Chain Left" className="w-full h-full object-contain" />
+                            </div>
+                            <div className="absolute -top-80 sm:-top-70 right-[15%] h-100 z-10 animate-chain-right">
+                                <img src={Chains2} alt="Chain Right" className="w-full h-full object-contain" />
+                            </div>
+
+                            {/* Board Frame */}
+                            <div className="absolute inset-0 z-20 overflow-hidden drop-shadow-2xl">
+                                <img
+                                    src={Mobileboard}
+                                    alt="Frame Mobile"
+                                    className="block sm:hidden absolute inset-0 w-full h-full object-contain pointer-events-none"
+                                />
+                                <img
+                                    src={PCboard}
+                                    alt="Frame PC"
+                                    className="hidden sm:block absolute inset-0 w-full h-full object-contain pointer-events-none"
+                                />
+
+                                {/* LOGO AS BACKGROUND WATERMARK (The Change) */}
+                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.08] scale-110">
+                                    <img src={logoImg} className="w-[80%] max-w-[300px] grayscale" alt="Orb Background" />
+                                </div>
+                            </div>
+
+                            {/* CONTENT TEXT & QR */}
+                            <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center
+                                            pt-[24%] pb-[20%] px-[14%]
+                                            sm:pt-[22%] sm:pb-[18%] sm:px-[18%]">
+
+                                <h1 className="text-2xl sm:text-5xl font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] leading-tight text-white mb-6">
+                                    Official Account Line
+                                </h1>
+
+                                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 w-full">
+                                    {/* QR Code */}
+                                    <div className="shrink-0 bg-white p-2 rounded-xl shadow-lg rotate-0 sm:-rotate-2 transition-transform hover:rotate-0 duration-300">
+                                        <img
+                                            src={qrCodeImg}
+                                            alt="QR Code Line"
+                                            className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 object-contain"
+                                        />
+                                    </div>
+
+                                    {/* Line Info */}
+                                    <div className="flex flex-col items-center sm:items-start space-y-3 text-[#092338]">
+                                        <div className="flex flex-col items-center sm:items-start">
+                                            <span className="text-[10px] sm:text-sm uppercase tracking-widest font-bold opacity-70">
+                                                ID Line
+                                            </span>
+                                            <p className="text-xl sm:text-3xl font-bold drop-shadow-sm select-all tracking-wide">
+                                                {lineInfo.id}
+                                            </p>
+                                        </div>
+
+                                        <a
+                                            href={lineInfo.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="bg-[#0C365B] hover:brightness-110 text-white px-6 py-2.5 rounded-full font-bold shadow-lg
+                                                     transition-all active:scale-95 flex items-center gap-2 text-xs sm:text-base mt-2"
+                                        >
+                                            <span>Add Friend</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer */}
+                <div className="absolute bottom-4 w-full text-center z-40 text-[10px] md:text-xs text-cyan-100/50">
+                    <p>@Atlantis.DLOR2026. All Right Served</p>
+                </div>
             </div>
         </>
     );

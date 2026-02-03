@@ -8,25 +8,25 @@ import Thevia from '@assets/map/Territory/Thevia.png';
 import Xurith from '@assets/map/Territory/Xurith.png';
 
 const TERRITORIES = [
-  { 
-    id: 'northgard', 
-    src: Northgard, 
-    className: "w-[15%] h-[15%] ml-[55%] mt-[8%]" 
+  {
+    id: 'northgard',
+    src: Northgard,
+    className: "w-[15%] h-[15%] left-[55%] top-[8%]"
   },
-  { 
-    id: 'euprus', 
-    src: Euprus, 
-    className: "w-[19%] h-[25.5%] ml-[55%] mt-[20%]" 
+  {
+    id: 'euprus',
+    src: Euprus,
+    className: "w-[19%] h-[25.5%] left-[54.7%] top-[19.7%]"
   },
-  { 
-    id: 'thevia', 
-    src: Thevia, 
-    className: "w-[42%] h-[35%] ml-[39%] mt-[30%]" 
+  {
+    id: 'thevia',
+    src: Thevia,
+    className: "w-[42%] h-[35%] left-[38.9%] top-[30%]"
   },
-  { 
-    id: 'xurith', 
-    src: Xurith, 
-    className: "w-[19%] h-[19%] ml-[24.5%] mt-[60.5%]" 
+  {
+    id: 'xurith',
+    src: Xurith,
+    className: "w-[19%] h-[19%] left-[24.5%] top-[60.5%]"
   },
 ];
 
@@ -71,16 +71,17 @@ export default function CoresMap({ territoryStates, onTerritoryClick }) {
 
   const handleMapClick = (e) => {
     const reversedIds = TERRITORIES.map(t => t.id).reverse();
-    
+
     for (const id of reversedIds) {
       const img = imageRefs.current[id];
-      // We allow interaction with 'locked' and 'unlocked', just not 'hidden'
-      if (!img || territoryStates[id] === 'hidden') continue;
+
+      // Removed check for 'hidden' state
+      if (!img) continue;
 
       const rect = img.getBoundingClientRect();
       if (e.clientX >= rect.left && e.clientX <= rect.right &&
           e.clientY >= rect.top && e.clientY <= rect.bottom) {
-        
+
         if (isPixelOpaque(img, e.clientX, e.clientY)) {
           setClickedId(id);
           setTimeout(() => setClickedId(null), 300); // Reset animation
@@ -111,36 +112,9 @@ export default function CoresMap({ territoryStates, onTerritoryClick }) {
           opacity: 0.4;
           background: url('https://www.transparenttextures.com/patterns/natural-paper.png');
         }
-        
-        @keyframes cloud-drift {
-          0% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(-10px, -5px) scale(1.05); }
-          100% { transform: translate(0, 0) scale(1); }
-        }
-
-        .cloud-wrapper {
-          filter: url(#cloud-fog) blur(4px);
-          opacity: 0.95;
-          mix-blend-mode: normal;
-        }
-
-        .cloud-base {
-          position: absolute;
-          inset: -40%; 
-          background: radial-gradient(closest-side, rgba(255,255,255,1) 40%, rgba(255,255,255,0) 100%);
-          animation: cloud-drift 8s infinite ease-in-out;
-        }
-
-        .cloud-detail {
-          position: absolute;
-          inset: -20%;
-          background: radial-gradient(closest-side, rgba(240,240,240,0.8) 30%, rgba(255,255,255,0) 100%);
-          animation: cloud-drift 12s infinite ease-in-out reverse;
-          opacity: 0.7;
-        }
       `}</style>
 
-      {/* SVG Filters */}
+      {/* SVG Filters (Cloud fog removed) */}
       <svg className="hidden">
         <defs>
           <filter id="paper-grain">
@@ -149,23 +123,17 @@ export default function CoresMap({ territoryStates, onTerritoryClick }) {
             <feComposite operator="in" in="coloredNoise" in2="SourceGraphic" result="composite" />
             <feBlend mode="multiply" in="composite" in2="SourceGraphic" />
           </filter>
-
-          <filter id="cloud-fog">
-            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="5" seed="5" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G" />
-            <feGaussianBlur stdDeviation="2" />
-          </filter>
         </defs>
       </svg>
 
-      <div 
+      <div
         ref={containerRef}
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         onClick={handleMapClick}
         className="map-container relative w-full max-w-[300px] sm:max-w-[600px] cursor-pointer select-none"
       >
-        <div 
+        <div
           className="map-inner relative overflow-hidden rounded-sm border-8 border-[#3d2b1f]/10"
           style={{ filter: 'url(#paper-grain) drop-shadow(0 20px 30px rgba(0,0,0,0.3))' }}
         >
@@ -173,45 +141,29 @@ export default function CoresMap({ territoryStates, onTerritoryClick }) {
           <div className="paper-overlay absolute inset-0 z-20" />
 
           {TERRITORIES.map((t) => {
-            const status = territoryStates[t.id]; 
-            const isHidden = status === 'hidden';
+            const status = territoryStates[t.id];
             const isLocked = status === 'locked';
             const isAnimating = clickedId === t.id;
 
             return (
               <div key={t.id} className="absolute inset-0 pointer-events-none">
-                
-                {/* 1. Territory Image */}
+                {/* Territory Image */}
                 <img
                   ref={el => imageRefs.current[t.id] = el}
                   src={t.src}
                   crossOrigin="anonymous"
                   className={`
                     absolute transition-all duration-1000 ease-in-out pointer-events-none
-                    ${t.className} 
-                    
+                    ${t.className}
+
                     /* Visual State (Locked vs Unlocked) */
                     ${isLocked ? 'grayscale brightness-90' : 'grayscale-0 sepia-[0.3]'}
 
-                    /* Click Animation (Applied regardless of Lock status) */
+                    /* Click Animation */
                     ${isAnimating ? 'brightness-125 scale-105 z-30' : 'z-10'}
                   `}
                   alt={t.id}
                 />
-
-                <div 
-                   className={`
-                     absolute transition-all duration-1000 ease-in-out z-20 flex items-center justify-center sepia-90
-                     ${t.className}
-                     ${isHidden ? 'opacity-100 scale-125' : 'opacity-0 scale-150 pointer-events-none'}
-                   `}
-                >
-                   <div className="cloud-wrapper w-full h-full relative">
-                      <div className="cloud-base"></div>
-                      <div className="cloud-detail"></div>
-                   </div>
-                </div>
-
               </div>
             );
           })}

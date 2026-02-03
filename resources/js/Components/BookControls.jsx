@@ -13,29 +13,30 @@ const ControlButton = ({ onClick, disabled, src, alt }) => {
             onMouseDown={() => !disabled && setPressed(true)}
             onMouseUp={() => setPressed(false)}
             onMouseLeave={() => setPressed(false)}
-            // Touch events for mobile responsiveness
             onTouchStart={() => !disabled && setPressed(true)}
             onTouchEnd={() => setPressed(false)}
             onClick={onClick}
             disabled={disabled}
             className={`
-                relative focus:outline-none
+                relative focus:outline-none select-none
                 flex items-center justify-center
-                ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                flex-shrink-0  /* <--- IMPORTANT: Prevents button from disappearing */
+                transition-opacity duration-300
+                ${disabled ? 'opacity-30 cursor-not-allowed grayscale' : 'cursor-pointer hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]'}
             `}
         >
             <img
                 src={src}
                 alt={alt}
                 className={`
-                    h-60 md:h-22 w-auto
-                    object-contain transition-all duration-100 ease-out
-                    ${pressed ? 'scale-90 brightness-110' : 'scale-100 hover:brightness-105'}
+                    h-20 sm:h-24 w-auto
+                    object-contain transition-transform duration-100 ease-out
+                    ${pressed ? 'scale-90 brightness-125' : 'scale-100'}
                 `}
                 style={{
                     filter: pressed && !disabled
-                        ? 'drop-shadow(0 0 14px rgba(0,180,255,.9))'
-                        : 'drop-shadow(0 0 5px rgba(0,120,200,0))',
+                        ? 'drop-shadow(0 0 10px rgba(34,211,238,0.8))'
+                        : '',
                 }}
             />
         </button>
@@ -52,6 +53,7 @@ export default function BookControls({
     className = ''
 }) {
     const [inputVal, setInputVal] = useState(currentPage);
+    const [isFocused, setIsFocused] = useState(false);
 
     useEffect(() => {
         setInputVal(currentPage);
@@ -66,7 +68,8 @@ export default function BookControls({
 
     return (
         <div
-            className={`flex items-center gap-2 md:gap-6 p-2 md:p-3 px-4 md:px-6 rounded-full ${className}`}
+            // Reduced gap on mobile (gap-2) so buttons don't get pushed off
+            className={`flex items-center justify-center gap-2 md:gap-8 ${className}`}
             style={{ fontFamily: 'Cormorant Infant, serif' }}
             onPointerDown={(e) => e.stopPropagation()}
         >
@@ -75,6 +78,9 @@ export default function BookControls({
                 input[type=number]::-webkit-outer-spin-button {
                     -webkit-appearance: none;
                     margin: 0;
+                }
+                input[type=number] {
+                    -moz-appearance: textfield;
                 }
             `}</style>
 
@@ -86,20 +92,44 @@ export default function BookControls({
                 alt="Previous"
             />
 
-            {/* PAGE INPUT */}
+            {/* === THE PILL === */}
             <div
-                className="flex items-center gap-1 md:gap-2 text-white/90 font-bold tracking-wide text-lg md:text-xl drop-shadow-md"
+                className={`
+                    relative group flex items-center justify-center gap-1 md:gap-2
+                    px-4 py-2 md:px-6 md:py-3
+                    min-w-[110px] md:min-w-[160px] /* Reduced min-width on mobile */
+                    rounded-full border transition-all duration-300
+
+                    ${isFocused
+                        ? 'bg-[#0f1c2e]/90 border-cyan-400/60 shadow-[0_0_20px_rgba(6,182,212,0.25)]'
+                        : 'bg-[#0f1c2e]/60 border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)] hover:border-cyan-400/40 hover:bg-[#0f1c2e]/80'}
+
+                    backdrop-blur-md
+                `}
             >
+                {/* Input Field */}
                 <input
                     type="number"
                     value={inputVal}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
                     onChange={(e) => setInputVal(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="w-10 bg-transparent text-center text-white focus:outline-none focus:border-white transition-colors"
+                    className="
+                        w-7 bg-transparent text-right
+                        text-xl md:text-3xl font-bold text-cyan-50
+                        drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]
+                        focus:outline-none focus:text-white transition-colors
+                        selection:bg-cyan-500/30
+                    "
                 />
-                <span
-                    className="opacity-50 whitespace-nowrap"
-                >/ {totalPages}
+
+                {/* Divider */}
+                <span className="text-cyan-500/50 text-lg md:text-2xl font-light pb-1">/</span>
+
+                {/* Total Pages */}
+                <span className="text-cyan-200/60 text-base md:text-xl font-medium tracking-wide pt-1">
+                    {totalPages}
                 </span>
             </div>
 

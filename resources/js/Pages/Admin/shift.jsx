@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import { Head, router } from '@inertiajs/react';
 import { createPortal } from 'react-dom';
-import * as XLSX from 'xlsx';
 
 // Components
 import UnderwaterEffect from '@components/UnderwaterEffect';
@@ -11,12 +10,12 @@ import ButtonHome from '@components/ButtonHome';
 import AdminSidebar from '@components/AdminSidebar';
 
 // Icons
-import { 
+import {
     PencilSquareIcon, TrashIcon, PlusIcon, UserGroupIcon,
     ChevronLeftIcon, ChevronRightIcon, XMarkIcon,
     IdentificationIcon, ExclamationTriangleIcon, UserPlusIcon,
     ListBulletIcon, TableCellsIcon, UserMinusIcon, ChartBarIcon,
-    MagnifyingGlassIcon, ArrowDownTrayIcon
+    MagnifyingGlassIcon, ArrowDownTrayIcon, ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline';
 
 // --- THEMED STAT CARD ---
@@ -26,8 +25,8 @@ const StatCard = ({ label, value, type }) => {
         <div className={`
             relative overflow-hidden rounded-sm p-4 flex items-center gap-4 group
             border-double border-4 backdrop-blur-md transition-all duration-500 flex-1
-            ${isTotal 
-                ? 'bg-[#0f1c2e]/60 border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.1)] hover:border-cyan-400/50' 
+            ${isTotal
+                ? 'bg-[#0f1c2e]/60 border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.1)] hover:border-cyan-400/50'
                 : 'bg-[#0f1c2e]/60 border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.1)] hover:border-amber-400/50'}
         `}>
             <div className={`absolute -right-8 -top-8 w-24 h-24 rounded-full blur-[50px] opacity-20 transition-opacity group-hover:opacity-40 ${isTotal ? 'bg-cyan-500' : 'bg-amber-500'}`} />
@@ -46,24 +45,26 @@ const StatCard = ({ label, value, type }) => {
 
 export default function Shift() {
     const backgroundRef = useRef(null);
+    const fileInputRef = useRef(null);
+
     const [showImage, setShowImage] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [isZooming, setIsZooming] = useState(true);
     const [inputLocked, setInputLocked] = useState(true);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [viewMode, setViewMode] = useState('regular'); 
-    const ITEMS_PER_PAGE = viewMode === 'compact' ? 10 : 5; 
+    const [viewMode, setViewMode] = useState('regular');
+    const ITEMS_PER_PAGE = viewMode === 'compact' ? 10 : 5;
 
     const [shifts, setShifts] = useState([
-        { 
-            id: 1, shift: 'Shift 1', type: 'Onsite', place: 'GKU 03', date: '2026-11-01', 
-            timeStart: '06:30', timeEnd: '09:30', quota: 20, 
-            guardians: ['JYO', 'KAY', 'VIM', 'GTR', 'WIL', 'UZY', 'RYU'], 
+        {
+            id: 1, shift: 'Shift 1', type: 'Onsite', place: 'GKU 03', date: '2026-11-01',
+            timeStart: '06:30', timeEnd: '09:30', quota: 20,
+            assistants: ['JYO', 'KAY', 'VIM', 'GTR', 'WIL', 'UZY', 'RYU'],
             caasBooked: [
                 { id: '10101230001', name: 'Muhammad Hafiz', major: 'Teknik Elektro' },
                 { id: '10101230002', name: 'Stevannie Pratama', major: 'Teknik Telekomunikasi' }
-            ] 
+            ]
         },
     ]);
 
@@ -74,7 +75,7 @@ export default function Shift() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isPlotterOpen, setIsPlotterOpen] = useState(false);
     const [confirmModal, setConfirmModal] = useState({ isOpen: false, title: '', message: '', type: 'danger', onConfirm: () => {} });
-    const [currentFormData, setCurrentFormData] = useState({ id: null, shift: '', type: 'Onsite', place: '', date: '', timeStart: '', timeEnd: '', quota: 0, guardians: [], caasBooked: [] });
+    const [currentFormData, setCurrentFormData] = useState({ id: null, shift: '', type: 'Onsite', place: '', date: '', timeStart: '', timeEnd: '', quota: 0, assistants: [], caasBooked: [] });
     const [activeShift, setActiveShift] = useState(null);
     const [newPlotterName, setNewPlotterName] = useState('');
 
@@ -149,9 +150,9 @@ export default function Shift() {
     const handleAddPlotter = (e) => {
         if (e) e.preventDefault();
         if (!newPlotterName.trim()) return;
-        const updated = [...activeShift.guardians, newPlotterName.trim()];
-        setShifts(prev => prev.map(s => s.id === activeShift.id ? { ...s, guardians: updated } : s));
-        setActiveShift(prev => ({ ...prev, guardians: updated }));
+        const updated = [...activeShift.assistants, newPlotterName.trim()];
+        setShifts(prev => prev.map(s => s.id === activeShift.id ? { ...s, assistants: updated } : s));
+        setActiveShift(prev => ({ ...prev, assistants: updated }));
         setNewPlotterName('');
     };
 
@@ -163,23 +164,16 @@ export default function Shift() {
         }
     };
 
-    const handleExportExcel = () => {
-        const exportData = shifts.map(s => ({
-            Shift: s.shift, Date: s.date, Start: s.timeStart, End: s.timeEnd,
-            Booked: s.caasBooked.length, Quota: s.quota, Plotters: s.guardians.join(', ')
-        }));
-        const worksheet = XLSX.utils.json_to_sheet(exportData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Shifts");
-        XLSX.writeFile(workbook, "ShiftData.xlsx");
-    };
+    const handleExportExcel = () => { return };
+
+    const handleImportExcel = () => { return };
 
     const handleLogout = () => {
         setInputLocked(true);
         setIsSidebarOpen(false);
         setTimeout(() => {
             setIsLoggingOut(true);
-            setTimeout(() => router.visit('/'), 300); 
+            setTimeout(() => router.visit('/'), 300);
         }, 350);
     };
 
@@ -208,17 +202,16 @@ export default function Shift() {
         <>
             <Head title="Shift Management" />
             <style>{styles}</style>
-            
-            {/* SCROLLABLE ONLY ON MOBILE via overflow-y-auto on small screens */}
+
             <div className="fixed inset-0 w-full h-full bg-[#0a2a4a] text-white overflow-y-auto md:overflow-hidden font-sans">
-                
+
                 {/* Fixed Background */}
                 <div className="fixed inset-0 z-0 pointer-events-none">
-                    <img 
-                        ref={backgroundRef} src={background} alt="bg" 
+                    <img
+                        ref={backgroundRef} src={background} alt="bg"
                         onLoad={() => setImageLoaded(true)}
-                        className={`absolute inset-0 w-full h-full object-cover transition-all duration-1500 ease-out ${showImage && imageLoaded ? 'opacity-100' : 'opacity-0'} ${!isZooming ? 'pulse-effect' : ''} cold-blue-filter`} 
-                        style={{ transform: showImage && imageLoaded ? (isZooming ? 'scale(1.5)' : 'scale(1.0)') : 'scale(1.3)', transformOrigin: 'center' }} 
+                        className={`absolute inset-0 w-full h-full object-cover transition-all duration-1500 ease-out ${showImage && imageLoaded ? 'opacity-100' : 'opacity-0'} ${!isZooming ? 'pulse-effect' : ''} cold-blue-filter`}
+                        style={{ transform: showImage && imageLoaded ? (isZooming ? 'scale(1.5)' : 'scale(1.0)') : 'scale(1.3)', transformOrigin: 'center' }}
                     />
                     <UnderwaterEffect />
                     <div className={`absolute inset-0 bg-linear-to-b from-black/25 via-transparent to-black/30 transition-opacity duration-1000 ${showImage && imageLoaded ? 'opacity-100' : 'opacity-0'}`} />
@@ -226,7 +219,7 @@ export default function Shift() {
 
                 {/* Content Layer */}
                 <div className={`relative md:absolute md:inset-0 z-10 flex flex-col items-center justify-start md:justify-center p-4 md:p-8 transition-all duration-1000 ${isZooming ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
-                    
+
                     <div className="text-center relative z-10 mb-8 w-auto md:w-full max-w-7xl flex flex-col md:flex-row items-center md:items-end justify-between gap-6 mt-20 md:mt-0">
                         <div className="text-center md:text-left">
                             <h1 className="text-5xl md:text-7xl font-bold leading-tight" style={{ fontFamily: 'Cormorant Infant, serif', textShadow: '0 2px 20px rgba(0,0,0,.8)' }}>
@@ -243,42 +236,68 @@ export default function Shift() {
                     <div className="w-full max-w-7xl pb-20 md:pb-0">
                         <div className="atlantean-panel p-6 flex flex-col xl:flex-row justify-between items-center gap-6 rounded-t-2xl">
                             <div className="flex gap-2">
-                                <button 
+                                <button
                                     onClick={() => {
                                         setCurrentFormData({
-                                            id: null, 
-                                            shift: '', 
-                                            type: 'Onsite', 
-                                            place: '', 
-                                            date: '', 
-                                            timeStart: '', 
-                                            timeEnd: '', 
-                                            quota: 0, 
-                                            guardians: [], 
+                                            id: null,
+                                            shift: '',
+                                            type: 'Onsite',
+                                            place: '',
+                                            date: '',
+                                            timeStart: '',
+                                            timeEnd: '',
+                                            quota: 0,
+                                            assistants: [],
                                             caasBooked: []
-                                        }); setIsFormOpen(true);}} 
+                                        }); setIsFormOpen(true);}}
                                     className="px-6 py-3 bg-cyan-600/80 border border-cyan-400/50 hover:bg-cyan-500 rounded-sm font-serif font-bold uppercase tracking-widest flex items-center gap-2 shadow-lg transition-all text-xs"
                                 >
                                     <PlusIcon className="w-4 h-4" /> New Shift
                                 </button>
-                                <button 
-                                    onClick={handleExportExcel} 
+
+                                <button
+                                    onClick={() =>
+                                        setConfirmModal({
+                                            isOpen: true,
+                                            title: 'Import Shift',
+                                            message: `Do you want to import Shift?`,
+                                            onConfirm: () => {
+                                                fileInputRef.current.click();
+                                                closeAllModals();
+                                            }
+                                        })
+                                    }
+                                    className="p-3 border border-blue-500/40 text-blue-300 rounded-sm hover:bg-blue-900/20 transition-all"
+                                >
+                                    <ArrowUpTrayIcon className="w-5 h-5" />
+                                </button>
+
+                                <button
+                                    onClick={handleExportExcel}
                                     className="p-3 border border-emerald-500/40 text-emerald-300 rounded-sm hover:bg-emerald-900/20 transition-all" title="Export excel"
                                 >
                                     <ArrowDownTrayIcon className="w-5 h-5" />
                                 </button>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleImportExcel}
+                                    accept=".xlsx, .xls"
+                                    className="hidden"
+                                />
+
                             </div>
-                            
+
                             <div className="flex flex-wrap items-center justify-center gap-4">
                                 <div className="bg-black/30 p-1 rounded-sm border border-white/10 flex">
-                                    <button 
-                                        onClick={() => setViewMode('regular')} 
+                                    <button
+                                        onClick={() => setViewMode('regular')}
                                         className={`p-2 rounded-sm transition-all ${viewMode === 'regular' ? 'bg-cyan-600 text-white' : 'text-white/40 hover:text-white'}`}
                                     >
                                         <TableCellsIcon className="w-5 h-5" />
                                     </button>
-                                    <button 
-                                        onClick={() => setViewMode('compact')} 
+                                    <button
+                                        onClick={() => setViewMode('compact')}
                                         className={`p-2 rounded-sm transition-all ${viewMode === 'compact' ? 'bg-cyan-600 text-white' : 'text-white/40 hover:text-white'}`}
                                     >
                                         <ListBulletIcon className="w-5 h-5" />
@@ -288,10 +307,6 @@ export default function Shift() {
                                     <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-cyan-500/50" />
                                     <input type="text" placeholder="Filter table..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full bg-black/30 border border-white/10 rounded-sm pl-10 pr-4 py-2.5 text-xs text-cyan-100 focus:outline-none focus:border-cyan-500/50 transition-all tracking-wider" />
                                 </div>
-                                <div className="flex gap-2">
-                                    <button onClick={() => setConfirmModal({isOpen: true, title: 'Reset Plotters?', message: 'Remove all guardians?', type: 'warning', onConfirm: () => { setShifts(s => s.map(x => ({...x, guardians: []}))); closeAllModals(); }})} className="p-2.5 border border-amber-500/40 text-amber-300 rounded-sm hover:bg-amber-900/20 transition-all"><UserMinusIcon className="w-5 h-5" /></button>
-                                    <button onClick={() => setConfirmModal({isOpen: true, title: 'Wipe System?', message: 'Delete all shifts?', type: 'danger', onConfirm: () => { setShifts([]); closeAllModals(); }})} className="p-2.5 border border-rose-500/40 text-rose-300 rounded-sm hover:bg-rose-900/20 transition-all"><TrashIcon className="w-5 h-5" /></button>
-                                </div>
                             </div>
                         </div>
 
@@ -300,34 +315,128 @@ export default function Shift() {
                                 <table className="w-full text-left border-collapse min-w-[950px]">
                                     <thead className="bg-[#0f1c2e]/95 sticky top-0 z-10 border-b border-white/10 text-cyan-100/70 font-serif text-[10px] md:text-xs uppercase tracking-widest">
                                         <tr>
-                                            <th className="p-4 w-16 pl-8">No</th>
-                                            <th className="p-4 cursor-pointer hover:text-cyan-400" onClick={() => handleSort('shift')}>Shift</th>
-                                            <th className="p-4 cursor-pointer hover:text-cyan-400" onClick={() => handleSort('date')}>Date</th>
-                                            <th className="p-4">Quota</th>
-                                            <th className="p-4">Assistants</th>
-                                            <th className="p-4 pr-8 text-center">Actions</th>
+                                            <th className="p-4 w-16 pl-8">
+                                                No
+                                            </th>
+                                            <th
+                                                className="p-4 text-left cursor-pointer hover:text-cyan-400"
+                                                onClick={() => handleSort('shift')}
+                                            >
+                                                Shift
+                                            </th>
+                                            <th
+                                                className="p-4 text-left cursor-pointer hover:text-cyan-400"
+                                                onClick={() => handleSort('date')}
+                                            >
+                                                Date
+                                            </th>
+                                            <th className="p-4 text-left">
+                                                Quota
+                                            </th>
+                                            <th className={`p-4 text-left ${viewMode === 'regular' ? 'w-[480px] min-w-[300px]' : 'w-[480px] min-w-[300px]'}`}>
+                                                Assistants
+                                            </th>
+                                            <th className="p-4 pr-8 text-center">
+                                                Actions
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="font-sans">
                                         {paginatedShifts.map((item, index) => (
                                             <tr key={item.id} className="border-b border-white/5 hover:bg-cyan-400/5 transition-colors group">
-                                                <td className={`${viewMode === 'compact' ? 'py-1.5' : 'p-4'} pl-8 font-mono text-white/30 text-[10px]`}>{(currentPage - 1) * ITEMS_PER_PAGE + index + 1}</td>
-                                                <td className={`${viewMode === 'compact' ? 'py-1.5 text-sm' : 'p-4 text-base md:text-lg'} font-bold uppercase tracking-widest`}>{item.shift}</td>
-                                                <td className={`${viewMode === 'compact' ? 'py-1.5 text-[11px]' : 'p-4 text-sm'} font-mono`}><span className="text-cyan-100">{formatDisplayDate(item.date)}</span> <span className="text-cyan-500/30 mx-1">|</span> <span className="text-white/60">{item.timeStart}</span></td>
-                                                <td className={`${viewMode === 'compact' ? 'py-1.5 text-[11px]' : 'p-4 text-sm'} font-medium`}>{item.caasBooked.length} <span className="text-white/20">/</span> {item.quota}</td>
-                                                <td className={`${viewMode === 'compact' ? 'py-1.5' : 'p-4'}`}>
-                                                    <div className="flex flex-wrap items-center gap-2">
-                                                        {item.guardians.slice(0, 5).map((g, i) => (
-                                                            <span key={i} className={`px-2.5 py-1 bg-cyan-900/40 border border-cyan-500/30 rounded-sm font-bold text-cyan-100 ${viewMode === 'compact' ? 'text-[9px]' : 'text-[11px]'}`}>{g}</span>
+                                                <td className={`${viewMode === 'compact' ? 'px-4 py-1.5' : 'p-4'} pl-8 font-mono text-white/30 text-sm`}>
+                                                    {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                                                </td>
+
+                                                <td className={`${viewMode === 'compact' ? 'px-4 py-1.5 text-sm' : 'p-4 text-base md:text-lg'} font-bold uppercase tracking-widest`}>
+                                                    {item.shift}
+                                                </td>
+
+                                                <td className={`${viewMode === 'compact' ? 'px-4 py-1.5 text-sm' : 'p-4 text-base'} font-mono`}>
+                                                    <span className="text-cyan-100">
+                                                        {formatDisplayDate(item.date)}
+                                                    </span>
+                                                    {viewMode === 'compact' ? (
+                                                        <>
+                                                            <span className="text-cyan-500/30 mx-1">
+                                                                |
+                                                            </span>
+                                                            <span className="text-white/60">
+                                                                {item.timeStart} - {item.timeEnd}
+                                                            </span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <div className="text-white/40 text-sm mt-0.5">
+                                                                {item.timeStart} - {item.timeEnd}
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </td>
+
+                                                <td className={`${viewMode === 'compact' ? 'px-4 py-1.5 text-sm' : 'p-4 text-lg'} font-medium`}>
+                                                    {item.caasBooked.length}
+                                                    <span className="text-white/60">
+                                                        /
+                                                    </span>
+                                                    {item.quota}
+                                                </td>
+
+                                                <td className={`${viewMode === 'compact' ? 'px-4 py-1.5' : 'p-4'}`}>
+                                                    <div className={`flex flex-wrap items-center gap-1.5`}>
+                                                        {item.assistants.slice(0, viewMode === 'regular' ? 15 : 7).map((g, i) => (
+                                                            <span
+                                                                key={i}
+                                                                className={`px-2.5 py-1 bg-cyan-900/40 border border-cyan-500/30 rounded-sm font-bold text-cyan-100 ${viewMode === 'compact' ? 'text-xs' : 'text-sm'}`}
+                                                            >
+                                                                {g}
+                                                            </span>
                                                         ))}
-                                                        {item.guardians.length > 5 && <span className="text-cyan-400/70 font-mono italic font-bold ml-1 text-[10px]">... +{item.guardians.length - 5}</span>}
+                                                        {item.assistants.length > (viewMode === 'regular' ? 15 : 7) && (
+                                                            <span className="text-cyan-400/70 font-mono italic font-bold ml-1 text-sm">
+                                                                ... +{item.assistants.length - (viewMode === 'regular' ? 15 : 7)}
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 </td>
-                                                <td className={`${viewMode === 'compact' ? 'py-1.5' : 'p-4'} pr-8`}>
+
+                                                <td className={`${viewMode === 'compact' ? 'px-4 py-1.5' : 'p-4'} pr-8`}>
                                                     <div className="flex justify-center gap-3">
-                                                        <button onClick={() => { setActiveShift(item); setIsPlotterOpen(true); }} className={`${viewMode === 'compact' ? 'p-1.5' : 'p-2.5'} border border-cyan-500/30 text-cyan-400 hover:text-white rounded-sm hover:bg-cyan-500/10 transition-all`}><UserPlusIcon className="w-5 h-5" /></button>
-                                                        <button onClick={() => { setCurrentFormData(item); setIsFormOpen(true); }} className={`${viewMode === 'compact' ? 'p-1.5' : 'p-2.5'} border border-amber-500/30 text-amber-400 hover:text-white rounded-sm hover:bg-amber-500/10 transition-all`}><PencilSquareIcon className="w-5 h-5" /></button>
-                                                        <button onClick={() => setConfirmModal({isOpen: true, title: 'Delete Shift?', message: `Remove ${item.shift} permanently?`, type: 'danger', onConfirm: () => { setShifts(s => s.filter(x => x.id !== item.id)); closeAllModals(); }})} className={`${viewMode === 'compact' ? 'p-1.5' : 'p-2.5'} border border-rose-500/30 text-rose-400 hover:text-white rounded-sm hover:bg-rose-500/10 transition-all`}><TrashIcon className="w-5 h-5" /></button>
+                                                        <button
+                                                            onClick={() => {
+                                                                setActiveShift(item);
+                                                                setIsPlotterOpen(true);
+                                                            }}
+                                                            className={`${viewMode === 'compact' ? 'p-1.5' : 'p-2.5'} border border-cyan-500/30 text-cyan-400 hover:text-white rounded-sm hover:bg-cyan-500/10 transition-all`}
+                                                        >
+                                                            <UserPlusIcon className="w-5 h-5" />
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => {
+                                                                setCurrentFormData(item);
+                                                                setIsFormOpen(true);
+                                                            }}
+                                                            className={`${viewMode === 'compact' ? 'p-1.5' : 'p-2.5'} border border-amber-500/30 text-amber-400 hover:text-white rounded-sm hover:bg-amber-500/10 transition-all`}
+                                                        >
+                                                            <PencilSquareIcon className="w-5 h-5" />
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => setConfirmModal({
+                                                                isOpen: true,
+                                                                title: 'Delete Shift?',
+                                                                message: `Remove ${item.shift} permanently?`,
+                                                                type: 'danger',
+                                                                onConfirm: () => {
+                                                                    setShifts(s => s.filter(x => x.id !== item.id));
+                                                                    closeAllModals();
+                                                                }
+                                                            })}
+                                                            className={`${viewMode === 'compact' ? 'p-1.5' : 'p-2.5'} border border-rose-500/30 text-rose-400 hover:text-white rounded-sm hover:bg-rose-500/10 transition-all`}
+                                                        >
+                                                            <TrashIcon className="w-5 h-5" />
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -354,7 +463,7 @@ export default function Shift() {
 
                 {/* MODALS */}
                 {isFormOpen && createPortal(
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
                         <div className="absolute inset-0 bg-[#020406]/90 backdrop-blur-sm" onClick={closeAllModals} />
                         <div className="relative w-full max-w-xl bg-[#0a121d] border-2 border-double border-cyan-600/30 p-10 shadow-2xl animate-popIn">
                             <button onClick={closeAllModals} className="absolute top-4 right-4 text-white/40 hover:text-white transition-all"><XMarkIcon className="w-6 h-6"/></button>
@@ -395,7 +504,7 @@ export default function Shift() {
 
                 {/* Other Modals (Plotter/Confirm) */}
                 {isPlotterOpen && activeShift && createPortal(
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
                         <div className="absolute inset-0 bg-[#020406]/95 backdrop-blur-md" onClick={closeAllModals} />
                         <div className="relative w-full max-w-5xl bg-[#0a121d] border-2 border-double border-cyan-600/30 shadow-2xl animate-popIn flex flex-col h-[90vh] md:h-[85vh] overflow-hidden">
                             <div className="p-8 border-b border-white/5 bg-[#050a10] flex justify-between items-center">
@@ -413,13 +522,13 @@ export default function Shift() {
                                         <button type="submit" className="px-8 bg-cyan-700/30 border border-cyan-500/40 text-cyan-100 font-bold uppercase text-[10px] rounded-sm hover:bg-cyan-600 transition-all">Add</button>
                                     </form>
                                     <div className="flex flex-wrap content-start gap-3">
-                                        {activeShift.guardians.map((name, idx) => (
+                                        {activeShift.assistants.map((name, idx) => (
                                             <div key={idx} className="flex items-center gap-3 px-4 py-2.5 bg-cyan-950/40 border border-cyan-500/30 rounded-sm">
                                                 <span className="text-sm font-medium tracking-wider">{name}</span>
                                                 <button onClick={() => {
-                                                    const updated = activeShift.guardians.filter((_, i) => i !== idx);
-                                                    setShifts(s => s.map(x => x.id === activeShift.id ? {...x, guardians: updated} : x));
-                                                    setActiveShift(prev => ({...prev, guardians: updated}));
+                                                    const updated = activeShift.assistants.filter((_, i) => i !== idx);
+                                                    setShifts(s => s.map(x => x.id === activeShift.id ? {...x, assistants: updated} : x));
+                                                    setActiveShift(prev => ({...prev, assistants: updated}));
                                                 }} className="text-rose-500/40 hover:text-rose-400 transition-all"><XMarkIcon className="w-4 h-4" /></button>
                                             </div>
                                         ))}
@@ -459,6 +568,7 @@ export default function Shift() {
                         </div>
                     </div>, document.body
                 )}
+
                 {/* UI Fixed Elements */}
                 <div className={`fixed top-6 left-6 z-[60] transition-all duration-700 ease-out ${!isZooming && !isLoggingOut ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6 pointer-events-none'}`}>
                     <ButtonSidebar onClick={() => setIsSidebarOpen(prev => !prev)} />
@@ -473,8 +583,8 @@ export default function Shift() {
                     onLogout={handleLogout}
                 />
 
-                <div className="fixed inset-0 z-[70] pointer-events-none transition-opacity duration-1000 ease-in-out" style={{ background: 'linear-gradient(to bottom, #0a2a4a, #0c365b)', opacity: isLoggingOut ? 1 : 0 }} />
-                {inputLocked && <div className="fixed inset-0 z-[80] pointer-events-auto" />}
+                <div className="fixed inset-0 z-70 pointer-events-none transition-opacity duration-1000 ease-in-out" style={{ background: 'linear-gradient(to bottom, #0a2a4a, #0c365b)', opacity: isLoggingOut ? 1 : 0 }} />
+                {inputLocked && <div className="fixed inset-0 z-80 pointer-events-auto" />}
             </div>
         </>
     );

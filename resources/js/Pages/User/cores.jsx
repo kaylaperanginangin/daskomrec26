@@ -7,10 +7,7 @@ import ButtonSidebar from '@components/ButtonSidebar';
 import ButtonHome from '@components/ButtonHome';
 import UserSidebar from '@components/UserSidebar';
 import CoresMap from '@components/CoresMap';
-import UnlockDialog from '@components/UnlockDialog'; // Import the dialog
-
-// --- Configuration ---
-const PROGRESSION = ['xurith', 'thevia', 'euprus', 'northgard'];
+import UnlockDialog from '@components/UnlockDialog';
 
 const CLUE = {
     xurith: 'Look underneath',
@@ -35,12 +32,11 @@ const STATUS = {
 export default function Cores() {
     const backgroundRef = useRef(null);
 
-    // --- Logic for Map Progression ---
     const [territoryStates, setTerritoryStates] = useState({
         xurith: STATUS.LOCKED,
-        thevia: STATUS.HIDDEN,
-        euprus: STATUS.HIDDEN,
-        northgard: STATUS.HIDDEN,
+        thevia: STATUS.LOCKED,
+        euprus: STATUS.LOCKED,
+        northgard: STATUS.LOCKED,
     });
 
     const [dialogState, setDialogState] = useState({
@@ -51,6 +47,7 @@ export default function Cores() {
 
     const handleMapInteract = (id) => {
         const currentStatus = territoryStates[id];
+        // If locked, open dialog to attempt unlock
         if (currentStatus === STATUS.LOCKED) {
             setDialogState({ isOpen: true, territoryId: id, isError: false });
         }
@@ -58,17 +55,14 @@ export default function Cores() {
 
     const handleUnlockSubmit = (inputCode) => {
         const { territoryId } = dialogState;
-        
-        if (inputCode === PASSCODES[territoryId]) {
-            // Success: Unlock current, Reveal next
-            const currentIndex = PROGRESSION.indexOf(territoryId);
-            const nextId = PROGRESSION[currentIndex + 1];
 
-            setTerritoryStates(prev => {
-                const newState = { ...prev, [territoryId]: STATUS.UNLOCKED };
-                if (nextId) newState[nextId] = STATUS.LOCKED;
-                return newState;
-            });
+        // Check passcode for the specific territory
+        if (inputCode === PASSCODES[territoryId]) {
+            // Success: Unlock ONLY the current territory
+            setTerritoryStates(prev => ({
+                ...prev,
+                [territoryId]: STATUS.UNLOCKED
+            }));
 
             setDialogState({ isOpen: false, territoryId: null, isError: false });
         } else {
@@ -176,13 +170,14 @@ export default function Cores() {
             <Head title="Home" />
             <style>{styles}</style>
 
-            {/* --- DIALOG IS HERE (Highest Z-Index, outside effects) --- */}
-            <UnlockDialog 
+            {/* --- DIALOG --- */}
+            <UnlockDialog
                 isOpen={dialogState.isOpen}
                 territoryName={dialogState.territoryId}
                 isError={dialogState.isError}
                 onClose={() => setDialogState({ ...dialogState, isOpen: false })}
                 onSubmit={handleUnlockSubmit}
+                clue={CLUE[dialogState.territoryId]}
             />
 
             <div className="relative w-full min-h-screen overflow-hidden">
@@ -198,7 +193,7 @@ export default function Cores() {
                         style={getBackgroundStyle()}
                     />
                 </div>
-       
+
                 <div className="absolute inset-0 pointer-events-none transition-opacity duration-1000" style={{ background: 'rgba(2, 99, 196, 0.2)' }} />
 
                 <UnderwaterEffect isLoaded={showImage && imageLoaded} isZooming={false} />
@@ -217,8 +212,7 @@ export default function Cores() {
 
                 {/* --- MAP CONTAINER --- */}
                 <div className="absolute inset-0 flex items-center justify-center" style={getMapStyle()}>
-                    {/* Passing states and handler down to the map */}
-                    <CoresMap 
+                    <CoresMap
                         territoryStates={territoryStates}
                         onTerritoryClick={handleMapInteract}
                     />
