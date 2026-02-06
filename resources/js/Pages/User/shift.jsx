@@ -43,12 +43,9 @@ export default function ShiftPage() {
         
         const zoomTimer = setTimeout(() => { 
             setIsZooming(false); 
-            
+            setInputLocked(false); 
             if (!IS_PASSED) {
                 setShowGateModal(true);
-                setInputLocked(false); 
-            } else {
-                setInputLocked(false); 
             }
         }, 100);
 
@@ -57,12 +54,9 @@ export default function ShiftPage() {
             clearTimeout(zoomTimer);
             setShowImage(true); 
             setIsZooming(false); 
-            
+            setInputLocked(false);
             if (!IS_PASSED) {
                 setShowGateModal(true);
-                setInputLocked(false);
-            } else {
-                setInputLocked(false);
             }
         };
 
@@ -147,21 +141,10 @@ export default function ShiftPage() {
                      <UnderwaterEffect />
                 </div>
 
-                {/* 3. Global Navigation */}
-                <div className={`fixed top-4 left-4 md:top-6 md:left-6 z-[120] transition-all duration-700 ease-out 
-                    ${isNavigationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6 pointer-events-none'}`}>
-                    <ButtonSidebar onClick={() => setIsSidebarOpen(prev => !prev)} />
-                </div>
-
-                <div className={`fixed top-4 right-4 md:top-6 md:right-6 z-[120] transition-all duration-700 ease-out 
-                    ${isNavigationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6 pointer-events-none'}`}>
-                    <ButtonHome onClick={handleHomeClick} />
-                </div>
-
-                {/* 4. Content Layer */}
+                {/* 3. Content Layer */}
                 <div className={`relative z-40 flex flex-col items-center justify-start md:justify-center min-h-full w-full px-4 pt-24 pb-12 md:py-0 transition-all duration-1000
                     ${isContentVisible && !isLoggingOut ? 'opacity-100 scale-100' : 'opacity-0 scale-95'} 
-                    ${isAnyModalOpen ? 'blur-sm brightness-75' : ''}`}>
+                    ${isAnyModalOpen ? 'blur-sm brightness-50 pointer-events-none' : ''}`}>
                     
                     <h1 className="text-3xl sm:text-4xl md:text-5xl mb-6 md:mb-10 font-bold drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] tracking-wide text-center shrink-0">
                         Choose Your Shift
@@ -176,11 +159,9 @@ export default function ShiftPage() {
                     </div>
                 </div>
 
-                {/* 5. Sidebars & Modals */}
-                <UserSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onLogout={handleLogout} />
-
+                {/* 4. Modals Layer */}
                 {showGateModal && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-[2px]">
                         <div className="relative z-10 w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px] animate-in zoom-in-95 duration-500">
                             <img src={Mobileboard} alt="Locked Board" className="w-full h-auto drop-shadow-2xl" />
                             <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
@@ -219,6 +200,7 @@ export default function ShiftPage() {
                 )}
 
                 <BlueModalWrapper isOpen={showModal} onClose={() => setShowModal(false)}>
+                    {/* Isi modal add shift */}
                     <div className="flex flex-col justify-center items-center text-center h-full w-full space-y-6 px-4">
                         <h1 className="text-[0px] sm:text-sm text-left sm:text-center -2 sm:pl-0 text-white tracking-[0.2em] uppercase font-bold">Let The Deep Uncover Your Purpose</h1>
                         <h1 className="text-xl sm:text-5xl text-white font-bold leading-tight">Are you sure you want <br /> to add this shift?</h1>
@@ -237,9 +219,24 @@ export default function ShiftPage() {
 
                 <ShiftSuccessModal isOpen={showSuccess} onClose={() => setShowSuccess(false)} shift={selectedShift} />
 
-                {/* 6. Exit / Input Lock Layer */}
-                <div className={`fixed inset-0 z-[90] pointer-events-none transition-opacity duration-1000 bg-[#0a2a4a] ${isLoggingOut ? 'opacity-100' : 'opacity-0'}`} />
-                {inputLocked && <div className="fixed inset-0 z-[100] cursor-wait" />}
+                {/* 5.Sidebar & Navigation*/}
+                <div className="relative z-[200]">
+                    <UserSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onLogout={handleLogout} />
+                </div>
+
+                <div className={`fixed top-4 left-4 md:top-6 md:left-6 z-[200] transition-all duration-700 ease-out 
+                    ${isNavigationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6 pointer-events-none'}`}>
+                    <ButtonSidebar onClick={() => setIsSidebarOpen(prev => !prev)} />
+                </div>
+
+                <div className={`fixed top-4 right-4 md:top-6 md:right-6 z-[200] transition-all duration-700 ease-out 
+                    ${isNavigationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6 pointer-events-none'}`}>
+                    <ButtonHome onClick={handleHomeClick} />
+                </div>
+
+                {/* 6. Final Transition Layer*/}
+                <div className={`fixed inset-0 z-[210] pointer-events-none transition-opacity duration-1000 bg-[#0a2a4a] ${isLoggingOut ? 'opacity-100' : 'opacity-0'}`} />
+                {inputLocked && <div className="fixed inset-0 z-[220] cursor-wait" />}
             </div>
         </>
     );
