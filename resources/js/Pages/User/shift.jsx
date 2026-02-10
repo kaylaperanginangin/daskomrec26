@@ -14,7 +14,7 @@ import buttonImg from '@assets/buttons/ButtonRegular.png';
 import Mobileboard from '@assets/backgrounds/02-ABoard_Mobile.png';
 import logoImg from '@assets/logo/ORB_DLOR 1.png';
 
-const IS_PASSED = false; 
+const IS_PASSED = true; 
 
 export default function ShiftPage() {
     const backgroundRef = useRef(null);

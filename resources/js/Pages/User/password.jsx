@@ -284,12 +284,12 @@ export default function ChangePassword() {
                      <img
                         src={seaweed}
                         alt="seaweed left"
-                        className="absolute bottom-0 left-0 w-60 md:w-85 filter brightness-90 seaweed-left-anim"
+                        className="absolute bottom-0 left-[-30%] w-60  md:bottom-0 md:left-[-5%] md:w-85 filter brightness-90 seaweed-left-anim"
                      />
                      <img
                         src={seaweed}
                         alt="seaweed right"
-                        className="absolute bottom-0 right-0 w-60 md:w-85 filter brightness-90 seaweed-right-anim"
+                        className="absolute bottom-0 right-[-35%] w-60 md:bottom-0 md:right-[-10%] md:w-85 filter brightness-90 seaweed-right-anim scale-x-[-1]"
                      />
                 </div>
 
@@ -396,6 +396,18 @@ export default function ChangePassword() {
                     className="fixed inset-0 z-60 pointer-events-none bg-[#0a2a4a] transition-opacity duration-1000"
                     style={{ opacity: isLoggingOut ? 1 : 0 }}
                 />
+
+                {/* === FOOTER === */}
+                <div className={`
+                    absolute bottom-4 w-full text-center z-50 pointer-events-none
+                    transition-opacity duration-1000 delay-500
+                    ${isZooming ? 'opacity-0' : 'opacity-100'}
+                `}>
+                    <p className="text-white font-caudex text-[10px] md:text-xl tracking-widest drop-shadow-md">
+                        @Atlantis.DLOR2026. All Right Served
+                    </p>
+                </div>
+
             </div>
         </>
     );
