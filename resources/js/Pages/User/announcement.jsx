@@ -116,6 +116,23 @@ export default function AnnouncementPage() {
             100% { opacity: 1; }
         }
 
+        @keyframes bubbleRise {
+            0% { bottom: -50px; opacity: 0; transform: scale(0.5) translateX(0); }
+            20% { opacity: 0.5; }
+            50% { transform: scale(1) translateX(20px); } /* Gerakan sedikit ke kanan */
+            100% { bottom: 110vh; opacity: 0; transform: scale(1.2) translateX(-20px); } /* Naik sampai atas layar */
+        }
+
+        .bubble {
+            position: absolute;
+            /* Membuat bola transparan dengan kilauan */
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+            border-radius: 50%; /* Membuat jadi bulat */
+            pointer-events: none; /* Agar tidak menghalangi klik mouse */
+            z-index: 10;
+        }
+
         /* --- CLASSES --- */
         .animate-drop { animation: dropIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
         .animate-sway-container { animation: sway 7s ease-in-out infinite; transform-origin: top center; }
@@ -308,6 +325,17 @@ export default function AnnouncementPage() {
                 <div className="absolute bottom-4 w-full text-center z-40 text-[10px] md:text-xs text-cyan-100/50">
                     <p>@Atlantis.DLOR2026. All Right Served</p>
                 </div>
+
+                {/* --- NEW DECORATION: BUBBLES --- */}
+                <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
+                     {/* Random bubbles using pure CSS/HTML to avoid logic changes */}
+                    <div className="bubble w-4 h-4 left-[10%]" style={{ animation: 'bubbleRise 10s infinite linear' }} />
+                    <div className="bubble w-2 h-2 left-[25%]" style={{ animation: 'bubbleRise 15s infinite linear', animationDelay: '2s' }} />
+                    <div className="bubble w-6 h-6 left-[50%]" style={{ animation: 'bubbleRise 12s infinite linear', animationDelay: '5s' }} />
+                    <div className="bubble w-3 h-3 left-[70%]" style={{ animation: 'bubbleRise 18s infinite linear', animationDelay: '1s' }} />
+                    <div className="bubble w-5 h-5 left-[85%]" style={{ animation: 'bubbleRise 14s infinite linear', animationDelay: '3s' }} />
+                </div>
+
                 <div className="absolute inset-0 z-0">
                     <img src={Background3} alt="Background" className="w-full h-full object-cover brightness-[0.6] blur-sm scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-cyan-900/30" />

@@ -5,11 +5,12 @@ import coverImage from '@assets/cards/books/FrontCover.png';
 import backCoverImage from '@assets/cards/books/BackCover.png';
 
 const TOTAL_PAGES = 89;
-const IMAGE_PATH_PREFIX = 'https://ik.imagekit.io/kyla08/foto-asisten-filter'; 
-const SEPIA_COLOR = '#f2e8d5';
+const PATH_FILTERED = 'https://ik.imagekit.io/kyla08/foto-asisten-filter'; 
+const PATH_NORMAL   = 'https://ik.imagekit.io/kyla08/foto-asisten-polos';
 
-const CROP_WIDTH = '145%'; 
-const CROP_HEIGHT = '115%'; 
+const SEPIA_COLOR = '#f2e8d5';
+const SIZE_FILTERED = '145% 115%'; 
+const SIZE_NORMAL   = '110% 110%'; 
 
 const COVER_WIDTH = '210%';
 const COVER_HEIGHT = '115%';
@@ -17,9 +18,10 @@ const COVER_HEIGHT = '115%';
 const MAX_ROTATION = 5;
 const BUBBLE_COUNT = 12;
 
-const Page = forwardRef((props, ref) => {
+  const Page = forwardRef((props, ref) => {
   const isRightPage = props.number % 2 !== 0; 
-
+  const currentBgSize = props.isFiltered ? SIZE_FILTERED : SIZE_NORMAL;
+  
   return (
     <div className="page" ref={ref} data-density="soft">
       <div 
@@ -29,12 +31,11 @@ const Page = forwardRef((props, ref) => {
            border: 'none',
         }}
       >
-        {/* Outside Shadow */}
         <div 
           className="absolute inset-0 w-full h-full"
           style={{
             backgroundImage: `url(${props.contentImage})`,
-            backgroundSize: `${CROP_WIDTH} ${CROP_HEIGHT}`, 
+            backgroundSize: currentBgSize, 
             backgroundPosition: 'center center', 
             backgroundRepeat: 'no-repeat',
             boxShadow: isRightPage 
@@ -43,7 +44,6 @@ const Page = forwardRef((props, ref) => {
           }}
         />
 
-        {/* Inner Shadow */}
         <div 
             className="absolute inset-0 pointer-events-none" 
             style={{ 
@@ -81,7 +81,6 @@ const Cover = forwardRef((props, ref) => {
           `
         }}
       >
-        {/* Spine Shine (Left side) */}
         <div className="absolute left-0 top-0 bottom-0 w-4 z-20 pointer-events-none" />
       </div>
     </div>
@@ -89,13 +88,11 @@ const Cover = forwardRef((props, ref) => {
 });
 Cover.displayName = 'Cover';
 
-// ==========================================
-// 3. MAIN BOOK COMPONENT
-// ==========================================
 const AssistantBook = forwardRef(({ 
     onPageChange, 
-    width = 400,  // Default desktop width
-    height = 600  // Default desktop height
+    width = 400,
+    height = 600,
+    initialFilterState = false //changes foto filter state
 }, ref) => {
     
   const bookRef = useRef(null);
@@ -106,7 +103,12 @@ const AssistantBook = forwardRef(({
   const [bubbles, setBubbles] = useState([]);
   const [clicked, setClicked] = useState(false);
 
-  // --- EXPOSE METHODS TO PARENT ---
+  // --- LOGIKA FILTER (Controlled by Prop or State) ---
+  const [isFiltered, setIsFiltered] = useState(initialFilterState); 
+  useEffect(() => {
+    setIsFiltered(initialFilterState);
+  }, [initialFilterState]);
+
   useImperativeHandle(ref, () => ({
     flipPrev: () => bookRef.current.pageFlip().flipPrev(),
     flipNext: () => bookRef.current.pageFlip().flipNext(),
@@ -114,7 +116,6 @@ const AssistantBook = forwardRef(({
     getTotalPages: () => TOTAL_PAGES + 2
   }));
 
-  // Handle Mobile State (for single/double page spread logic)
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
@@ -122,7 +123,6 @@ const AssistantBook = forwardRef(({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Notify parent on flip
   const onFlip = useCallback((e) => {
     if (onPageChange) onPageChange(e.data);
   }, [onPageChange]);
@@ -130,7 +130,7 @@ const AssistantBook = forwardRef(({
   // --- 3D INTERACTION (TILT) ---
   const handlePointerMove = (e) => {
     if (!containerRef.current) return;
-    if (e.buttons === 1) return; // Don't tilt if dragging page
+    if (e.buttons === 1) return; 
 
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -186,8 +186,7 @@ const AssistantBook = forwardRef(({
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center">
-      
-      {/* SVG FILTERS for Wet Effect */}
+
       <svg style={{ display: 'none' }}>
         <defs>
           <filter id="wet-glimmer">
@@ -275,10 +274,8 @@ const AssistantBook = forwardRef(({
             style={{ '--scale': clicked ? 0.98 : 1 }}
           >
             <HTMLFlipBook
-              // === DYNAMIC PROPS ===
               width={width}
               height={height}
-              
               size="fixed"
               usePortrait={isMobile}
               minWidth={200}
@@ -295,13 +292,19 @@ const AssistantBook = forwardRef(({
               onFlip={onFlip}
             >
               <Cover key="front-cover" bgImage={coverImage} />
-                {pages.map((pageNum) => (
-                  <Page 
-                    key={pageNum} 
-                    number={pageNum} 
-                    contentImage={`${IMAGE_PATH_PREFIX}/${pageNum}.png?tr=w-400,q-80,f-auto`} 
-                  />
-                ))}
+                {pages.map((pageNum) => {
+                  const basePath = isFiltered ? PATH_FILTERED : PATH_NORMAL;
+                  const fileName = isFiltered ? `${pageNum}.png` : `${pageNum}_dlor.png`;
+                  
+                  return (
+                    <Page 
+                      key={pageNum} 
+                      number={pageNum} 
+                      contentImage={`${basePath}/${fileName}?tr=w-400,q-80,f-auto`} 
+                      isFiltered={isFiltered}
+                    />
+                  );
+                })}
               <Cover key="back-cover" bgImage={backCoverImage} />
             </HTMLFlipBook>
 
