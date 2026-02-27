@@ -24,9 +24,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'nim' => fake()->unique()->numerify('###########'),
+            'nim' => '10101',
             'password' => static::$password ??= Hash::make('password'),
-            'is_admin' => false,
+            'is_admin' => true,
             'last_activity' => now()->timestamp,
         ];
     }
