@@ -17,24 +17,23 @@ COPY public/ ./public/
 RUN npm run build
 
 ###############################################################################
-# Stage 2 — Production PHP image (no nginx, uses artisan serve)
+# Stage 2 — Production PHP-FPM image (served by Nginx reverse-proxy)
 ###############################################################################
-FROM php:8.4-cli
+FROM php:8.4-fpm-alpine
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    APP_ENV=production \
+ENV APP_ENV=production \
     APP_DEBUG=false
 
 # Install system libs + PHP extensions in one layer
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apk add --no-cache \
         git curl ca-certificates unzip \
-        libpng-dev libjpeg62-turbo-dev libfreetype6-dev \
-        libonig-dev libxml2-dev libzip-dev libicu-dev \
+        freetype-dev libjpeg-turbo-dev libpng-dev \
+        oniguruma-dev libxml2-dev libzip-dev icu-dev linux-headers \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j"$(nproc)" \
         pdo_mysql mbstring exif pcntl bcmath gd zip intl opcache \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apk del --no-cache linux-headers \
+    && rm -rf /tmp/* /var/cache/apk/*
 
 # OPcache production settings
 RUN { \
@@ -44,6 +43,17 @@ RUN { \
         echo 'opcache.validate_timestamps=0'; \
         echo 'opcache.enable_cli=1'; \
     } > /usr/local/etc/php/conf.d/opcache-prod.ini
+
+# PHP-FPM pool tuning
+RUN { \
+        echo '[www]'; \
+        echo 'pm = dynamic'; \
+        echo 'pm.max_children = 20'; \
+        echo 'pm.start_servers = 4'; \
+        echo 'pm.min_spare_servers = 2'; \
+        echo 'pm.max_spare_servers = 6'; \
+        echo 'pm.max_requests = 500'; \
+    } > /usr/local/etc/php-fpm.d/zz-tuning.conf
 
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -72,7 +82,10 @@ RUN php artisan config:clear \
     && php artisan route:clear \
     && php artisan view:clear
 
-EXPOSE 8000
+# Clean up build-only tools
+RUN rm -f /usr/bin/composer \
+    && apk del --no-cache git \
+    && rm -rf tests docs .github .git node_modules /tmp/* /var/cache/apk/*
 
-# Run via artisan serve (no nginx needed)
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# PHP-FPM runs on port 9000 by default
+CMD ["php-fpm"]
