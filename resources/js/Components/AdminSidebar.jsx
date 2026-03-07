@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
 import { router } from "@inertiajs/react";
 
-import ButtonRegular from "@assets/buttons/Regular.png";
-import ButtonStar from "@assets/buttons/Star.png";
-import ButtonAnchor from "@assets/buttons/Anchor.png";
-import ButtonChain from "@assets/buttons/Chain.png";
+import ButtonRegular from "@assets/buttons/Regular.webp";
+import ButtonStar from "@assets/buttons/Star.webp";
+import ButtonAnchor from "@assets/buttons/Anchor.webp";
+import ButtonChain from "@assets/buttons/Chain.webp";
 
-import ButtonCores from "@assets/buttons/CoresUnlocked.png";
+import ButtonCores from "@assets/buttons/CoresUnlocked.webp";
 
 export default function UserSidebar({ isOpen, onClose, onLogout }) {
     const buttonWrapper =

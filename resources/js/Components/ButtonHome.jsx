@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import button from '@assets/buttons/Home.png'
+import button from '@assets/buttons/Home.webp'
 
 export default function ButtonHome({ onClick }) {
     return (

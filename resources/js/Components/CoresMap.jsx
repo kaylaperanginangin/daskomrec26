@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 
 // Assets
-import Map from '@assets/map/map.png';
-import Euprus from '@assets/map/Territory/Euprus.png';
-import Northgard from '@assets/map/Territory/Northgard.png';
-import Thevia from '@assets/map/Territory/Thevia.png';
-import Xurith from '@assets/map/Territory/Xurith.png';
+import Map from '@assets/map/map.webp';
+import Euprus from '@assets/map/Territory/Euprus.webp';
+import Northgard from '@assets/map/Territory/Northgard.webp';
+import Thevia from '@assets/map/Territory/Thevia.webp';
+import Xurith from '@assets/map/Territory/Xurith.webp';
 
 const TERRITORIES = [
   {

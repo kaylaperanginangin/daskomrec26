@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 /* Background Assets */
-import BoardPC from '@assets/backgrounds/BoardPC.png';
-import BoardMobile from '@assets/backgrounds/BoardMobile.png';
-import LogoDLOR from '@assets/logo/ORB_DLOR 1.png';
+import BoardPC from '@assets/backgrounds/BoardPC.webp';
+import BoardMobile from '@assets/backgrounds/BoardMobile.webp';
+import LogoDLOR from '@assets/logo/ORB_DLOR 1.webp';
 
 /* Chain Assets */
-import Chains1 from '@assets/others/DECORATIONS/Chains/01-Chain.png';
-import Chains2 from '@assets/others/DECORATIONS/Chains/01-Chain.png';
+import Chains1 from '@assets/others/DECORATIONS/Chains/01-Chain.webp';
+import Chains2 from '@assets/others/DECORATIONS/Chains/01-Chain.webp';
 
 
 export default function ShiftSuccessModal({ isOpen, onClose, shift, isExiting }) {

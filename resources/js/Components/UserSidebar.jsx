@@ -1,13 +1,13 @@
 import { useState, useRef } from "react";
 import { router, usePage } from "@inertiajs/react";
 
-import ButtonRegular from "@assets/buttons/Regular.png";
-import ButtonStar from "@assets/buttons/Star.png";
-import ButtonAnchor from "@assets/buttons/Anchor.png";
-import ButtonChain from "@assets/buttons/Chain.png";
+import ButtonRegular from "@assets/buttons/Regular.webp";
+import ButtonStar from "@assets/buttons/Star.webp";
+import ButtonAnchor from "@assets/buttons/Anchor.webp";
+import ButtonChain from "@assets/buttons/Chain.webp";
 
-import ButtonCoreUnlocked from "@assets/buttons/CoresUnlocked.png";
-import ButtonCoreLocked from "@assets/buttons/CoresLocked.png";
+import ButtonCoreUnlocked from "@assets/buttons/CoresUnlocked.webp";
+import ButtonCoreLocked from "@assets/buttons/CoresLocked.webp";
 
 export default function UserSidebar({ isOpen, onClose, onLogout, onNavigate }) {
     const { config, userStageId } = usePage().props;

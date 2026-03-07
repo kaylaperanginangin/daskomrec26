@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { Head, router } from '@inertiajs/react';
 
 /* Background Assets */
-import Background from '@assets/backgrounds/Home.png';
-import BoardPC from '@assets/backgrounds/BoardPC.png';
-import BoardMobile from '@assets/backgrounds/BoardMobile.png';
+import Background from '@assets/backgrounds/Home.webp';
+import BoardPC from '@assets/backgrounds/BoardPC.webp';
+import BoardMobile from '@assets/backgrounds/BoardMobile.webp';
 
 /* Decor Assets */
-import Chains1 from '@assets/others/DECORATIONS/Chains/01-Chain.png';
-import Chains2 from '@assets/others/DECORATIONS/Chains/01-Chain.png';
-import LogoDLOR from '@assets/logo/ORB_DLOR 1.png';
-import ImgLineQR from '@assets/logo/Code.jpeg';
+import Chains1 from '@assets/others/DECORATIONS/Chains/01-Chain.webp';
+import Chains2 from '@assets/others/DECORATIONS/Chains/01-Chain.webp';
+import LogoDLOR from '@assets/logo/ORB_DLOR 1.webp';
+import ImgLineQR from '@assets/logo/Code.webp';
 
 /* Button Components */
 import ButtonSidebar from '@components/ButtonSidebar';

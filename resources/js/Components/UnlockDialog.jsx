@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@assets/buttons/Regular.png';
+import Button from '@assets/buttons/Regular.webp';
 
 export default function UnlockDialog({
   isOpen, onClose, onSubmit, territoryName, isError, clue, isAlreadyUnlocked

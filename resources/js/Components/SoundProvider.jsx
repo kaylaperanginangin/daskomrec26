@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useRef } from 'react';
 import { Howl } from 'howler';
 
-import SoundBackground from '@assets/sounds/MorrowindTheme.mp3';
+import SoundBackground from '@assets/sounds/MorrowindTheme.opus';
 
 const SoundContext = createContext();
 

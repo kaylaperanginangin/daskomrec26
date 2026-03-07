@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Head } from '@inertiajs/react';
 
 /* Background Assets */
-import Background from '@assets/backgrounds/Main.png';
+import Background from '@assets/backgrounds/Main.webp';
 
 /* Decor Assets */
-import Hijau from '@assets/others/mike.png';
+import Hijau from '@assets/others/mike.webp';
 
 /* Other Components */
 import UnderwaterEffect from '@components/UnderwaterEffect'

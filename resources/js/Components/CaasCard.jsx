@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useMemo } from 'react';
 
-import CardFem from '@assets/cards/Female_CAAS.png';
-import CardBoy from '@assets/cards/Male_CAAS.png';
+import CardFem from '@assets/cards/Female_CAAS.webp';
+import CardBoy from '@assets/cards/Male_CAAS.webp';
 
 const MAX_ROTATION = 8;
 const BUBBLE_COUNT = 15;

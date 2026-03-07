@@ -13,7 +13,7 @@
 
 * {
   box-sizing: border-box;
-  cursor: url('../../public/assets/others/cursor_64x64.png'), auto;
+  cursor: url('../../public/assets/others/cursor_64x64.webp'), auto;
 }
 
 html, body, #app {

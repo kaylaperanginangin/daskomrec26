@@ -3,15 +3,15 @@ import { Head, useForm, router } from "@inertiajs/react";
 import axios from "axios";
 
 /* Background Assets */
-import ImgMain from '@assets/backgrounds/Main.png';
-import ImgRoad from '@assets/backgrounds/Road.png';
-import ImgOrb from '@assets/backgrounds/Orb.png';
-import ImgDoorLocked from '@assets/backgrounds/DoorLocked.png';
-import ImgDoorUnlocked from '@assets/backgrounds/DoorUnlocked.png';
-import ImgScroll from "@assets/backgrounds/Scroll.png";
+import ImgMain from '@assets/backgrounds/Main.webp';
+import ImgRoad from '@assets/backgrounds/Road.webp';
+import ImgOrb from '@assets/backgrounds/Orb.webp';
+import ImgDoorLocked from '@assets/backgrounds/DoorLocked.webp';
+import ImgDoorUnlocked from '@assets/backgrounds/DoorUnlocked.webp';
+import ImgScroll from "@assets/backgrounds/Scroll.webp";
 
 /* Other Assets */
-import ButtonLogin from "@assets/buttons/Regular.png";
+import ButtonLogin from "@assets/buttons/Regular.webp";
 import BlueInputBox from "@components/BlueInputBox";
 
 /* Other Components */

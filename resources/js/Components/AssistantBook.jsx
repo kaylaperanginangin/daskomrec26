@@ -1,8 +1,8 @@
 import React, { forwardRef, useRef, useState, useEffect, useCallback, useImperativeHandle } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 
-import CoverFront from '@assets/cards/books/FrontCover.png';
-import CoverBack from '@assets/cards/books/BackCover.png';
+import CoverFront from '@assets/cards/books/FrontCover.webp';
+import CoverBack from '@assets/cards/books/BackCover.webp';
 
 const TOTAL_PAGES = 89;
 const PATH_FILTERED = 'https://ik.imagekit.io/kyla08/foto-asisten-filter';

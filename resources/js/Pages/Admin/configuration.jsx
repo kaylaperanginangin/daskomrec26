@@ -3,7 +3,7 @@ import { Head, router } from "@inertiajs/react";
 import { createPortal } from "react-dom";
 
 /* Background Assets */
-import Background from "@assets/backgrounds/Alternate.png";
+import Background from "@assets/backgrounds/Alternate.webp";
 
 /* Buttons Components */
 import ButtonSidebar from "@components/ButtonSidebar";
