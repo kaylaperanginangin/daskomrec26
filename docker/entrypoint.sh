@@ -10,7 +10,7 @@ if [ ! -f vendor/autoload.php ]; then
 fi
 
 # Install Node dependencies & build frontend if needed
-if [ ! -d node_modules ]; then
+if [ ! -x node_modules/.bin/vite ]; then
     echo "[entrypoint] Installing npm dependencies..."
     npm ci
 fi
@@ -22,7 +22,14 @@ fi
 
 # Ensure storage & cache dirs exist and are writable
 mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache
-chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+find storage bootstrap/cache -type d -exec chmod 775 {} +
+find storage bootstrap/cache -type f -exec chmod 664 {} +
+
+if [ "${RUN_MIGRATIONS:-true}" = "true" ]; then
+    echo "[entrypoint] Running database migrations..."
+    php artisan migrate --force --no-interaction
+fi
 
 # Cache config, routes, views
 php artisan config:clear

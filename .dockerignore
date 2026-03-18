@@ -7,8 +7,7 @@
 node_modules
 vendor
 
-# Docker files (not needed inside the image)
-docker
+# Docker files
 docker-compose.yml
 Dockerfile
 .dockerignore
@@ -48,3 +47,4 @@ Thumbs.db
 # Built frontend (copied from Stage 1)
 public/build
 public/hot
+

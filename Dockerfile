@@ -1,5 +1,23 @@
 ###############################################################################
-# Runtime-only PHP-FPM image (app code is bind-mounted via docker-compose)
+# Stage 1 — Build frontend assets with Node
+###############################################################################
+FROM node:20-alpine AS frontend
+
+WORKDIR /app
+
+# Install JS deps first (layer cache)
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+# Copy source needed for Vite build
+COPY vite.config.js ./
+COPY resources/ ./resources/
+COPY public/ ./public/
+
+RUN npm run build
+
+###############################################################################
+# Stage 2 — Production PHP-FPM image (served by Nginx reverse-proxy)
 ###############################################################################
 FROM php:8.4-fpm-alpine
 
@@ -8,7 +26,7 @@ ENV APP_ENV=production \
 
 # Install system libs + PHP extensions in one layer
 RUN apk add --no-cache \
-        git curl ca-certificates unzip npm nodejs \
+        git curl ca-certificates unzip \
         freetype-dev libjpeg-turbo-dev libpng-dev \
         oniguruma-dev libxml2-dev libzip-dev icu-dev linux-headers \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -37,13 +55,37 @@ RUN { \
         echo 'pm.max_requests = 500'; \
     } > /usr/local/etc/php-fpm.d/zz-tuning.conf
 
-# Composer (kept for runtime use: install/update after mount)
+# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Entrypoint: installs deps & builds frontend on first run
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+# Install PHP deps (copy manifests first for layer cache)
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --optimize-autoloader --no-dev --no-scripts
 
-ENTRYPOINT ["entrypoint.sh"]
+# Copy the rest of the application
+COPY . .
+
+# Re-run post-autoload-dump scripts now that all files are present
+RUN composer dump-autoload --optimize --no-dev
+
+# Bring in compiled frontend assets from Stage 1
+COPY --from=frontend /app/public/build ./public/build
+
+# Ensure storage & cache dirs exist and are writable
+RUN mkdir -p storage/logs storage/framework/{cache,sessions,views} bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
+# Cache config, routes, views for production
+RUN php artisan config:clear \
+    && php artisan route:clear \
+    && php artisan view:clear
+
+# Clean up build-only tools
+RUN rm -f /usr/bin/composer \
+    && apk del --no-cache git \
+    && rm -rf tests docs .github .git node_modules /tmp/* /var/cache/apk/*
+
+# PHP-FPM runs on port 9000 by default
+CMD ["php-fpm"]
