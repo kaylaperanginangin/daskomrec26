@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 
 /* Background Assets */
 import Background from "@assets/backgrounds/Home.webp";
@@ -24,7 +24,12 @@ export default function HomeAdmin({
     puzzles,
 }) {
     const backgroundRef = useRef(null);
-    const USER = "Jyothi";
+
+    const {auth} = usePage().props;
+    const user = auth.user;
+    const profile= auth.profile|| {};
+
+    const USER = user.name || "Admin";
 
     // Intro states
     const [showImage, setShowImage] = useState(false);
