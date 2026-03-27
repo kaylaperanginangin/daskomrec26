@@ -21,10 +21,12 @@ import AdminSidebar from "@components/AdminSidebar";
 import UnderwaterEffect from "@components/UnderwaterEffect";
 import BlueModalWrapper from "@components/BlueBox";
 
-export default function ChangePassword() {
+// Added users prop to receive data from your backend
+export default function ChangePassword({ users = { data: [] } }) {
     const backgroundRef = useRef(null);
-    const [showImage, setShowImage] = useState(false);
+    const searchTimeoutRef = useRef(null);
 
+    const [showImage, setShowImage] = useState(false);
     const [isZooming, setIsZooming] = useState(true);
     const [inputLocked, setInputLocked] = useState(true);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -33,6 +35,9 @@ export default function ChangePassword() {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    // Search Dropdown State
+    const [showDropdown, setShowDropdown] = useState(false);
 
     // Navigation States
     const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -98,6 +103,21 @@ export default function ChangePassword() {
                 setShowModal(false);
             },
         });
+    };
+
+    // CaAs Search Handler
+    const handleSearch = (value) => {
+        setData("current_password", value);
+
+        if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+
+        searchTimeoutRef.current = setTimeout(() => {
+            router.get(
+                window.location.pathname, // Keeps the request on the current page
+                { search: value },
+                { preserveState: true, replace: true }
+            );
+        }, 300);
     };
 
     useEffect(() => {
@@ -209,6 +229,16 @@ export default function ChangePassword() {
             border-radius: 50%;
             pointer-events: none;
         }
+
+        /* Added custom scrollbar for dropdown */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(34, 211, 238, 0.3);
+            border-radius: 10px;
+        }
     `;
 
     const EyeIcon = ({ visible }) => (
@@ -277,23 +307,46 @@ export default function ChangePassword() {
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center" style={getFormStyle()}>
                     <div className="text-center mb-6">
                         <h1 className="text-4xl md:text-5xl mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] tracking-wide">Change The Password</h1>
-                        <p className="text-sm md:text-lg text-gray-200 opacity-90 tracking-wider drop-shadow-md font-caudex">After you changed don't forget the password</p>
+                        <p className="text-sm md:text-lg text-gray-200 opacity-90 tracking-wider drop-shadow-md font-caudex">Note that this is used to change the praktikans password</p>
                     </div>
 
                     <div className="w-full max-w-[450px] px-8 space-y-6">
-                        {/* Old Password */}
-                        <div className="group">
-                            <label className="block text-lg mb-1 ml-1 drop-shadow-md text-gray-100">Old Password</label>
+                        {/* Praktikans NIM with Autocomplete */}
+                        <div className="group relative">
+                            <label className="block text-lg mb-1 ml-1 drop-shadow-md text-gray-100">Praktikans NIM</label>
                             <div className="relative">
                                 <input
-                                    type={showCurrentPassword ? "text" : "password"}
                                     value={data.current_password}
-                                    onChange={(e) => setData("current_password", e.target.value)}
+                                    onChange={(e) => {
+                                        handleSearch(e.target.value);
+                                        setShowDropdown(true);
+                                    }}
+                                    onFocus={() => setShowDropdown(true)}
+                                    onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
                                     className="w-full h-12 bg-gray-300 text-gray-800 rounded-md px-4 pr-12 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all placeholder-gray-500"
+                                    placeholder="Search NIM..."
                                 />
-                                <button type="button" onClick={() => setShowCurrentPassword(!showCurrentPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900 transition-colors focus:outline-none">
-                                    <EyeIcon visible={showCurrentPassword} />
-                                </button>
+
+                                {/* Search Dropdown */}
+                                {showDropdown && users?.data?.length > 0 && (
+                                    <div className="absolute z-50 w-full mt-2 bg-[#0a121d] border border-cyan-500/30 rounded-md shadow-xl max-h-48 overflow-y-auto custom-scrollbar">
+                                        {users.data.map((user) => (
+                                            <div
+                                                key={user.id}
+                                                // onMouseDown prevents the input from losing focus before the click finishes
+                                                onMouseDown={(e) => {
+                                                    e.preventDefault();
+                                                    setData("current_password", user.nim);
+                                                    setShowDropdown(false);
+                                                }}
+                                                className="px-4 py-3 hover:bg-cyan-500/20 cursor-pointer border-b border-white/5 transition-colors"
+                                            >
+                                                <div className="font-mono text-cyan-200 font-bold">{user.nim}</div>
+                                                <div className="text-xs text-white/60 font-sans tracking-widest">{user.profile?.name || user.name || "Unknown"}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                             {errors.current_password && <div className="text-red-400 text-sm mt-1">{errors.current_password}</div>}
                         </div>

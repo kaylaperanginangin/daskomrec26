@@ -378,7 +378,7 @@ export default function AdminDashboard({
 
     const applyChange = () => {
         const { type, value } = pendingAction;
-        if (type === "shift") {
+        if (type === "Shift") {
             setShiftOn(value);
             if (currentStageId) {
                 router.put(
@@ -505,7 +505,7 @@ export default function AdminDashboard({
                             </div>
                             <Toggle
                                 isOn={shiftOn}
-                                onClick={() => requestChange("shift", !shiftOn)}
+                                onClick={() => requestChange("Shift", !shiftOn)}
                             />
                         </div>
                         <div className="flex items-center justify-between group">
@@ -613,7 +613,9 @@ export default function AdminDashboard({
                             <div className="text-amber-100/70 text-base leading-relaxed text-center font-light">
                                 {pendingAction.type === "core" ? (
                                     <>
+                                        <p>
                                         Changing data for
+                                        </p>
                                         <span className="text-white font-bold">
                                             {pendingAction.value.name}
                                         </span>
@@ -647,9 +649,16 @@ export default function AdminDashboard({
                                     <>
                                         Changing status to:
                                         <span className="text-white font-bold block mt-2 text-xl font-serif">
-                                            {pendingAction.type === "state"
-                                                ? pendingAction.value
-                                                : `${pendingAction.type} ${pendingAction.value ? "On" : "Off"}`}
+                                        {pendingAction.type === "state"
+                                            ? {
+                                                1: "Administration",
+                                                2: "Coding and Writing Test",
+                                                3: "Interview",
+                                                4: "Group Task",
+                                                5: "Teaching",
+                                                6: "Rising",
+                                            }[pendingAction.value] || pendingAction.value
+                                            : `${pendingAction.type} ${pendingAction.value ? "On" : "Off"}`}
                                         </span>
                                     </>
                                 )}
