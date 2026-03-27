@@ -27,7 +27,7 @@ export default function Assistants() {
     const [isBookPlacing, setIsBookPlacing] = useState(true);
 
     const [pageIndex, setPageIndex] = useState(0);
-    const totalIndices = 89 + 2;
+    const totalIndices = 87 + 2;
 
     const [bookDim, setBookDim] = useState({ width: 300, height: 450 });
 

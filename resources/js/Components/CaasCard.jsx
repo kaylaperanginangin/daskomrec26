@@ -176,20 +176,20 @@ export default function CardCaas({ sex, name, nim, cls, major }) {
 
           <div className="card-foil absolute inset-0 pointer-events-none z-10" />
 
-          <div
-            className="absolute inset-0 flex flex-col justify-end text-[#7C5D12] font-bold z-30 ml-32 mb-24 sm:ml-40 sm:mb-32 pointer-events-none"
-            style={{ fontFamily: 'Cormorant Infant, serif' }}
-          >
+            <div
+                className="absolute inset-0 flex flex-col justify-end text-[#7C5D12] font-bold z-30 ml-32 mb-24 sm:ml-40 sm:mb-32 pointer-events-none"
+                style={{ fontFamily: 'Cormorant Infant, serif' }}
+            >
             {[name, nim, cls, major].map((text, idx) => (
-              <p
-                key={`${text}-${idx}`}
-                className="text-lg leading-6 sm:text-xl sm:leading-6 drop-shadow-sm"
-                style={{textShadow: '0 1px 4px rgba(255,255,255,0.7)'}}
-              >
+                <p
+                    key={`${text}-${idx}`}
+                    className="text-lg leading-6 sm:text-xl sm:leading-6 drop-shadow-sm truncate max-w-50"
+                    style={{ textShadow: '0 1px 4px rgba(255,255,255,0.7)' }}
+                >
                 {text}
-              </p>
+                </p>
             ))}
-          </div>
+            </div>
         </div>
 
         {/* Bubble bubble */}
