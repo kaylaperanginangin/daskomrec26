@@ -461,7 +461,7 @@ export default function AnnouncementPage({
                                                             <button
                                                                 onClick={() =>
                                                                     handleNavigate(
-                                                                        "/user/home",
+                                                                        "/User/home",
                                                                     )
                                                                 }
                                                                 className="group relative w-64 sm:w-80 md:w-96 h-28 md:h-40 transition-all duration-300 hover:scale-105 active:scale-95"
@@ -499,7 +499,7 @@ export default function AnnouncementPage({
                                             </h1>
                                             <button
                                                 onClick={() =>
-                                                    handleNavigate("/user/home")
+                                                    handleNavigate("/User/home")
                                                 }
                                                 className="group relative w-64 sm:w-80 md:w-96 h-28 md:h-40 transition-all duration-300 hover:scale-105 active:scale-95"
                                             >
