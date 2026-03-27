@@ -404,19 +404,19 @@ export default function Welcome() {
                         <img
                             src={ImgOrb}
                             alt="rocks"
-                            className="w-full h-auto min-w-[2000px] absolute bottom-1 left-1/2 -translate-x-1/2"
+                            className="w-full h-auto min-w-[2000px] absolute bottom-1"
                             style={{ filter: 'sepia(1) hue-rotate(150deg) saturate(2) contrast(1.5) brightness(0.9)' }}
                         />
                         <img
                             src={ImgDoor}
                             alt="ImgDoor"
-                            className="w-full h-auto min-w-[2000px] absolute bottom-1 left-1/2 -translate-x-1/2"
+                            className="w-full h-auto min-w-[2000px] absolute bottom-1"
                             style={{ filter: 'sepia(1) hue-rotate(150deg) saturate(2) contrast(1.5) brightness(0.9)' }}
                         />
                         <img
                             src={ImgRoad}
                             alt="ImgRoad"
-                            className="w-full h-auto min-w-[2000px] absolute bottom-1 left-1/2 -translate-x-1/2"
+                            className="w-full h-auto min-w-[2000px] absolute bottom-1"
                             style={{ filter: 'sepia(1) hue-rotate(150deg) saturate(2) contrast(1.5) brightness(0.9)' }}
                         />
 

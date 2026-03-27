@@ -2,6 +2,7 @@ import './bootstrap';
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
 import { SoundProvider } from '@components/SoundProvider'
+import MuteButton from '@components/MuteButton'
 
 createInertiaApp({
     resolve: name => {
@@ -12,6 +13,7 @@ createInertiaApp({
         createRoot(el).render(
             <SoundProvider>
                 <App {...props} />
+                <MuteButton/>
             </SoundProvider>
         )
     },

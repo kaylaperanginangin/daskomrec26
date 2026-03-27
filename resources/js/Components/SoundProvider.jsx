@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Howl } from 'howler';
 
 import SoundBackground from '@assets/sounds/MorrowindTheme.opus';
@@ -7,12 +7,13 @@ const SoundContext = createContext();
 
 export function SoundProvider({ children }) {
     const musicRef = useRef(null);
+    const [muted, setMuted] = useState(false);
 
     useEffect(() => {
         musicRef.current = new Howl({
             src: [SoundBackground],
             loop: true,
-            volume: 1.0,
+            volume: 0.3,
             html5: true,
         });
 
@@ -30,7 +31,11 @@ export function SoundProvider({ children }) {
     }, []);
 
     const toggleMute = () => {
-        if (musicRef.current) musicRef.current.mute(!musicRef.current._muted);
+        if (!musicRef.current) return;
+
+        const newMuted = !muted;
+        musicRef.current.mute(newMuted);
+        setMuted(newMuted);
     };
 
     const setVolume = (v) => {
@@ -38,7 +43,7 @@ export function SoundProvider({ children }) {
     };
 
     return (
-        <SoundContext.Provider value={{ toggleMute, setVolume }}>
+        <SoundContext.Provider value={{ toggleMute, setVolume, muted }}>
             {children}
         </SoundContext.Provider>
     );
