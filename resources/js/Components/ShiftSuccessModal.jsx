@@ -186,12 +186,7 @@ export default function ShiftSuccessModal({ isOpen, onClose, shift, isExiting })
                                 </div>
                             </div>
                         </div>
-
-                        <div className="absolute bottom-16 w-full flex justify-center">
-                             <button onClick={onClose} className="text-white/50 text-sm hover:text-white transition-colors">Close</button>
-                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
