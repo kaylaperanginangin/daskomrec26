@@ -391,7 +391,7 @@ export default function AnnouncementPage({
                                                                     </h1>
                                                                 )}
                                                             </>
-                                                        ) : (
+                                                        ) : userStatus === "failed" ? (
                                                             <>
                                                                 {/* Failed */}
                                                                 <div className="space-y-2 text-lg">
@@ -424,6 +424,28 @@ export default function AnnouncementPage({
                                                                     }}
                                                                 />
                                                                 )}
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                {/* Pending */}
+                                                                <div className="space-y-2 text-lg">
+                                                                    <h1>
+                                                                        {" "}
+                                                                        Bersabar ya, untuk penyeleksian masih dalam tahap
+                                                                        {" "}
+                                                                    </h1>
+                                                                    <div className="py-2 border-y border-dashed border-[#092338]/40 my-2">
+                                                                        <span className="text-orange-600/80 font-black text-4xl md:text-5xl tracking-wide block">
+                                                                            PROSES
+                                                                        </span>
+                                                                    </div>
+                                                                    <h1>
+                                                                        {" "}
+                                                                        pada
+                                                                        tahap
+                                                                        ini.{" "}
+                                                                    </h1>
+                                                                </div>
                                                             </>
                                                         )}
                                                     </div>
