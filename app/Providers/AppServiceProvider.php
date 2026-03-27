@@ -27,8 +27,8 @@ public function register(): void
     public function boot(): void
     {
         Schema::defaultStringLength(191);
-
-        if ($this->app->environment('production')) {
+	
+	if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
     }
