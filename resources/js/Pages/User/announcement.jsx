@@ -369,7 +369,7 @@ export default function AnnouncementPage({
                                                                 {/* --- VARIABLE QUOTE HERE --- */}
                                                                 {successMessage && (
                                                                     <div
-                                                                        className="text-sm sm:text-sm md:text-lg opacity-70 mt-4 prose prose-sm max-w-none text-[#092338]"
+                                                                        className="text-xs sm:text-sm md:text-lg opacity-70 mt-4 prose prose-sm max-w-none text-[#092338] break-words whitespace-pre-wrap"
                                                                         dangerouslySetInnerHTML={{
                                                                             __html: successMessage,
                                                                         }}
@@ -417,12 +417,12 @@ export default function AnnouncementPage({
 
                                                                 {/* --- VARIABLE QUOTE HERE --- */}
                                                                 {failMessage && (
-                                                                    <div
-                                                                        className="text-xs sm:text-sm md:text-lg opacity-70 mt-4 prose prose-sm max-w-none text-[#092338]"
-                                                                        dangerouslySetInnerHTML={{
-                                                                            __html: failMessage,
-                                                                        }}
-                                                                    />
+                                                                <div
+                                                                    className="text-xs sm:text-sm md:text-lg opacity-70 mt-4 prose prose-sm max-w-none text-[#092338] break-words whitespace-pre-wrap"
+                                                                    dangerouslySetInnerHTML={{
+                                                                    __html: failMessage,
+                                                                    }}
+                                                                />
                                                                 )}
                                                             </>
                                                         )}
