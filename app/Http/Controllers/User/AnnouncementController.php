@@ -48,7 +48,11 @@ class AnnouncementController extends Controller
         }
 
         // Determine user status based on CaasStage
-        $userStatus = $caasStage->status === 'LOLOS' ? 'passed' : 'failed';
+        $userStatus = match ($caasStage->status) {
+            'LOLOS' => 'passed',
+            'GAGAL' => 'failed',
+            default => 'pending',
+        };
 
         // Get the configuration for the user's stage
         $configuration = Configuration::where('stage_id', $stage->id)->first();
