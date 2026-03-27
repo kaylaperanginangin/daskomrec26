@@ -119,11 +119,29 @@ class UserController extends Controller
     }
 
     /**
-     * Export all CaAs users to Excel
+     * Export CaAs users to Excel with optional filters
      */
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new CaasExport, 'CaAs_Manifest_Archive.xlsx');
+        $exportAll = $request->boolean('export_all', true);
+        $stageId = $request->input('stage_id');
+        $status = $request->input('status');
+
+        $filename = 'CaAs_Manifest_Archive';
+        if (!$exportAll) {
+            if ($stageId) {
+                $stage = Stage::find($stageId);
+                if ($stage) {
+                    $filename .= '_' . str_replace(' ', '_', $stage->name);
+                }
+            }
+            if ($status) {
+                $filename .= '_' . $status;
+            }
+        }
+        $filename .= '.xlsx';
+
+        return Excel::download(new CaasExport($stageId, $status, $exportAll), $filename);
     }
 
     /**

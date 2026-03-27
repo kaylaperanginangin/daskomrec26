@@ -50,15 +50,17 @@ Route::middleware('auth')->group(function (){
             return inertia('User/oaline');
         });
 
-        Route::get('/user/shift', [UserShiftController::class, 'index'])->name('user.shift.index');
+        Route::middleware('config.check:isi_jadwal_on')->group(function () {
+            Route::get('/user/shift', [UserShiftController::class, 'index'])->name('user.shift.index');
+            Route::post('/user/shift', [UserShiftController::class, 'store'])->name('user.shift.store');
+        });
 
-        Route::post('/user/shift', [UserShiftController::class, 'store'])->name('user.shift.store');
+        Route::get('/user/announcement', [AnnouncementController::class, 'index'])->name('user.announcement')->middleware('config.check:pengumuman_on');
 
-        Route::get('/user/announcement', [AnnouncementController::class, 'index'])->name('user.announcement');
-
-        Route::get('/user/cores', [CoresController::class, 'index'])->name('user.cores.index');
-
-        Route::post('/user/cores/unlock/{puzzle}', [PuzzleController::class, 'unlock'])->name('user.puzzle.unlock');
+        Route::middleware('config.check:puzzles_on')->group(function () {
+            Route::get('/user/cores', [CoresController::class, 'index'])->name('user.cores.index');
+            Route::post('/user/cores/unlock/{puzzle}', [PuzzleController::class, 'unlock'])->name('user.puzzle.unlock');
+        });
     });
 
     // === ADMIN ROUTES ===

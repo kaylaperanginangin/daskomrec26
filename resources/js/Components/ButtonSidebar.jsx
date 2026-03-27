@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import button from '@assets/buttons/Sidebar.png'
+import button from '@assets/buttons/Sidebar.webp'
 
 export default function ButtonSidebar({ onClick }) {
     return (

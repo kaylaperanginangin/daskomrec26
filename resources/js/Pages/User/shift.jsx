@@ -2,10 +2,10 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { Head, router, usePage } from "@inertiajs/react";
 
 /* Background Assets */
-import ImgMain from '@assets/backgrounds/Main.png';
+import ImgMain from '@assets/backgrounds/Main.webp';
 
 /* Button Components */
-import ButtonRegular from '@assets/buttons/Regular.png';
+import ButtonRegular from '@assets/buttons/Regular.webp';
 import ButtonSidebar from "@components/ButtonSidebar";
 import ButtonHome from "@components/ButtonHome";
 

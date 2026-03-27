@@ -7,12 +7,12 @@ export default function UnderwaterEffect({ isLoaded, isZooming }) {
         let rafId;
         const onMove = (e) => {
             if (!containerRef.current) return;
-            
+
             cancelAnimationFrame(rafId);
             rafId = requestAnimationFrame(() => {
                 const x = e.clientX / window.innerWidth;
-                const angle = (0.5 - x) * 30; 
-                
+                const angle = (0.5 - x) * 30;
+
                 containerRef.current.style.setProperty('--light-angle', `${angle}deg`);
             });
         };
@@ -51,7 +51,7 @@ export default function UnderwaterEffect({ isLoaded, isZooming }) {
 
     return (
         <>
-            <div 
+            <div
                 ref={containerRef}
                 className="fixed inset-0 pointer-events-none z-50 overflow-hidden"
                 style={{
@@ -60,19 +60,9 @@ export default function UnderwaterEffect({ isLoaded, isZooming }) {
             >
                 <style>{styles}</style>
 
-                <svg style={{ display: 'none' }}>
-                    <defs>
-                        <filter id="waterDistortion" x="-20%" y="-20%" width="140%" height="140%">
-                            <feTurbulence type="fractalNoise" baseFrequency="0.005 0.02" numOctaves="3" seed="2">
-                                <animate attributeName="baseFrequency" dur="20s" values="0.005 0.02;0.008 0.015;0.005 0.02" repeatCount="indefinite" />
-                            </feTurbulence>
-                            <feDisplacementMap in="SourceGraphic" scale="30" xChannelSelector="R" yChannelSelector="G" />
-                        </filter>
-                    </defs>
-                </svg>
 
                 {/* Darker Vignette */}
-                <div 
+                <div
                     className="absolute inset-0"
                     style={{
                         background: 'radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 5, 20, 0.3) 100%)',
@@ -87,7 +77,7 @@ export default function UnderwaterEffect({ isLoaded, isZooming }) {
                         zIndex: 2,
                         mixBlendMode: 'screen',
                         filter: 'blur(80px)',
-                        
+
                         background: `
                             conic-gradient(
                                 from var(--light-angle) at 50% -20%,
@@ -103,7 +93,7 @@ export default function UnderwaterEffect({ isLoaded, isZooming }) {
                 />
 
                 {/* Distorted Overlay */}
-                <div 
+                <div
                     className="absolute inset-0"
                     style={{
                         zIndex: 3,

@@ -1,14 +1,14 @@
 import { useRef, useState, useEffect } from "react";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 
 /* Background Assets */
-import Background from "@assets/backgrounds/Home.png";
+import Background from "@assets/backgrounds/Home.webp";
 
 /* Decor Assets */
-import DecorLeonidas from "@assets/others/LEONIDAS.png";
-import DecorShip from "@assets/others/DECORATIONS/Shipwreck/18.png";
-import DecorFlag from "@assets/others/DECORATIONS/Shipwreck/19.png";
-import DecorFish from "@assets/others/DECORATIONS/Fish & Other Sea Creatures/02-Fish.png";
+import DecorLeonidas from "@assets/others/LEONIDAS.webp";
+import DecorShip from "@assets/others/DECORATIONS/Shipwreck/18.webp";
+import DecorFlag from "@assets/others/DECORATIONS/Shipwreck/19.webp";
+import DecorFish from "@assets/others/DECORATIONS/Fish & Other Sea Creatures/02-Fish.webp";
 
 /* Other Components */
 import UnderwaterEffect from "@components/UnderwaterEffect";
@@ -24,7 +24,12 @@ export default function HomeAdmin({
     puzzles,
 }) {
     const backgroundRef = useRef(null);
-    const USER = "Jyothi";
+
+    const {auth} = usePage().props;
+    const user = auth.user;
+    const profile= auth.profile|| {};
+
+    const USER = user.name || "Admin";
 
     // Intro states
     const [showImage, setShowImage] = useState(false);

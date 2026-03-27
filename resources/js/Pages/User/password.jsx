@@ -2,17 +2,17 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import { Head, router, useForm } from "@inertiajs/react";
 
 /* Background Assets */
-import ImgMain from "@assets/backgrounds/Main.png";
-import ImgBuilding from "@assets/others/DECORATIONS/Atlantis Ruins/06-Building.png";
-import ImgRoad from "@assets/backgrounds/Road.png";
+import ImgMain from "@assets/backgrounds/Main.webp";
+import ImgBuilding from "@assets/others/DECORATIONS/Atlantis Ruins/06-Building.webp";
+import ImgRoad from "@assets/backgrounds/Road.webp";
 
 /* Decor Assets */
-import LogoDLOR from "@assets/logo/ORB_DLOR 1.png";
-import DecorSeaweed from "@assets/others/DECORATIONS/Seaweed & Coral Reefs/29.png";
-import DecorFish from "@assets/others/DECORATIONS/Fish & Other Sea Creatures/02-Fish.png";
+import LogoDLOR from "@assets/logo/ORB_DLOR 1.webp";
+import DecorSeaweed from "@assets/others/DECORATIONS/Seaweed & Coral Reefs/29.webp";
+import DecorFish from "@assets/others/DECORATIONS/Fish & Other Sea Creatures/02-Fish.webp";
 
 /* Button Components */
-import ButtonRegular from "@assets/buttons/Regular.png";
+import ButtonRegular from "@assets/buttons/Regular.webp";
 import ButtonSidebar from "@components/ButtonSidebar";
 import ButtonHome from "@components/ButtonHome";
 

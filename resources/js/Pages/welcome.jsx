@@ -3,25 +3,25 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Parallax, ParallaxLayer } from '@react-spring/parallax';
 
 /* Background Assets */
-import ImgMain from '@assets/backgrounds/Main.png';
-import ImgOrb from '@assets/backgrounds/Orb.png';
-import ImgInside from '@assets/backgrounds/Inside.png';
-import ImgCaveTopLeft from '@assets/backgrounds/CaveTopLeft.png';
-import ImgCaveTopRight from '@assets/backgrounds/CaveTopRight.png';
-import ImgCaveBottomLeft from '@assets/backgrounds/CaveBottomLeft.png';
-import ImgCaveBottomRight from '@assets/backgrounds/CaveBottomRight.png';
-import ImgRoad from '@assets/backgrounds/Road.png';
-import ImgDoor from '@assets/backgrounds/DoorLocked.png';
+import ImgMain from '@assets/backgrounds/Main.webp';
+import ImgOrb from '@assets/backgrounds/Orb.webp';
+import ImgInside from '@assets/backgrounds/Inside.webp';
+import ImgCaveTopLeft from '@assets/backgrounds/CaveTopLeft.webp';
+import ImgCaveTopRight from '@assets/backgrounds/CaveTopRight.webp';
+import ImgCaveBottomLeft from '@assets/backgrounds/CaveBottomLeft.webp';
+import ImgCaveBottomRight from '@assets/backgrounds/CaveBottomRight.webp';
+import ImgRoad from '@assets/backgrounds/Road.webp';
+import ImgDoor from '@assets/backgrounds/DoorLocked.webp';
 
 /* Other Assets */
-import LogoDaskom from '@assets/logo/01-DaskomBnW.png';
-import LogoDLOR from '@assets/logo/02-DLOR_Plain.png';
-import ButtonGoDown from '@assets/buttons/Down.png';
-import ButtonStart from '@assets/buttons/Regular.png';
+import LogoDaskom from '@assets/logo/01-DaskomBnW.webp';
+import LogoDLOR from '@assets/logo/02-DLOR_Plain.webp';
+import ButtonGoDown from '@assets/buttons/Down.webp';
+import ButtonStart from '@assets/buttons/Regular.webp';
 
 /* Decor Assets */
-import DecorFish_1 from '@assets/others/01-Fish.png';
-import DecorFish_2 from '@assets/others/02-Fish.png';
+import DecorFish_1 from '@assets/others/01-Fish.webp';
+import DecorFish_2 from '@assets/others/02-Fish.webp';
 
 /* Other Components */
 import UnderwaterEffect from '@components/UnderwaterEffect';
@@ -404,19 +404,19 @@ export default function Welcome() {
                         <img
                             src={ImgOrb}
                             alt="rocks"
-                            className="w-full h-auto min-w-[2000px] absolute bottom-1 left-1/2 -translate-x-1/2"
+                            className="w-full h-auto min-w-[2000px] absolute bottom-1"
                             style={{ filter: 'sepia(1) hue-rotate(150deg) saturate(2) contrast(1.5) brightness(0.9)' }}
                         />
                         <img
                             src={ImgDoor}
                             alt="ImgDoor"
-                            className="w-full h-auto min-w-[2000px] absolute bottom-1 left-1/2 -translate-x-1/2"
+                            className="w-full h-auto min-w-[2000px] absolute bottom-1"
                             style={{ filter: 'sepia(1) hue-rotate(150deg) saturate(2) contrast(1.5) brightness(0.9)' }}
                         />
                         <img
                             src={ImgRoad}
                             alt="ImgRoad"
-                            className="w-full h-auto min-w-[2000px] absolute bottom-1 left-1/2 -translate-x-1/2"
+                            className="w-full h-auto min-w-[2000px] absolute bottom-1"
                             style={{ filter: 'sepia(1) hue-rotate(150deg) saturate(2) contrast(1.5) brightness(0.9)' }}
                         />
 

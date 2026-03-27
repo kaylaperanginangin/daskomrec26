@@ -2,10 +2,10 @@ import { useRef, useState, useEffect } from 'react';
 import { Head, router } from '@inertiajs/react';
 
 /* Background Assets */
-import Background from '@assets/backgrounds/Alternate.png';
+import Background from '@assets/backgrounds/Alternate.webp';
 
 /* Decor Assets */
-import DecorRumput from '@assets/others/DECORATIONS/Seaweed & Coral Reefs/32.png';
+import DecorRumput from '@assets/others/DECORATIONS/Seaweed & Coral Reefs/32.webp';
 
 /* Button Components */
 import ButtonSidebar from '@components/ButtonSidebar';
@@ -27,7 +27,7 @@ export default function Assistants() {
     const [isBookPlacing, setIsBookPlacing] = useState(true);
 
     const [pageIndex, setPageIndex] = useState(0);
-    const totalIndices = 89 + 2;
+    const totalIndices = 87 + 2;
 
     const [bookDim, setBookDim] = useState({ width: 300, height: 450 });
 

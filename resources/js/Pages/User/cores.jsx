@@ -2,10 +2,10 @@ import { useRef, useState, useEffect } from "react";
 import { Head, router, usePage } from "@inertiajs/react";
 
 /* Background Assets */
-import Background from "@assets/backgrounds/Alternate.png";
+import Background from "@assets/backgrounds/Alternate.webp";
 
 /* Decor Assets */
-import DecorRumput from "@assets/others/DECORATIONS/Seaweed & Coral Reefs/32.png";
+import DecorRumput from "@assets/others/DECORATIONS/Seaweed & Coral Reefs/32.webp";
 
 /* Button Components */
 import ButtonSidebar from "@components/ButtonSidebar";

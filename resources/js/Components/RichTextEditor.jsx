@@ -20,7 +20,6 @@ const formats = [
     "color",
     "background",
     "list",
-    "bullet",
     "link",
 ];
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import ButtonLeft from '@assets/buttons/CircularLeft.png';
-import ButtonRight from '@assets/buttons/CircularRight.png';
+import ButtonLeft from '@assets/buttons/CircularLeft.webp';
+import ButtonRight from '@assets/buttons/CircularRight.webp';
 
 const ControlButton = ({ onClick, disabled, src, alt }) => {
     const [pressed, setPressed] = useState(false);

@@ -7,6 +7,7 @@ use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsUser;
+use App\Http\Middleware\CheckConfiguration;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'guest' => RedirectIfAuthenticated::class,
             'admin' => IsAdmin::class,
             'user' => IsUser::class,
+            'config.check' => CheckConfiguration::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

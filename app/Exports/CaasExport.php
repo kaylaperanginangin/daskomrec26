@@ -11,17 +11,38 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class CaasExport implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
+    protected $stageId;
+    protected $status;
+    protected $exportAll;
+
+    public function __construct($stageId = null, $status = null, $exportAll = true)
+    {
+        $this->stageId = $stageId;
+        $this->status = $status;
+        $this->exportAll = $exportAll;
+    }
+
     /**
-     * Get all users with their profiles (all records, not paginated)
+     * Get users with their profiles, optionally filtered by stage and status
      *
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        return User::with('profile', 'caasStage.stage')
+        $query = User::with('profile', 'caasStage.stage')
             ->join('caas_stages', 'users.id', '=', 'caas_stages.user_id')
-            ->select('users.*')
-            ->get();
+            ->select('users.*');
+
+        if (!$this->exportAll) {
+            if ($this->stageId) {
+                $query->where('caas_stages.stage_id', $this->stageId);
+            }
+            if ($this->status) {
+                $query->where('caas_stages.status', $this->status);
+            }
+        }
+
+        return $query->get();
     }
 
     /**
@@ -37,6 +58,8 @@ class CaasExport implements FromCollection, WithHeadings, WithMapping, WithStyle
             'jurusan',
             'kelas',
             'jenis kelamin',
+            'stage',
+            'status',
         ];
     }
 
@@ -54,6 +77,8 @@ class CaasExport implements FromCollection, WithHeadings, WithMapping, WithStyle
             $user->profile->major ?? 'N/A',
             $user->profile->class ?? 'N/A',
             $user->profile->gender ?? 'N/A',
+            $user->caasStage->stage->name ?? 'N/A',
+            $user->caasStage->status ?? 'N/A',
         ];
     }
 

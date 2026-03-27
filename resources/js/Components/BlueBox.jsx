@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import BoardPC from '@assets/backgrounds/BoardPC.png';
-import BoardMobile from '@assets/backgrounds/BoardMobile.png';
-import Chains1 from '@assets/others/DECORATIONS/Chains/01-Chain.png';
-import Chains2 from '@assets/others/DECORATIONS/Chains/01-Chain.png';
+import BoardPC from '@assets/backgrounds/BoardPC.webp';
+import BoardMobile from '@assets/backgrounds/BoardMobile.webp';
+import Chains1 from '@assets/others/DECORATIONS/Chains/01-Chain.webp';
+import Chains2 from '@assets/others/DECORATIONS/Chains/01-Chain.webp';
 
 export default function BlueModalWrapper({ isOpen, onClose, children, className = "" }) {
     const [shouldRender, setShouldRender] = useState(false);
