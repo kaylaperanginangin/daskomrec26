@@ -26,10 +26,9 @@ export default function HomeAdmin({
     const backgroundRef = useRef(null);
 
     const {auth} = usePage().props;
-    const user = auth.user;
     const profile= auth.profile|| {};
 
-    const USER = user.name || "Admin";
+    const USER = profile.name || "Admin";
 
     // Intro states
     const [showImage, setShowImage] = useState(false);
