@@ -712,15 +712,16 @@ export default function AdminDashboard({
                                 </div>
                             </div>
 
-                            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')]">
+<div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')]">
                                 {/* PASS COLUMN */}
-                                <div className="flex flex-col border-r border-white/5 bg-emerald-900/5 relative">
-                                    <div className="p-4 border-b border-white/5 bg-emerald-500/5 flex justify-between">
+                                <div className="flex flex-col min-h-0 border-r border-white/5 bg-emerald-900/5 relative">
+                                    <div className="p-4 shrink-0 border-b border-white/5 bg-emerald-500/5 flex justify-between">
                                         <span className="text-emerald-500/60 text-xs font-serif font-bold uppercase tracking-[0.2em]">
                                             Pass Content
                                         </span>
                                     </div>
-                                    <div className="flex-1 p-8 flex flex-col gap-8 overflow-y-auto">
+                                    
+                                    <div className="flex-1 min-h-0 p-8 flex flex-col gap-8 overflow-hidden">
                                         {!isPreviewMode ? (
                                             <>
                                                 <div className="flex-1 flex flex-col">
@@ -730,13 +731,11 @@ export default function AdminDashboard({
                                                     <RichTextEditor
                                                         editorKey={`pass-${currentStageId}`}
                                                         value={tempPass}
-                                                        onChange={(value) =>
-                                                            setTempPass(value)
-                                                        }
+                                                        onChange={(value) => setTempPass(value)}
                                                         placeholder="Enter message..."
                                                     />
                                                 </div>
-                                                <div>
+                                                <div className="shrink-0">
                                                     <label className="text-[10px] uppercase font-bold text-emerald-500/40 mb-3 tracking-widest">
                                                         Attachment Link
                                                     </label>
@@ -747,12 +746,7 @@ export default function AdminDashboard({
                                                         <input
                                                             type="text"
                                                             value={tempPassLink}
-                                                            onChange={(e) =>
-                                                                setTempPassLink(
-                                                                    e.target
-                                                                        .value,
-                                                                )
-                                                            }
+                                                            onChange={(e) => setTempPassLink(e.target.value)}
                                                             className="bg-transparent w-full text-sm text-emerald-200 placeholder-emerald-900/50 focus:outline-none font-mono"
                                                             placeholder="https://..."
                                                         />
@@ -760,25 +754,26 @@ export default function AdminDashboard({
                                                 </div>
                                             </>
                                         ) : (
-                                            <div className="h-full flex flex-col border border-emerald-500/20 bg-emerald-900/10 p-8 relative">
+                                            <div className="flex-1 min-h-0 flex flex-col border border-emerald-500/20 bg-emerald-900/10 p-8 relative overflow-hidden">
                                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"></div>
-                                                <h4 className="text-2xl font-serif text-emerald-400 mb-6 text-center">
+                                                
+                                                <h4 className="text-2xl font-serif text-emerald-400 mb-6 text-center shrink-0">
                                                     Status: PASSED
                                                 </h4>
+                                                
                                                 <div
-                                                    className="text-emerald-100/80 leading-loose text-lg font-light prose prose-invert prose-emerald max-w-none"
+                                                    className="flex-1 min-h-0 overflow-y-auto hide-scrollbar text-emerald-100/80 leading-loose text-lg font-light prose prose-invert prose-emerald max-w-none break-words whitespace-pre-wrap pr-2"
                                                     dangerouslySetInnerHTML={{
-                                                        __html:
-                                                            tempPass ||
-                                                            "<p class='text-emerald-100/40 italic text-center'>No message set</p>",
+                                                        __html: tempPass || "<p class='text-emerald-100/40 italic text-center'>No message set</p>",
                                                     }}
                                                 />
+                                                
                                                 {tempPassLink && (
                                                     <a
                                                         href={tempPassLink}
                                                         target="_blank"
                                                         rel="noreferrer"
-                                                        className="mt-auto w-full py-4 border border-emerald-500/40 text-emerald-300 text-center uppercase tracking-[0.25em] text-xs font-bold hover:bg-emerald-500/10 transition-all"
+                                                        className="mt-6 shrink-0 w-full py-4 border border-emerald-500/40 text-emerald-300 text-center uppercase tracking-[0.25em] text-xs font-bold hover:bg-emerald-500/10 transition-all"
                                                     >
                                                         Open Link
                                                     </a>
@@ -789,13 +784,14 @@ export default function AdminDashboard({
                                 </div>
 
                                 {/* FAIL COLUMN */}
-                                <div className="flex flex-col bg-rose-900/5">
-                                    <div className="p-4 border-b border-white/5 bg-rose-500/5 flex justify-between">
+                                <div className="flex flex-col min-h-0 bg-rose-900/5">
+                                    <div className="p-4 shrink-0 border-b border-white/5 bg-rose-500/5 flex justify-between">
                                         <span className="text-rose-500/60 text-xs font-serif font-bold uppercase tracking-[0.2em]">
                                             Fail Content
                                         </span>
                                     </div>
-                                    <div className="flex-1 p-8 flex flex-col gap-8 overflow-y-auto">
+                                    
+                                    <div className="flex-1 min-h-0 p-8 flex flex-col gap-8 overflow-hidden">
                                         {!isPreviewMode ? (
                                             <>
                                                 <div className="flex-1 flex flex-col">
@@ -805,25 +801,23 @@ export default function AdminDashboard({
                                                     <RichTextEditor
                                                         editorKey={`fail-${currentStageId}`}
                                                         value={tempFail}
-                                                        onChange={(value) =>
-                                                            setTempFail(value)
-                                                        }
+                                                        onChange={(value) => setTempFail(value)}
                                                         placeholder="Enter message..."
                                                     />
                                                 </div>
                                             </>
                                         ) : (
-                                            <div className="h-full flex flex-col border border-rose-500/20 bg-rose-900/10 p-8 relative">
+                                            <div className="flex-1 min-h-0 flex flex-col border border-rose-500/20 bg-rose-900/10 p-8 relative overflow-hidden">
                                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-rose-500/50 to-transparent"></div>
-                                                <h4 className="text-2xl font-serif text-rose-400 mb-6 text-center">
+                                                
+                                                <h4 className="text-2xl font-serif text-rose-400 mb-6 text-center shrink-0">
                                                     Status: NOT SELECTED
                                                 </h4>
+                                                
                                                 <div
-                                                    className="text-rose-100/80 leading-loose text-lg font-light prose prose-invert prose-rose max-w-none"
+                                                    className="flex-1 min-h-0 overflow-y-auto hide-scrollbar text-rose-100/80 leading-loose text-lg font-light prose prose-invert prose-rose max-w-none break-words whitespace-pre-wrap pr-2"
                                                     dangerouslySetInnerHTML={{
-                                                        __html:
-                                                            tempFail ||
-                                                            "<p class='text-rose-100/40 italic text-center'>No message set</p>",
+                                                        __html: tempFail || "<p class='text-rose-100/40 italic text-center'>No message set</p>",
                                                     }}
                                                 />
                                             </div>
@@ -851,9 +845,24 @@ export default function AdminDashboard({
                     document.body,
                 )}
 
-            <style>{`
+                <style>{`
                 @keyframes popIn { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
                 .animate-popIn { animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+                .prose p, .prose span, .prose a {
+                    word-wrap: break-word !important;
+                    overflow-wrap: break-word !important;
+                    word-break: break-all !important;
+                    white-space: pre-wrap !important;
+                }
+                
+                .hide-scrollbar {
+                    -ms-overflow-style: none;  
+                    scrollbar-width: none;  
+                }
+                .hide-scrollbar::-webkit-scrollbar {
+                    display: none; 
+                }
             `}</style>
         </div>
     );
